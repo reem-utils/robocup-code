@@ -1,0 +1,199 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>object_check_states &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for object_check_states</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+<span class="kn">import</span> <span class="nn">roslib</span>
+<span class="n">roslib</span><span class="o">.</span><span class="n">load_manifest</span><span class="p">(</span><span class="s">&#39;pal_smach_utils&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">smach</span>
+
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.global_common</span> <span class="kn">import</span> <span class="n">succeeded</span><span class="p">,</span> <span class="n">aborted</span><span class="p">,</span> <span class="n">transform_pose</span>
+
+
+<div class="viewcode-block" id="CheckObjectAndRemoveFromList"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#object_check_states.CheckObjectAndRemoveFromList">[docs]</a><span class="k">class</span> <span class="nc">CheckObjectAndRemoveFromList</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Checks if there is any object in the entering userdata. It removes the found object from the list and outputs the list.</span>
+<span class="sd">    The target_frame parameter is the desired frame_id of the poses of the result.</span>
+<span class="sd">    The leave_unknowns parameter specifies whether the objects tagged as unknown (not trained) should be used and left in the list</span>
+<span class="sd">    or not.</span>
+<span class="sd">    Outcomes:</span>
+<span class="sd">        - succeeded: A object was found and is returned. Also it was removed from the list.</span>
+<span class="sd">        - aborted: No object was found, or all the objects were unknown and leave_unknowns was set to False.</span>
+<span class="sd">    Userdata:</span>
+<span class="sd">        - in_objects_data: ObjectPoseList of objects found.</span>
+<span class="sd">        - in_target_object: String containing the name of the object wanted to be found. It&#39;s the empty string ( &#39;&#39; ) if it&#39;s looking for any object.</span>
+<span class="sd">        - out_object_found: The found object. It&#39;s the first on the list if in_target_object is the empty string ( &#39;&#39; ), or the target_object if found.</span>
+<span class="sd">                            If no object is found, this output key has the value None (not a string).</span>
+<span class="sd">        - out_objects_data: The list of objects exceptuating the object found. It&#39;s the same list if no object is found.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_frame</span><span class="p">,</span> <span class="n">leave_unknowns</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="n">aborted</span><span class="p">],</span> <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;in_objects_data&#39;</span><span class="p">,</span> <span class="s">&#39;in_target_object&#39;</span><span class="p">],</span>
+                             <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;out_object_found&#39;</span><span class="p">,</span> <span class="s">&#39;out_objects_data&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_frame</span> <span class="o">=</span> <span class="n">target_frame</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">leave_unknowns</span> <span class="o">=</span> <span class="n">leave_unknowns</span>
+
+<div class="viewcode-block" id="CheckObjectAndRemoveFromList.fill_print_object_information_and_remove_from_list"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#object_check_states.CheckObjectAndRemoveFromList.fill_print_object_information_and_remove_from_list">[docs]</a>    <span class="k">def</span> <span class="nf">fill_print_object_information_and_remove_from_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userdata</span><span class="p">,</span> <span class="n">object_index</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Fills in the selected output object and removes it of the list &#39;&#39;&#39;</span>
+        <span class="n">frame_id</span> <span class="o">=</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_objects_data</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span>
+        <span class="k">print</span> <span class="s">&quot;---------------- Object recognition --------------------&quot;</span>
+        <span class="k">print</span> <span class="s">&quot;Object found is: &quot;</span> <span class="o">+</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_objects_data</span><span class="o">.</span><span class="n">object_list</span><span class="p">[</span><span class="n">object_index</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">print</span> <span class="s">&quot;In position in the </span><span class="si">%s</span><span class="s"> coordinate frame: &quot;</span> <span class="o">%</span> <span class="n">frame_id</span>
+        <span class="k">print</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_objects_data</span><span class="o">.</span><span class="n">object_list</span><span class="p">[</span><span class="n">object_index</span><span class="p">]</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span>
+        <span class="k">print</span> <span class="s">&quot;With orientation:&quot;</span>
+        <span class="k">print</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_objects_data</span><span class="o">.</span><span class="n">object_list</span><span class="p">[</span><span class="n">object_index</span><span class="p">]</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span>
+        <span class="k">print</span> <span class="s">&quot;--------------------------------------------------------&quot;</span>
+        <span class="n">obj_data_copy</span> <span class="o">=</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_objects_data</span>
+        <span class="k">if</span> <span class="n">frame_id</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_frame</span><span class="p">:</span>
+            <span class="n">obj_data_copy</span><span class="o">.</span><span class="n">object_list</span><span class="p">[</span><span class="n">object_index</span><span class="p">]</span><span class="o">.</span><span class="n">pose</span> <span class="o">=</span> <span class="n">transform_pose</span><span class="p">(</span><span class="n">userdata</span><span class="o">.</span><span class="n">in_objects_data</span><span class="o">.</span><span class="n">object_list</span><span class="p">[</span><span class="n">object_index</span><span class="p">]</span><span class="o">.</span><span class="n">pose</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">,</span> <span class="s">&#39;/map&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="c"># Remove the selected object:</span>
+        <span class="n">userdata</span><span class="o">.</span><span class="n">out_object_found</span> <span class="o">=</span> <span class="n">obj_data_copy</span><span class="o">.</span><span class="n">object_list</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">object_index</span><span class="p">)</span>
+        <span class="n">userdata</span><span class="o">.</span><span class="n">out_objects_data</span> <span class="o">=</span> <span class="n">obj_data_copy</span>
+</div>
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userdata</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_objects_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">n_objects</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">userdata</span><span class="o">.</span><span class="n">in_objects_data</span><span class="o">.</span><span class="n">object_list</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_target_object</span> <span class="o">!=</span> <span class="s">&#39;&#39;</span><span class="p">:</span>  <span class="c"># There has been a target object specified (str(None) was once used)</span>
+                <span class="k">print</span> <span class="s">&quot;Target object specified! Looking for the&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">userdata</span><span class="o">.</span><span class="n">in_target_object</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;.&#39;</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_objects</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_objects_data</span><span class="o">.</span><span class="n">object_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_target_object</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">fill_print_object_information_and_remove_from_list</span><span class="p">(</span><span class="n">userdata</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="n">succeeded</span>
+                    <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">leave_unknowns</span><span class="p">:</span>
+                        <span class="n">obj_data_copy</span> <span class="o">=</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_objects_data</span>
+                        <span class="n">obj_data_copy</span><span class="o">.</span><span class="n">object_list</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                        <span class="n">userdata</span><span class="o">.</span><span class="n">out_objects_data</span> <span class="o">=</span> <span class="n">obj_data_copy</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c"># We need to have first the known objects</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_objects</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_objects_data</span><span class="o">.</span><span class="n">object_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s">&#39;unknown&#39;</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">fill_print_object_information_and_remove_from_list</span><span class="p">(</span><span class="n">userdata</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="n">succeeded</span>
+                <span class="c"># No known objects in the list</span>
+                <span class="k">if</span> <span class="n">n_objects</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">leave_unknowns</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">fill_print_object_information_and_remove_from_list</span><span class="p">(</span><span class="n">userdata</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">succeeded</span>
+        <span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">No object recognized!! Let&#39;s go to another place...</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="n">userdata</span><span class="o">.</span><span class="n">out_object_found</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">userdata</span><span class="o">.</span><span class="n">out_objects_data</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c"># userdata.in_objects_data</span>
+        <span class="k">return</span> <span class="n">aborted</span>
+
+</div>
+<div class="viewcode-block" id="CheckRemaining"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#object_check_states.CheckRemaining">[docs]</a><span class="k">class</span> <span class="nc">CheckRemaining</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="p">):</span>
+
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Checks if there are objects in a ObjectPoseList.</span>
+<span class="sd">    Userdata:</span>
+<span class="sd">        - in_obj_list: ObjectPoseList of objects. Can be None if there aren&#39;t objects yet.</span>
+<span class="sd">    Outcomes:</span>
+<span class="sd">        - remaining: Means that there are objects remaining.</span>
+<span class="sd">        - empty: Means that the list is empty or that the ObjectPoseList equals None.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;remaining&#39;</span><span class="p">,</span> <span class="s">&#39;empty&#39;</span><span class="p">],</span> <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;in_obj_list&#39;</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userdata</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">userdata</span><span class="o">.</span><span class="n">in_obj_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">userdata</span><span class="o">.</span><span class="n">in_obj_list</span><span class="o">.</span><span class="n">object_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">obj_name_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_obj_list</span><span class="o">.</span><span class="n">object_list</span><span class="p">:</span>
+                <span class="n">obj_name_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">print</span> <span class="s">&quot;Objects remaining in the location:&quot;</span><span class="p">,</span> <span class="n">obj_name_list</span>
+            <span class="k">return</span> <span class="s">&#39;remaining&#39;</span>
+        <span class="k">return</span> <span class="s">&#39;empty&#39;</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_documentation/pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

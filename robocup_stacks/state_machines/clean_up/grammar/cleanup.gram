@@ -1,0 +1,24 @@
+#JSGF V1.0;
+
+grammar cleanup;
+
+public <basic> = (  <goto> {obj.put("action","cleanup");} | <garbage> ){obj.put("external","1");}; 
+
+<goto> = (<gocommand> [the] <room> {obj.put("location",$.$value);} );
+
+<gocommand> = (clean up);
+
+<room> =(kitchen | kitchen chair | kitchen table | fridge | microwave | stool | washing machine | bedroom | wardrobe | closet | lamp | bed | drawer | corridor | hanger | bench | bookshelf | living room | side table | dining table | arm chair | coach table | sofa | tv | plant | business | exit);
+
+
+
+
+<garbage>  = <garbage2>;
+
+<garbage1> = _unk;
+<garbage2> = <garbage1> | (_unk _unk);
+<garbage3> = <garbage2> | (_unk _unk _unk);
+<garbage4> = <garbage3> | (_unk _unk _unk _unk);
+<garbage5> = <garbage4> | (_unk _unk _unk _unk _unk);
+
+

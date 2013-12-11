@@ -1,0 +1,19 @@
+<package>
+  <description brief="poi_current_position_sm_mock">
+
+     poi_current_position_sm_mock
+
+  </description>
+  <author>RDaneelOlivaw</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/poi_current_position_sm_mock</url>
+
+  <depend package="std_msgs"/>
+  <depend package="rospy"/>
+  <depend package="geometry_msgs"/>
+  <depend package="roslib"/>"" 
+  
+</package>
+
+

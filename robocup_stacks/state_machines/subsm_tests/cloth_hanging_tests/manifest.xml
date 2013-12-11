@@ -1,0 +1,21 @@
+<package>
+  <description brief="cloth_hanging_tests">
+
+     cloth_hanging_tests
+
+  </description>
+  <author>icarus</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/cloth_hanging_tests</url>
+  <depend package="rospy"/>
+  <depend package="actionlib" />
+  <depend package="actionlib_msgs" />
+  <depend package="smach_ros" />
+  <depend package="smach" />
+  <depend package="pal_smach_utils"/>
+  <depend package="cloth_hanging"/>
+
+</package>
+
+

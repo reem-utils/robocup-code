@@ -1,0 +1,41 @@
+<launch>
+
+
+
+  <!-- fake action server nodes -->
+<!-- <include file="$(find object_recognition_mock)/launch/object_recognition_mock.launch" /> -->
+<!-- <include file="$(find arm_navigation_mock)/launch/arm_navigation_mock.launch" /> -->
+<!-- <include file="$(find close_hand_mock)/launch/close_hand_mock.launch" /> -->
+  
+  <!-- before all this we need:
+  reem_robocup_gazebo reem_empty_world.launch 
+  reem_robocup_arm_navigation reem_arm_navigation.launch 
+  and the init_pose script!
+  running...
+  and when that runs... we need:
+  reem_robocup_gazebo_plugins objects_on_table_with_hack.launch 
+  finished... then we can execute the next stuff -->
+
+
+ <!--  <include file="$(find move_by)/launch/move_by.launch" >
+    <arg name="odom_topic" value="/erratic_odometry/odom" />
+    <arg name="cmd_topic" value="/cmd_vel" />
+  </include> -->
+
+
+  <!-- <include file="$(find reemh2_gazebo_laser_sensors)/launch/laser.launch" /> -->
+
+
+  <!-- <include file="$(find blort_ros)/launch/tracking_histogram.launch" /> -->
+  <!-- <include file="$(find pal_vision_segmentation)/launch/histogram_pringles_segment.launch" /> -->
+  <!-- <include file="$(find blort_ros)/launch/view_control.launch" /> -->
+
+
+  <!-- sm_search_and_grasp SMACH -->
+  <node pkg ="grasp_test"
+        type="sm_search_and_grasp_launcher.py"
+        name="sm_search_and_grasp"
+        output="screen">
+  </node>
+
+</launch>

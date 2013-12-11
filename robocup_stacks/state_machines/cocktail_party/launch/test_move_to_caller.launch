@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- load the configuration file -->
+  <rosparam file="$(find cocktail_party)/config/cocktail_party.yaml" command="load" ns="cocktail_party" />
+
+  <!--
+  <include file="$(find tts_mock)/launch/tts_mock.launch" />
+  <include file="$(find move_base_mock)/launch/move_base_mock.launch" />
+  <include file="$(find upperbody_mock)/launch/upperbody_mock.launch" />
+  <include file="$(find gesture_recognition_mock)/launch/gesture_recognition_mock.launch" />
+  -->
+  
+  <!-- Static Transforms -->
+  <!-- Uncomment if testing with mocks 
+  <node pkg="tf" type="static_transform_publisher" name="static_tf_gesture_detection_frame_base_link" args="1 0 0 0 0 0 gesture_detection_frame base_link 100" />
+  <node pkg="tf" type="static_transform_publisher" name="static_transform_base_link_kinect_link" args="1 0 0 0 0 0 base_link map 100" />
+  -->
+  
+  <!-- Cocktail SMACH -->
+  <node pkg ="cocktail_party"
+        type="test_move_to_caller.py"
+        name="test_move_to_caller"
+        output="screen">
+
+        <!-- WARNING: If testing with iri_motion_detector_mock, comment the line below -->
+        <!-- <remap from="/iri_motion_detector" to="/iri_motion_detector/getMotionPosition" /> -->
+  </node>
+
+</launch>

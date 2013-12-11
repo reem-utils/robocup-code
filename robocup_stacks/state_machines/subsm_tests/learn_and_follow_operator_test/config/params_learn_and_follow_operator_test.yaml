@@ -1,0 +1,3 @@
+move_base_topic_goal: "/move_base_simple/goal"
+nav_goal_x: 1.5
+distance_to_human: 1.0

@@ -1,0 +1,52 @@
+<launch>
+  <!-- declare arg to be passed in -->
+  <arg name="input_image" /> 
+
+  <group ns="iri_opencv_filters">
+    
+    
+    <node pkg="iri_opencv_filters" name="remove_border_convex" type="remove_border_node">
+      <remap from="~/image_in" to="$(arg input_image)"/>
+      <param name="~/remove_border_size" value="30" />
+      <param name="~/remove_border_convex" value="True" />
+    </node> -->
+
+    <node pkg="iri_opencv_filters" name="remove_border_all" type="remove_border_node">
+      <remap from="~/image_in" to="/iri_opencv_filters/remove_border_convex/image_out"/>
+      <param name="~/remove_border_size" value="20" />
+      <param name="~/remove_border_convex" value="False" />
+    </node>
+
+    <node pkg="iri_opencv_filters" name="morphological_grad" type="morphological_op_node">
+      <remap from="~/image_in" to="/iri_opencv_filters/remove_border_all/image_out"/>
+      <param name="~/morph_element_size" value="15" />
+      <param name="~/morph_operation" value="addblackhat" />
+    </node>
+    
+    <node pkg="iri_opencv_filters" name="floodfill_segmentation" type="floodfill_segmentation_node">
+      <remap from="~/image_in" to="/iri_opencv_filters/morphological_grad/image_out"/> 
+      <param name="~/floodfill_threshold" value="3" />
+      <param name="~/floodfill_min_area" value="80" />
+      <param name="~/floodfill_seed_num" value="10" />
+      <param name="~/colorspace_lab" value="true" />
+    </node>
+    
+    <node pkg="iri_opencv_filters" name="morphological_close" type="morphological_op_node">
+      <remap from="~/image_in" to="/iri_opencv_filters/floodfill_segmentation/image_out"/> 
+      <param name="~/morph_element_size" value="7" />
+      <param name="~/morph_operation" value="close" />
+    </node>
+
+    <!--<node pkg="iri_opencv_filters" name="median_blur" type="median_blur_node">
+      <remap from="~/image_in" to="/iri_opencv_filters/morphological_close/image_out"/> 
+      <param name="~/medianblur_size" value="5" />
+    </node>-->
+
+    <node pkg="iri_opencv_filters" name="remove_small_regions" type="remove_small_regions_node">
+      <remap from="~/image_in" to="/iri_opencv_filters/morphological_close/image_out"/> 
+      <param name="~/min_area_threshold" value="10" />
+    </node>
+    
+  </group>
+
+</launch>

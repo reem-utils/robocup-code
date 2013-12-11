@@ -1,0 +1,11 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~base_distance_before_closed_door" : \b [double] Required distance to avoid collision with a closed door min: 0.1, default: 0.36, max: 3.0
+- \b "~base_distance_after_open_door" : \b [double] Required distance to avoid collision with an open door min: 0.1, default: 1.0, max: 3.0
+- \b "~arm_distance_before_closed_door" : \b [double] Required distance to avoid collision with a closed door min: 0.01, default: 0.25, max: 1.0
+- \b "~z_arm_offset" : \b [double] Z-axis Arm offset to adjust target pose min: -1.0, default: 0.04, max: 1.0
+- \b "~y_offset" : \b [double] Y-axis offset to adjust target pose min: -1.0, default: 0.0, max: 1.0
+- \b "~no_simulator" : \b [bool] Run without simulation min: False, default: True, max: True
+

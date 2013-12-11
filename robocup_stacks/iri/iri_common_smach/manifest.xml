@@ -1,0 +1,14 @@
+<package>
+  <description brief="iri_common_smach">
+    Common SMACH code used across different IRI packages. Code goes from
+    simple functions, SMACH States, SMACH State Machines, etc.
+  </description>
+  <author>Jose Luis Rivero</author>
+  <license>LGPL</license>
+  <url>http://ros.org/wiki/iri_common_smach</url>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <depend package="sensor_msgs"/>
+  <depend package="geometry_msgs"/>
+  <depend package="tf"/>
+</package>

@@ -1,0 +1,17 @@
+<package>
+  <description brief="rosbag_image_cropper">
+
+     rosbag_image_cropper
+
+  </description>
+  <author>Sammy Pfeiffer, Bence Magyar</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/rosbag_image_cropper</url>
+  <depend package="rospy"/>
+  <depend package="opencv2"/>
+  <depend package="cv_bridge"/>
+
+</package>
+
+

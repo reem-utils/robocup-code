@@ -1,0 +1,5 @@
+bool first
+uint32 observation
+---
+bool goal_reached
+uint32 action

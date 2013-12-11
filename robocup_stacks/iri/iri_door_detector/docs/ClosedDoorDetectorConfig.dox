@@ -1,0 +1,26 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~min_door_width" : \b [int] Minimum door width min: 50, default: 300, max: 1500
+- \b "~max_door_width" : \b [int] Maximum door width min: 50, default: 750, max: 1500
+- \b "~min_door_height" : \b [int] Minimum door height min: 50, default: 850, max: 1500
+- \b "~max_door_height" : \b [int] Maximum door height min: 50, default: 1200, max: 1500
+- \b "~handle_width" : \b [int] Percentage of door width min: 1, default: 12, max: 20
+- \b "~handle_height" : \b [int] Percentage of door height min: 1, default: 6, max: 20
+- \b "~handle_location" : \b [int] Distance from door edge min: 0, default: 15, max: 50
+- \b "~allowed_blobs" : \b [int] Blob Threshold min: 0, default: 130, max: 400
+- \b "~segment_fidelity" : \b [int] Edge Fidelity of Segmentation min: 0, default: 40, max: 255
+- \b "~segment_size" : \b [int] Segment Area min: 0, default: 40, max: 255
+- \b "~debugging_images" : \b [int] Show Images for Debugging min: 0, default: 0, max: 5
+- \b "~no_simulator" : \b [bool] Run without simulation min: False, default: True, max: True
+- \b "~DSC" : \b [bool] Show Door Size Calibrator min: False, default: False, max: True
+- \b "~SHM" : \b [bool] Show Handle Mask min: False, default: False, max: True
+- \b "~SVP" : \b [bool] Show Virtual Points min: False, default: False, max: True
+- \b "~SFT" : \b [bool] Show Flatness Test min: False, default: False, max: True
+- \b "~Range_filter" : \b [bool] Apply Sensor range filter min: False, default: True, max: True
+- \b "~Persp_filter" : \b [bool] Apply Perspective filter min: False, default: True, max: True
+- \b "~Geom_filter" : \b [bool] Apply Geometry filter min: False, default: True, max: True
+- \b "~Size_filter" : \b [bool] Apply Size filter min: False, default: True, max: True
+- \b "~Aspect_filter" : \b [bool] Apply Aspect ratio filter min: False, default: True, max: True
+

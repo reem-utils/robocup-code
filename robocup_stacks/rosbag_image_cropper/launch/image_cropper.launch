@@ -1,0 +1,24 @@
+<launch>
+
+    <!-- setup the args -->
+    <arg name="bagfile" default="" /> <!-- FULL PATH TO THE FILE! Can't get roslaunch to figure it out -->
+    <arg name="object_name" default="object" />
+    <arg name="store_path" default="" />
+
+    <!-- launch image cropper with the name of the object -->
+    <node pkg ="rosbag_image_cropper"
+        type="rosbag_image_cropper.py"
+        name="rosbag_image_cropper"
+        args="$(arg object_name) $(arg store_path)"
+        output="screen">
+    </node>
+
+    <!-- launch rosbag play with the bagfile -->
+    <node pkg ="rosbag"
+        type="play"
+        name="play"
+        args="$(arg bagfile)"
+        output="screen">
+    </node>
+
+</launch>

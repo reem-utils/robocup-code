@@ -1,0 +1,4 @@
+This module provides a mock implementation of the `face_recognition'
+action.
+
+It returns between zero and three names with random confidence values.

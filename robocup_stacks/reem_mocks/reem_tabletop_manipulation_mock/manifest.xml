@@ -1,0 +1,19 @@
+<package>
+  <description brief="reem_tabletop_manipulation_mock">
+
+     reem_tabletop_manipulation_mock
+
+  </description>
+  <author>student</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/reem_tabletop_manipulation_mock</url>
+  <depend package="rospy"/>
+  <depend package="reem_tabletop_manipulation_launch"/>
+  <depend package="household_objects_database_msgs"/>
+  <depend package="tabletop_object_detector"/>
+  <depend package="pr2_controllers_msgs"/>
+
+</package>
+
+

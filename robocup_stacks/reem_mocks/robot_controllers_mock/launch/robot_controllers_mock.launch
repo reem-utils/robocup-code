@@ -1,0 +1,9 @@
+<launch>
+
+  <node pkg ="robot_controllers_mock"
+        type="robot_controllers_mock.py"
+        name="robot_controllers_mock"
+        output="screen">
+  </node>
+
+</launch>

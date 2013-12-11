@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<launch>
+
+<rosparam file="$(find follow_me)/config/params_follow_me.yaml"
+        command="load" ns="params_follow_me" />
+
+<!-- action server nodes -->
+<include file="$(find move_by)/launch/move_by_unsafe.launch"> 
+    <arg name="odom_topic" value="/base_odometry/odom"/>
+    <arg name="cmd_topic" value="/cmd_vel"/>
+</include>
+<!-- <include file="$(find iri_people_tracking_rai)/launch/reemTest.launch" /> -->
+
+  <!-- follow_operator_test SMACH -->
+  <node pkg ="follow_operator_test"
+        type="follow_operator_test.py"
+        name="follow_operator"
+        output="screen">
+  </node>
+
+</launch>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <!--Play Sound Node Launch-->
+  <include file="$(find tts_mock)/launch/tts_mock.launch" />
+  <!-- Dancing_reem_sm_test SMACH -->
+  <node pkg="talking_test"
+        type="talking_tts_test.py"
+        name="talking_tts_test"
+        output="screen">
+  </node>
+
+</launch>

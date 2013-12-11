@@ -1,0 +1,39 @@
+FILE(REMOVE_RECURSE
+  "../src/iri_door_detector/msg"
+  "../msg_gen"
+  "../msg_gen"
+  "CMakeFiles/ROSBUILD_genmsg_lisp"
+  "../msg_gen/lisp/FindADoorAction.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_FindADoorAction.lisp"
+  "../msg_gen/lisp/FindADoorGoal.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_FindADoorGoal.lisp"
+  "../msg_gen/lisp/FindADoorActionGoal.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_FindADoorActionGoal.lisp"
+  "../msg_gen/lisp/FindADoorResult.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_FindADoorResult.lisp"
+  "../msg_gen/lisp/FindADoorActionResult.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_FindADoorActionResult.lisp"
+  "../msg_gen/lisp/FindADoorFeedback.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_FindADoorFeedback.lisp"
+  "../msg_gen/lisp/FindADoorActionFeedback.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_FindADoorActionFeedback.lisp"
+  "../msg/FindADoorAction.msg"
+  "../msg/FindADoorGoal.msg"
+  "../msg/FindADoorActionGoal.msg"
+  "../msg/FindADoorResult.msg"
+  "../msg/FindADoorActionResult.msg"
+  "../msg/FindADoorFeedback.msg"
+  "../msg/FindADoorActionFeedback.msg"
+)
+
+# Per-language clean rules from dependency scanning.
+FOREACH(lang)
+  INCLUDE(CMakeFiles/ROSBUILD_genmsg_lisp.dir/cmake_clean_${lang}.cmake OPTIONAL)
+ENDFOREACH(lang)

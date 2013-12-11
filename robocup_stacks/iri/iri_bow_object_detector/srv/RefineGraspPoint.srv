@@ -1,0 +1,8 @@
+#sensor_msgs/PointCloud2 wrinkled_map
+#normal_descriptor_node/ndesc_pc normal_descriptor
+iri_bow_object_detector/ObjectBox[] posible_solutions
+sensor_msgs/Image image
+iri_perception_msgs/DescriptorSet descriptor_set
+---
+#geometry_msgs/Point grasp_point
+iri_perception_msgs/ImagePoint grasp_point

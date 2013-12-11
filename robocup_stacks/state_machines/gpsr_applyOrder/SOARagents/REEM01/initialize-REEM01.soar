@@ -1,0 +1,18 @@
+sp {propose*initialize-REEM01
+   (state <s> ^superstate nil
+             -^name)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-REEM01)
+}
+
+sp {apply*initialize-REEM01
+   (state <s> ^operator <op>)
+   (<op> ^name initialize-REEM01)
+-->
+   (<s> ^name REEM01
+        ^goal <g>
+        ^Rlocation room)
+   (<g> ^name go-to)
+}
+

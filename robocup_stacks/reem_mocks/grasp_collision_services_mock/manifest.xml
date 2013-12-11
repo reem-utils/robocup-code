@@ -1,0 +1,18 @@
+<package>
+  <description brief="grasp_collision_services_mock">
+
+     grasp_collision_services_mock
+
+  </description>
+  <author>student</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/grasp_collision_services_mock</url>
+  <depend package="rospy"/>
+  <depend package="std_srvs"/>
+  <depend package="arm_navigation_msgs"/>
+  <depend package="tabletop_collision_map_processing"/>
+
+</package>
+
+

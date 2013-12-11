@@ -1,0 +1,112 @@
+<!--
+  Application:
+    BoW object detector
+  Description:
+    Recognizes objects
+  Args:
+    Openni device ROS adress (kinect/asus/...)
+  Files:
+    -
+  Robot:
+    Estirabot
+  Author:
+    David Martínez (dmartinez@iri.upc.edu)
+  Date:
+    27 June 2012
+-->
+
+<launch>
+    <!-- Need to supply the openni device ROS adress ex: /kinect/camera -->
+    <arg name="openni_poincloud_topic" /> 
+    <arg name="robot_wam" default="true"/>
+    <arg name="12_12_05_vlsift128" default="false"/>
+    <arg name="13_01_08_vlsift128" default="true"/>
+    
+    <!-- 12_12_05_vlsift128 -->
+    <arg if="$(arg 12_12_05_vlsift128)" name="centroids_file" default="$(find iri_bow_object_detector)/conf/nuevos/ijrr13_centroids_vlsift_k128.txt"/>
+    <arg if="$(arg 12_12_05_vlsift128)" name="linear_svm_file" default="$(find iri_bow_object_detector)/conf/nuevos/linear_svm_IJRR13_vlsift128.npy"/>
+    <arg if="$(arg 12_12_05_vlsift128)" name="non_linear_svm_file" default="$(find iri_bow_object_detector)/conf/nuevos/non_linear_svm_IJRR13_vlsift128.pkl"/>
+    
+    <!-- 13_01_08_vlsift128 -->
+    <arg if="$(arg 13_01_08_vlsift128)" name="centroids_file" default="$(find iri_bow_object_detector)/conf/13-01-08/ijrr13_mask_vlfeat_dense_k128.txt"/>
+    <arg if="$(arg 13_01_08_vlsift128)" name="linear_svm_file" default="$(find iri_bow_object_detector)/conf/13-01-08/linear_svm_1negs_VLSIFT_IJRR13_ClothPartGT(128,2,1)_7_ijrr13_exp_vlsift128_all.npy"/>
+    <arg if="$(arg 13_01_08_vlsift128)" name="non_linear_svm_file" default="$(find iri_bow_object_detector)/conf/13-01-08/non_linear_svm_1negs_VLSIFT_IJRR13_ClothPartGT(128,2,1)_7_ijrr13_exp_vlsift128_all.pkl"/>
+
+    <!-- sift applied on the original image from openni device -->
+    <node pkg="iri_sift" name="iri_sift" type="iri_sift">
+        <!--<remap from="~/image_in" to="$(arg openni_device_root)/rgb/image_color"/>-->
+        <remap from="~/image_in" to="bow_object_detector/image_out"/>
+    </node>
+    
+    <node pkg="iri_vws" name="iri_vws" type="iri_vws">
+    </node>
+    
+    <!-- publish centroids -->
+    <node pkg="iri_publish_params" name="publish_centroids_old" type="iri_publish_params" args="$(arg centroids_file) /iri_sift/set_sift_centroids 0">
+        <remap from="classifier_update" to="iri_sift/set_sift_centroids"/> 
+    </node>
+    <node pkg="iri_publish_params" name="publish_centroids_new" type="iri_publish_params" args="$(arg centroids_file) /iri_vws/set_centroids 0">
+        <remap from="classifier_update" to="iri_vws/set_centroids"/> 
+    </node>
+
+    <!-- mask extracton -->
+    <include if="$(arg robot_wam)" file="$(find iri_bow_object_detector)/launch/mask_extraction/wam_mask_extraction.launch">
+        <arg name="input_topic" value="bow_object_detector/pointcloud_out" />
+    </include>
+    <include unless="$(arg robot_wam)" file="$(find iri_bow_object_detector)/launch/mask_extraction/reem_mask_extraction.launch">
+        <arg name="input_topic" value="bow_object_detector/pointcloud_out" />
+    </include>
+    
+    
+    <!-- BOW DETECTOR -->
+    
+    <node pkg="iri_bow_object_detector" name="bow_object_detector" type="iri_bow_object_detector" output="screen">
+        <remap from="~/mask_image_in" to="cloth_mask"/>
+        <remap from="~/pointcloud_in" to="$(arg openni_poincloud_topic)"/>
+        <remap from="~/getVwSet" to="iri_sift/get_geo_vw_set"/> 
+        <remap from="~/get_sift_descriptors" to="iri_sift/descriptors_from_image"/> 
+        <remap from="~/get_vws" to="iri_vws/get_vws"/> 
+        <remap from="~/detectObjects" to="geo_vw_detector"/>
+        <remap from="~/select_grasp_point" to="refine_grasp_point"/>  
+        <remap from="~/set_background_image" to="remove_background/set_background_image"/>
+        <remap from="~/pointcloud_to_descriptorset" to="iri_finddd/get_finddd_from_pointcloud"/>
+    </node>
+    
+    <!--<node pkg="iri_finddd" name="iri_finddd" type="iri_finddd" >
+        <param name="num_spatial_bins" value="4" />
+        <param name="desc_patch_radius" value="37" />
+        <param name="sample_each" value="3" />
+        <param name="centroids_file" value="$(find iri_finddd)/conf/xyz_centers13.txt" />
+        <param name="positions_file" value="" />
+        <param name="normalize_desc" value="1" />
+        <param name="use_soft_voting" value="1" />
+    </node>-->
+
+    <!-- Wrinkled map -->
+    <!--<node name="normal_descriptor_node" pkg="normal_descriptor_node" type="normal_descriptor_node" output="screen" >
+        <remap from="normal_descriptor_node/points" to="pcl_distance_filtered" />
+        <param name="num_spatial_bins" value="4" />
+        <param name="num_orientation_bins" value="8" />
+        <param name="desc_patch_radius" value="31" />
+        <param name="sample_each" value="6" />
+    </node>
+    <node name="iri_wrinkle_map" pkg="iri_wrinkled_map" type="iri_wrinkled_map">
+        <remap from="iri_wrinkle_map/descs" to="normal_descriptor_node/ndesc" />
+    </node>-->
+    
+    <!-- arnau python stuff rosrun iri_bow_object_detector ros_detector.py polo_live_sift -->
+    <node name="ros_detector" pkg="iri_bow_object_detector" type="ros_detector_reem.py" args="polo_live_sift" output="screen">
+        <param name="linear_svm_file" 
+                       value="$(arg linear_svm_file)" />
+        <param name="non_linear_svm_file"
+                       value="$(arg non_linear_svm_file)" />
+        <param name="finddd_svm_file" value="$(find iri_bow_object_detector)/conf/13-03-14/lapel_linear_classifier_n1_goodimas2.pkl" />
+    </node>
+</launch>
+
+<!--rosrun iri_publish_params iri_publish_params centroids_OpenCV_SIFT_k128.txt /iri_sift/set_sift_centroids 0 classifier_update:=/iri_sift/set_sift_centroids -->
+<!-- rosrun iri_bow_object_detector ros_detector.py polo_live_sift -->
+<!-- launch-prefix="xterm -e gdb - -args" -->
+
+
+

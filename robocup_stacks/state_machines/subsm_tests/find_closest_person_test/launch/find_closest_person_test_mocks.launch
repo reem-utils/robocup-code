@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<launch>
+    <node pkg="person_detector_mock" name ="person_detector" type="person_detector.py" />
+    <node pkg="move_base_mock" name ="move_base_mock_server" type="move_base_mock_server.py" />
+    <node pkg="tts_mock" name="tts" type="tts.py" />
+    <node pkg="face_recognition_mock" type="face_recognition.py" name="face_recognition" />
+
+    <!-- find_closest_person_test SMACH -->
+    <node pkg="find_closest_person_test" 
+          name="go_to_closest_person_test" 
+          type="go_to_closest_person_test.py"
+          output="screen">
+    </node>
+
+</launch>

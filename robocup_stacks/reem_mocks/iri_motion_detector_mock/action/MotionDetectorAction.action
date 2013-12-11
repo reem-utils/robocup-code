@@ -1,0 +1,7 @@
+# Define the goal
+
+---
+# Define the result
+geometry_msgs/PoseStamped pose
+---
+# Define a feedback message

@@ -1,0 +1,20 @@
+sp {REEM01*propose*find-person
+   (state <s> ^name REEM01
+              ^goal <g>
+              ^person <p>)
+  (<p> ^name <n>)
+ -(<p> ^location <l>)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name find-person
+         ^person <n>)
+}
+
+sp {REEM01*apply*find-person
+   (state <s> ^name REEM01
+              ^operator <o>
+              ^io.output-link <out>)
+   (<o> ^name find-person)
+-->
+   (<out> ^command find-person)
+}

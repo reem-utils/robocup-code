@@ -1,0 +1,26 @@
+<package>
+  <description brief="follow_any_person_test">
+
+     follow_any_person_test
+
+  </description>
+  <author>RDaneelOlivaw</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/follow_any_person_test</url>
+  <depend package="actionlib"/>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  
+  <depend package="geometry_msgs"/>
+  <depend package="std_srvs" />
+  <!--<depend package="follow_me"/>-->
+  <depend package="pal_smach_utils"/>
+  <depend package="text_to_speech" />
+
+  <depend package="dynamic_reconfigure" />
+
+</package>
+
+

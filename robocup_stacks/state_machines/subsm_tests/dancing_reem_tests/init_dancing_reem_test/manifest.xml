@@ -1,0 +1,20 @@
+<package>
+  <description brief="init_dancing_reem_test">
+
+     init_dancing_reem_test
+
+  </description>
+  <author>RDaneelOlivaw</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/init_dancing_reem_test</url>
+  <depend package="dancing_reem"/>
+  <depend package="pal_smach_utils"/>
+  <depend package="smach_ros"/>
+  <depend package="smach"/>
+  <depend package="rospy"/>
+  <depend package="actionlib"/>
+
+</package>
+
+

@@ -1,0 +1,11 @@
+<launch>
+
+
+  <!-- move_arm_to_travel_test SMACH -->
+  <node pkg ="move_arm_to_travel_test"
+        type="move_arm_to_travel_launcher.py"
+        name="move_arm_to_travel_test"
+        output="screen">
+  </node>
+
+</launch>

@@ -1,0 +1,34 @@
+<package>
+  <description brief="release_test">
+
+     release_test
+
+  </description>
+  <author>Sammy Pfeiffer</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/release_test</url>
+  <depend package="actionlib"/>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  
+  <depend package="geometry_msgs"/>
+  <depend package="move_base_msgs"/>
+  <depend package="arm_navigation_msgs" />
+  <depend package="actionlib_msgs" />
+  <depend package="object_manipulation_msgs" />
+  <depend package="control_msgs" />
+  <depend package="tf" />
+  <depend package="std_srvs" />
+  <depend package="object_recognition_mock" />
+  <depend package="pr2_controllers_msgs" />
+  
+
+  
+  <!-- Other packages -->
+  <depend package="pal_smach_utils"/>
+
+</package>
+
+

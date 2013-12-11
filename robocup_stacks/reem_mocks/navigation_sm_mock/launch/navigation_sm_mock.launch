@@ -1,0 +1,10 @@
+<launch>
+
+
+  <!-- navigation_sm_mock -->
+  <node pkg ="navigation_sm_mock"
+        type="navigation_sm_mock.py"
+        name="navigation_sm_mock">
+  </node>
+
+</launch>

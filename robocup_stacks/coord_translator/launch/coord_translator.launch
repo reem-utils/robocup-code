@@ -1,0 +1,16 @@
+<launch>
+
+  <rosparam file="$(find coord_translator)/config/objects_list.yaml" command="load" ns="objects" />
+  <rosparam file="$(find coord_translator)/config/mmap.yaml" command="load" ns="mmap" />
+  <rosparam file="$(find coord_translator)/config/locations_with_probabilities.yaml" command="load" ns="mmap" />
+  <rosparam file="$(find coord_translator)/config/furniture_probability.yaml" command="load" ns="mmap" />
+  <rosparam file="$(find coord_translator)/config/fire_locations.yaml" command="load" ns="mmap" />
+
+  <!-- coord translator -->
+  <node pkg ="coord_translator"
+        type="coord_translator.py"
+        name="coord_translator"
+        output="screen">
+  </node>
+
+</launch>

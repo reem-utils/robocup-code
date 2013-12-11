@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Cocktail SMACH -->
+  <node pkg ="cocktail_party"
+        type="test_run_command_local.py"
+        name="test_run_command"
+        output="screen">
+  </node>
+
+</launch>

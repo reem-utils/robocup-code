@@ -1,0 +1,28 @@
+<package>
+  <description brief="iri_bow_object_detector">
+
+     iri_bow_object_detector
+
+  </description>
+  <author>dmartinez</author>
+  <license>LGPL</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/iri_bow_object_detector</url>
+  <depend package="roscpp"/>
+  <depend package="iri_base_algorithm"/>
+  <depend package="normal_descriptor_node"/>
+  <depend package="iri_action_server"/>
+  <depend package="iri_sift"/>
+  <depend package="sensor_msgs"/>
+  <depend package="iri_perception_msgs"/>
+  <depend package="iri_plane_segmentation_pcl_rgb" />
+  <depend package="iri_opencv_filters" />
+<!--   <depend package="opencv2"/> -->
+  <depend package="pcl"/>
+  
+  <!-- TODO required by get_normals.cpp which should be removed from this package -->
+  <depend package="pcl_ros"/>
+
+</package>
+
+

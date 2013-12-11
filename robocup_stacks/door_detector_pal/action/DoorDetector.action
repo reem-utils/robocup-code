@@ -1,0 +1,18 @@
+# Goal
+# votation == 0 -> Stop
+# votation >  0 -> votation is the number of times in a row we need to detect again door closed/open to return results
+int8 votation
+---
+# Result
+# side of the handle "left" or "right"
+string handle_side
+# status of the door "open" or "closed"
+string door_status
+# if it's closed and we have the position of the handle
+geometry_msgs/PoseStamped door_handle
+# if it's open and we have the position of the door centroid
+geometry_msgs/PoseStamped door_position
+---
+# Feedback
+string comment
+

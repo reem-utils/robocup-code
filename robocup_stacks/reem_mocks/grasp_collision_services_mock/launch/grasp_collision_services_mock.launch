@@ -1,0 +1,9 @@
+<launch>
+
+  <node pkg ="grasp_collision_services_mock"
+        type="grasp_collision_services_mock.py"
+        name="grasp_collision_services_mock"
+        output="screen">
+  </node>
+
+</launch>

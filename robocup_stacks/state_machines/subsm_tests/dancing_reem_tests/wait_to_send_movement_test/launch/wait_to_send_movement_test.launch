@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <node pkg ="wait_to_send_movement_test"
+        type="wait_to_send_next_movement_test.py"
+        name="sm_wait_to_send_movement_test"
+        output="screen">
+  </node>
+
+</launch>

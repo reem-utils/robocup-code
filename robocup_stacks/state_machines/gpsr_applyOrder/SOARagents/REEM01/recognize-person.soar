@@ -1,0 +1,42 @@
+
+sp {REEM01*propose*recognize-person
+   (state <s> ^name REEM01
+              ^goal <g>
+              ^person <per1>)
+   (<per1> ^near ok)
+  -(<per1> ^known ok)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name recognize)
+}
+
+sp {REEM01*apply*recognize-person
+   (state <s> ^name REEM01
+              ^operator <o>
+              ^io.output-link <out>)
+   (<o> ^name recognize)
+-->
+   (<out> ^command recognize)
+}
+
+sp {REEM01*elaborate*recognized-person
+   (state <s> ^name REEM01
+              ^io.input-link <in>
+              ^person <p>)
+   (<p> ^near ok)
+   (<in> ^person-name <n>)
+-->
+   (<p> ^name <n>)
+}
+
+sp {REEM01*elaborate*check-recognized-person
+   (state <s> ^name REEM01
+              ^person <per1> {<per2> <> <per1>})
+   (<per1> ^name <n>
+           ^location <l>)
+   (<per2> ^near ok
+           ^name <n>)
+-->
+   (<per1> ^near ok)
+   (<s> ^person <per2> -)
+}

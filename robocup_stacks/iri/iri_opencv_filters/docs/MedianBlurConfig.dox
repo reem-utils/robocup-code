@@ -1,0 +1,6 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~medianblur_size" : \b [int] Median blur mask size. min: 1, default: 3, max: 15
+

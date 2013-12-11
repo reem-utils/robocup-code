@@ -1,0 +1,3 @@
+pushd REEM01
+source REEM01_source.soar
+popd

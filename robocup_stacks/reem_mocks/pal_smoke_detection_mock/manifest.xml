@@ -1,0 +1,16 @@
+<package>
+  <description brief="pal_smoke_detection_mock">
+
+     pal_smoke_detection_mock
+
+  </description>
+  <author>Yalim Isleyici</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/pal_smoke_detection_mock</url>
+  <depend package="std_msgs"/>
+  <depend package="rospy"/>
+
+</package>
+
+

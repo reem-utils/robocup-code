@@ -1,0 +1,10 @@
+\subsubsection usage Usage
+\verbatim
+<node name="MorphOpenAlgorithm" pkg="iri_opencv_filters" type="MorphOpenAlgorithm">
+  <param name="morph_operation" type="str" value="open" />
+  <param name="structuring_element_shape" type="str" value="ellipse" />
+  <param name="morph_element_size" type="int" value="3" />
+  <param name="morph_iterations" type="int" value="1" />
+</node>
+\endverbatim
+

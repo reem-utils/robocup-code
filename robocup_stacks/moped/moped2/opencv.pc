@@ -1,0 +1,9 @@
+prefix=/opt/ros/fuerte/stacks/vision_opencv/opencv2
+libdir=/opt/ros/fuerte/stacks/vision_opencv/opencv2/opencv/include
+includedir=/opt/ros/fuerte/stacks/vision_opencv/opencv2/opencv/lib
+
+Name: OpenCV
+Description: OpenCV as built by ROS
+Version: 2.0
+Libs: -L/opt/ros/fuerte/lib -lopencv_calib3d -lopencv_contrib -lopencv_core -lopencv_features2d -lopencv_flann -lopencv_gpu -lopencv_highgui -lopencv_imgproc -lopencv_legacy -lopencv_ml -lopencv_nonfree -lopencv_objdetect -lopencv_photo -lopencv_stitching -lopencv_ts -lopencv_video -lopencv_videostab
+CFlags: -I/opt/ros/fuerte/include/opencv -I/opt/ros/fuerte/include

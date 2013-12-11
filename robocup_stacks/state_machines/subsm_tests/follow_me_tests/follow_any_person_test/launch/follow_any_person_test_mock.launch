@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- load the configuration file -->
+    <rosparam file="$(find follow_me)/config/params_follow_me.yaml"
+      command="load" ns="params_follow_me" />
+
+    <rosparam file="$(find common)/config/params_navigation.yaml"
+        command="load"
+        ns="params_navigation" />
+
+    <!-- fake action server nodes -->
+    <include file="$(find face_recognition_mock)/launch/face_recognition_mock.launch" />
+    <include file="$(find person_detector_mock)/launch/person_detector_mock.launch" />
+    <include file="$(find tts_mock)/launch/tts_mock.launch" />
+    <include file="$(find speech_recognition_mock)/launch/speech_recognition_mock.launch" />
+    <include file="$(find poi_current_position_sm_mock)/launch/lookupTransform_mock.launch" />
+    <include file="$(find move_base_mock)/launch/move_base_mock.launch" />
+
+    <!-- follow_operator_test SMACH -->
+    <node pkg="follow_any_person_test"
+        type="follow_any_person_test.py"
+        name="sm_follow_any_person_test"
+        output="screen">
+    </node>
+
+
+    <node pkg="common"
+        type="navigation_reconfigure_server.py"
+        name="common_navigation"
+        output="screen">
+    </node>
+
+</launch>

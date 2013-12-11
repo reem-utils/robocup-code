@@ -1,0 +1,4 @@
+"Who is Who" State Machine
+
+To see what's going on, run the introspection viewer with:
+ $ rosrun smach_viewer smach_viewer.py

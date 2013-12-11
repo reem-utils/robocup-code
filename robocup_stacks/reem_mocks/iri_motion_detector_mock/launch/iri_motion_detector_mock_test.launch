@@ -1,0 +1,8 @@
+<launch>
+	
+  <include file="$(find iri_motion_detector_mock)/launch/iri_motion_detector_mock.launch"/>
+	
+  <node pkg="iri_motion_detector_mock" name="iri_motion_detector_mock_test" type="iri_motion_detector_mock_test.py" output="screen"/>
+
+</launch>
+

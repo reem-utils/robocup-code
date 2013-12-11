@@ -1,0 +1,18 @@
+<package>
+  <description brief="move_to_room_test">
+
+     move_to_room_test
+
+  </description>
+  <author>Gerard Canal</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/move_to_room_test</url>
+  <depend package="pal_smach_utils"/>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+
+</package>
+
+

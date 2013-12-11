@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<launch>
+  <!-- Restaurant SMACH -->
+  <node pkg ="restaurant"
+        type="restaurant_check_dependencies.py"
+        name="restaurant_check_dependencies"
+        output="screen">
+  </node>
+
+</launch>

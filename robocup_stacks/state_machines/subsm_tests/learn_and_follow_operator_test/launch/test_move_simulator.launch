@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<launch>
+    <include file="$(find face_recognition_mock)/launch/face_recognition_mock.launch" />
+    <include file="$(find person_detector_mock)/launch/person_detector_mock.launch" />
+    <include file="$(find tts_mock)/launch/tts_mock.launch" />
+    <include file="$(find speech_recognition_mock)/launch/speech_recognition_mock.launch" />
+    <include file="$(find poi_current_position_sm_mock)/launch/lookupTransform_mock.launch" />
+
+    <!-- load the Parameters configuration file -->
+    <rosparam file="$(find learn_and_follow_operator_test)/config/params_learn_and_follow_operator_test.yaml"
+        command="load"
+        ns="params_learn_and_follow_operator_test" />
+
+    <!--follow_operator_test SMACH-->
+    <node pkg="learn_and_follow_operator_test"
+        type="test_move_simulator.py"
+        name="test_move_simulator"
+        output="screen">
+    </node>
+
+    <node pkg="learn_and_follow_operator_test"
+        type="dynamic_reconfigure_server.py"
+        name="learn_and_follow_operator_test"
+        output="screen">
+    </node>
+</launch>

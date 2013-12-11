@@ -1,0 +1,11 @@
+<launch>
+
+    <include file="$(find next_location_provider)/launch/next_location_provider_service.launch" />
+
+    <node pkg ="find_object_say_category_and_grasp_test"
+        type="find_obj_get_cat_grasp.py"
+        name="find_obj_get_cat_grasp"
+        output="screen">
+    </node>
+
+</launch>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<launch>
+
+
+<!-- fake action server nodes -->
+  <include file="$(find coord_translator)/launch/coord_translator.launch" />
+
+ <!-- follow_operator_test SMACH -->
+  <node pkg ="fetch_and_give_object_test"
+        type="fetch_and_give_object_test.py"
+        name="fetch_and_give"
+        output="screen">
+  </node>
+
+</launch>
+

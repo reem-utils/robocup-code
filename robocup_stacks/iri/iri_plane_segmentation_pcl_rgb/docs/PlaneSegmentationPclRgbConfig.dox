@@ -1,0 +1,17 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~pointcloud_downsample" : \b [bool] Enable downsampling min: False, default: True, max: True
+- \b "~pointcloud_downsample_size" : \b [double] Downsampling point distance min: 0.0, default: 0.1, max: 1.0
+- \b "~choose_plane_by_distance" : \b [bool] Choose a big plane by distance (requires downsampling) min: False, default: True, max: True
+- \b "~choose_nearest_plane" : \b [bool] Gets nearest big plane min: False, default: True, max: True
+- \b "~plane_size_thresh" : \b [double] Plane distance threshold min: 0.0, default: 0.01, max: 1.0
+- \b "~plane_min_height" : \b [double] Plane negative threshold min: -1.0, default: -0.02, max: 1.0
+- \b "~plane_max_height" : \b [double] Plane positive threshold min: -1.0, default: 0.02, max: 1.0
+- \b "~plane_segm_iterations" : \b [int] Plane segmentation iterations min: 1, default: 1000, max: 10000
+- \b "~plane_segm_probability" : \b [double] Probability of choosing a sample w/o outliers min: 0.9, default: 0.99, max: 1.0
+- \b "~plane_clustering" : \b [bool] Maximum velocity scale factor min: False, default: False, max: True
+- \b "~plane_min_cluster_size" : \b [int] Maximum velocity scale factor min: 0, default: 400, max: 1000
+- \b "~plane_min_cluster_distance" : \b [double] Maximum velocity scale factor min: 0.0, default: 0.02, max: 1.0
+

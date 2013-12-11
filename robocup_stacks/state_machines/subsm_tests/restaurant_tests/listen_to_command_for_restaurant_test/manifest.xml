@@ -1,0 +1,19 @@
+<package>
+  <description brief="listen_to_command_for_restaurant_test">
+
+     listen_to_command_for_restaurant_test
+
+  </description>
+  <author>RDaneelOlivaw</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/listen_to_command_for_restaurant_test</url>
+  <depend package="pal_smach_utils"/>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="coord_translator"/>
+  <depend package="poi_current_position_sm_mock"/>
+
+</package>
+
+

@@ -1,0 +1,28 @@
+<package>
+  <description brief="elevator_handling_pt_test">
+
+     elevator_handling_pt_test
+
+  </description>
+  <author>david</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/elevator_handling_pt_test</url>
+  
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <depend package="text_to_speech"/> 
+  <!--<depend package="iri_perception_msgs"/> -->
+  <depend package="pal_interaction_msgs"/> 
+  <depend package="door_detector_pal"/> 
+  <depend package="move_base"/>
+  <depend package="move_base_msgs"/>
+  <depend package="iri_perception_msgs"/>
+  <depend package="pal_smach_utils"/>
+  <depend package="tf"/>
+  <depend package="geometry_msgs"/>
+
+</package>
+
+

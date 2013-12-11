@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<launch>
+  <!--Play Sound Node Launch-->
+  <include file="$(find tts_mock)/launch/tts_mock.launch" />
+  <!--Launch of Nod Head with bpm SM -->
+    <node pkg="dancing_reem" 
+        type="dancing_reem_and_nod.py"
+        name="sm_dancing_reem_and_nod"
+        output="screen" >
+    </node>
+
+</launch>

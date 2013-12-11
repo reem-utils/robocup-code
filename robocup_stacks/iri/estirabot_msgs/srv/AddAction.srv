@@ -1,0 +1,8 @@
+string action
+estirabot_msgs/DirtyArea[] dirty_areas
+estirabot_msgs/ArrayIndexes target_dirty_areas
+estirabot_msgs/PointsDistanceMsg[] distances
+string state_string
+bool action_movements_successful
+---
+bool needs_learning

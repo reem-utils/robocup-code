@@ -1,0 +1,16 @@
+<launch>
+
+
+  <!-- fake action server nodes -->
+
+<include file="$(find pal_smoke_detection)/launch/pal_smoke_detection.launch" />
+  
+<!-- Emergency Situation SMACH -->
+
+  <node pkg ="emergency_situation"
+        type="test_smoke_detector.py"
+        name="emergency_situation"
+        output="screen">
+  </node>
+
+</launch>

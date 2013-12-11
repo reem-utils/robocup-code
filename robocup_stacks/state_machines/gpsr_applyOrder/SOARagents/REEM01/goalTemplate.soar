@@ -1,0 +1,25 @@
+#Goal Template for SOAR
+
+sp {REEM01*propose*completed-goalINDEX
+    (state <s> ^name GPSR
+               ^goal <g>
+               ^item <i>
+               ^person <p>)
+    (<i> ^name ITEM)
+    (<p> ^name PERSON
+         ^item ITEM)
+    (<g> ^name ACTION
+         ^order INDEX)
+--->
+    (<s> ^operator <o> + >)
+    (<o> ^name completed-goalINDEX
+         ^successful ok)}
+
+sp {REEM01*apply*completed-goal
+    (state <s> ^name GPSR
+               ^io.output-link <out>
+               ^operator <o>)
+    (<o> ^name completed.goalINDEX)
+--->
+    (<out> ^result succesful)}
+

@@ -1,0 +1,4 @@
+uint32[] ids
+---
+bool ok
+string reason

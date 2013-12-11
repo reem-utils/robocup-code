@@ -1,0 +1,225 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>math_utils &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for math_utils</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+
+<div class="viewcode-block" id="xy_with_angle"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#math_utils.xy_with_angle">[docs]</a><span class="k">def</span> <span class="nf">xy_with_angle</span><span class="p">(</span><span class="n">alfa</span><span class="p">,</span> <span class="n">distance</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the x and y components for a 2D vector that</span>
+<span class="sd">    has that angle ( radians) reffered to the horizontal and has the</span>
+<span class="sd">    magnitude distance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">distance</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">alfa</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">distance</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">alfa</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+
+</div>
+<div class="viewcode-block" id="vector_magnitude"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#math_utils.vector_magnitude">[docs]</a><span class="k">def</span> <span class="nf">vector_magnitude</span><span class="p">(</span><span class="n">vec</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the magnitude of the given vector.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">vec</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">vec</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">vec</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">vec</span><span class="o">.</span><span class="n">z</span><span class="o">*</span><span class="n">vec</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="normalize_vector"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#math_utils.normalize_vector">[docs]</a><span class="k">def</span> <span class="nf">normalize_vector</span><span class="p">(</span><span class="n">vec</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a normalized (unitary) copy of *vec*.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">magnitude</span> <span class="o">=</span> <span class="n">vector_magnitude</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span>
+    <span class="n">unit</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">magnitude</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">unit</span><span class="o">.</span><span class="n">x</span> <span class="o">/=</span> <span class="n">magnitude</span>
+        <span class="n">unit</span><span class="o">.</span><span class="n">y</span> <span class="o">/=</span> <span class="n">magnitude</span>
+        <span class="n">unit</span><span class="o">.</span><span class="n">z</span> <span class="o">/=</span> <span class="n">magnitude</span>
+    <span class="k">return</span> <span class="n">unit</span>
+
+</div>
+<div class="viewcode-block" id="multiply_vector"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#math_utils.multiply_vector">[docs]</a><span class="k">def</span> <span class="nf">multiply_vector</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Multiplies each component of *vec* by the given *factor*.</span>
+<span class="sd">    There is the factor zero condition, to aviod having variables</span>
+<span class="sd">    that were negative having a value or -0.0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">factor</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">x</span> <span class="o">*=</span> <span class="n">factor</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">y</span> <span class="o">*=</span> <span class="n">factor</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">z</span> <span class="o">*=</span> <span class="n">factor</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+</div>
+<div class="viewcode-block" id="add_vectors"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#math_utils.add_vectors">[docs]</a><span class="k">def</span> <span class="nf">add_vectors</span><span class="p">(</span><span class="n">vec1</span><span class="p">,</span> <span class="n">vec2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Element-wise addition of vec1 and vec2.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">vec1</span><span class="p">)</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">vec2</span><span class="o">.</span><span class="n">x</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="n">vec2</span><span class="o">.</span><span class="n">y</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">z</span> <span class="o">+=</span> <span class="n">vec2</span><span class="o">.</span><span class="n">z</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+</div>
+<div class="viewcode-block" id="substract_vector"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#math_utils.substract_vector">[docs]</a><span class="k">def</span> <span class="nf">substract_vector</span><span class="p">(</span><span class="n">vec1</span><span class="p">,</span> <span class="n">vec2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Element-wise substraction of vec2 from vec1.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">vec1</span><span class="p">)</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">x</span> <span class="o">-=</span> <span class="n">vec2</span><span class="o">.</span><span class="n">x</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">y</span> <span class="o">-=</span> <span class="n">vec2</span><span class="o">.</span><span class="n">y</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">z</span> <span class="o">-=</span> <span class="n">vec2</span><span class="o">.</span><span class="n">z</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+</div>
+<div class="viewcode-block" id="multiply_quaternions"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#math_utils.multiply_quaternions">[docs]</a><span class="k">def</span> <span class="nf">multiply_quaternions</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Multiplies quaternions `a&#39; and `b`. Remember that this operation</span>
+<span class="sd">    is noncommutative.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="c"># From &quot;3D Math Primer for Graphics and Game Development&quot;, pag. 165</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">w</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">w</span> <span class="o">-</span> <span class="n">a</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">a</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">a</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">z</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">w</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">a</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">w</span> <span class="o">+</span> <span class="n">a</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">z</span> <span class="o">-</span> <span class="n">a</span><span class="o">.</span><span class="n">z</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">y</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">w</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">a</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">w</span> <span class="o">+</span> <span class="n">a</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">z</span> <span class="o">-</span> <span class="n">a</span><span class="o">.</span><span class="n">z</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">x</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">w</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">z</span> <span class="o">+</span> <span class="n">a</span><span class="o">.</span><span class="n">z</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">w</span> <span class="o">+</span> <span class="n">a</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">a</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">y</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+</div>
+<div class="viewcode-block" id="cross_product"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#math_utils.cross_product">[docs]</a><span class="k">def</span> <span class="nf">cross_product</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Makes the cross product of two vectors</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">z</span> <span class="o">-</span> <span class="n">a</span><span class="o">.</span><span class="n">z</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">y</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">z</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">a</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">z</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">a</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">x</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+
+</div>
+<div class="viewcode-block" id="dot_product"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#math_utils.dot_product">[docs]</a><span class="k">def</span> <span class="nf">dot_product</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Makes a dot product of two vectors</span>
+<span class="sd">    Returns a number</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">a</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">a</span><span class="o">.</span><span class="n">z</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">z</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+
+</div>
+<span class="k">def</span> <span class="nf">euclidean_distance</span><span class="p">(</span><span class="n">pose1</span><span class="p">,</span> <span class="n">pose2</span><span class="p">):</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="n">pose2</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">pose1</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="n">pose2</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">pose1</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">dist</span>
+
+<span class="k">def</span> <span class="nf">euclidean_distance_3d</span><span class="p">(</span><span class="n">pose1</span><span class="p">,</span> <span class="n">pose2</span><span class="p">):</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="n">pose2</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">pose1</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="n">pose2</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">pose1</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="n">pose2</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">z</span> <span class="o">-</span> <span class="n">pose1</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">z</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">dist</span>
+
+<span class="c"># vim: expandtab ts=4 sw=4</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_documentation/pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <node pkg ="write_old_movement_test"
+        type="write_old_movement_test.py"
+        name="sm_write_old_movement_test"
+        output="screen">
+  </node>
+
+</launch>

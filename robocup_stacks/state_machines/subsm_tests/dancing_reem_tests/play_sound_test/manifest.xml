@@ -1,0 +1,18 @@
+<package>
+  <description brief="play_sound_test">
+
+     play_sound_test
+
+  </description>
+  <author>RDaneelOlivaw</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/play_sound_test</url>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <depend package="pal_smach_utils"/>
+
+</package>
+
+

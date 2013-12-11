@@ -1,0 +1,13 @@
+<launch>
+
+	<!-- start up robot simulation and navigation -->
+  	<include file="$(find pal_navigation)/launch/all_rh2_gazebo.launch"/>
+
+	<!-- start up arm controllers -->
+  	<include file="$(find reem_arm_navigation)/launch/reem_arm_navigation.launch"/>
+
+	<!-- Release arms from collision state -->
+	<node pkg="simple_trajectory" type="simple_trajectory_left" name="simple_trajectory_left"/>
+	<node pkg="simple_trajectory" type="simple_trajectory_right" name="simple_trajectory_right"/>
+
+</launch>

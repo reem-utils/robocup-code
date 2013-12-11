@@ -1,0 +1,17 @@
+<package>
+  <description brief="next_location_provider">
+
+     next_location_provider
+
+  </description>
+  <author>Gerard Canal</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/next_location_provider</url>
+  <depend package="rospy"/>
+  <depend package="roslib"/>
+  <depend package="tf"/>
+  <depend package="pal_smach_utils" />
+</package>
+
+

@@ -1,0 +1,23 @@
+namespaces: {map_0: submap_0}
+numberOfSubmaps: 1
+poi:
+  submap_0:
+    poi_1: [submap_0, kitchen, 3.429, -3.548, -2.813]
+    poi_2: [submap_0, charger, 3.429, -3.548, -1.329]
+    poi_3: [submap_0, dinning_room, 3.429, -3.548, -2.387]
+    poi_4: [submap_0, exit,  3.429, -3.548, 0.075]
+    poi_5: [submap_0, playground, 3.429, -3.548, -2.721]
+    poi_6: [submap_0, business, 3.429, -3.548, -2.721]
+    poi_7: [submap_0, fridge, 3.429, -3.548, -2.721]
+    poi_8: [submap_0, robocup, -1.108, -0.516, 0.722]
+
+fire_locations:
+    poi_1: [submap_0, fire1_1, -4.760, 2.740, 2.72]
+    poi_2: [submap_0, fire1_2, -0.070, -0.248, -0.364]
+    poi_3: [submap_0, fire1_3, -4.715, 3.122, -0.367]
+    poi_4: [submap_0, fire1_4, -4.698, 3.090, 1.193]
+    poi_5: [submap_0, fire2_1, -5.001, 1.689, -1.933]
+    poi_6: [submap_0, fire2_2, -4.954, 1.672, 2.643]
+    poi_7: [submap_0, fire2_3, -4.906, 1.655, 1.419]
+    poi_8: [submap_0, fire2_4, -4.892, 1.699, -0.340]
+

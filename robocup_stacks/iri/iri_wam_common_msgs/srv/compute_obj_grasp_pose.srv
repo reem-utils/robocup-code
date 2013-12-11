@@ -1,0 +1,4 @@
+int32 filterID 
+---
+geometry_msgs/PoseStamped graspPose
+float32 wrinkleness

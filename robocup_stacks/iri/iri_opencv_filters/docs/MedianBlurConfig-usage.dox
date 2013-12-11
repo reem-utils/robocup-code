@@ -1,0 +1,7 @@
+\subsubsection usage Usage
+\verbatim
+<node name="MedianBlurAlgorithm" pkg="iri_opencv_filters" type="MedianBlurAlgorithm">
+  <param name="medianblur_size" type="int" value="3" />
+</node>
+\endverbatim
+

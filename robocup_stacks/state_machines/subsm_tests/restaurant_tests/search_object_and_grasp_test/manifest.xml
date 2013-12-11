@@ -1,0 +1,18 @@
+<package>
+  <description brief="search_object_and_grasp_test">
+
+     search_object_and_grasp_test
+
+  </description>
+  <author>RDaneelOlivaw</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/search_object_and_grasp_test</url>
+  <depend package="rospy"/>
+  <depend package="pal_smach_utils"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+
+</package>
+
+

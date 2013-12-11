@@ -1,0 +1,19 @@
+<package>
+  <description brief="navigation_sm_mock">
+
+     navigation_sm_mock
+
+  </description>
+  <author>Ricardo Tellez</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/coord_translator</url>
+  <depend package="std_msgs"/>
+  <depend package="geometry_msgs"/>
+  <depend package="rospy"/>
+  <depend package="roscpp"/>
+  <depend package="tf" />
+  <depend package="pal_navigation_msgs"/>
+</package>
+
+

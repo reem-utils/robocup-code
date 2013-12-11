@@ -1,0 +1,20 @@
+<package>
+  <description brief="move_head_test">
+
+     move_head_test
+
+  </description>
+  <author>david</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/move_head_test</url>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <depend package="pal_smach_utils"/>
+  <depend package="actionlib"/>
+  <depend package="pr2_controllers_msgs"/>
+
+</package>
+
+

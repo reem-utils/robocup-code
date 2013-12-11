@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- load the configuration file -->
+    <rosparam file="$(find follow_me)/config/params_follow_me.yaml"
+      command="load" ns="params_follow_me" />
+
+    <rosparam file="$(find common)/config/params_navigation.yaml"
+        command="load"
+        ns="params_navigation" />
+
+    <rosparam file="$(find learn_and_follow_operator_test)/config/params_learn_and_follow_operator_test.yaml"
+        command="load"
+        ns="params_learn_and_follow" />
+
+    <rosparam file="$(find restaurant)/config/restaurant.yaml"
+      command="load" ns="restaurant" />
+      
+    <rosparam file="$(find cocktail_party)/config/cocktail_party.yaml" command="load" ns="cocktail_party" />
+
+    <!--<include file="$(find tts_mock)/launch/tts_mock.launch" />-->
+    <!--<include file="$(find speech_recognition_mock)/launch/speech_recognition_mock.launch" />-->
+
+    <!-- follow_operator_test SMACH -->
+    <node pkg="learn_and_follow_operator_test"
+        type="inside_elevator_test.py"
+        name="inside_elevator_test"
+        output="screen">
+    </node>
+
+<!--
+    <node pkg="common"
+        type="navigation_reconfigure_server.py"
+        name="common_navigation"
+        output="screen">
+    </node> -->
+
+</launch>
+

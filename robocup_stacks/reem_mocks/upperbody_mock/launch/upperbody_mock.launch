@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <node
+    pkg="upperbody_mock" type="upperbody_mock_server.py"
+    name="upper_body"/>
+
+</launch>

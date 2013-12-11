@@ -1,0 +1,11 @@
+# goal
+# name of XML file containing motions for the robot
+string motion_file
+
+# true if trajectory validation is to be performed
+bool validate_trajectory
+---
+
+---
+# feedback message
+# no feedback for the moment. could be remaining time or current configuration

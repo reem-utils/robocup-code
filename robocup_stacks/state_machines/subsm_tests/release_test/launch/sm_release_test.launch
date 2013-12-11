@@ -1,0 +1,18 @@
+<launch>
+
+
+  <!-- fake action server nodes -->
+<!-- <include file="$(find arm_navigation_mock)/launch/arm_navigation_mock.launch" /> -->
+<!-- <include file="$(find close_hand_mock)/launch/close_hand_mock.launch" /> -->
+  
+
+  
+
+  <!-- sm_release SMACH -->
+  <node pkg ="release_test"
+        type="sm_release_object_launcher.py"
+        name="sm_release"
+        output="screen">
+  </node>
+
+</launch>

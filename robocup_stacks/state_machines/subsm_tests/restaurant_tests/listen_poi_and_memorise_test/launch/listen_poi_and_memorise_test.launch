@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Restaurant SMACH -->
+  <node pkg ="listen_poi_and_memorise_test"
+        type="listen_poi_and_memorise_test.py"
+        name="sm_listen_poi_and_memorise_test"
+        output="screen">
+  </node>
+
+</launch>

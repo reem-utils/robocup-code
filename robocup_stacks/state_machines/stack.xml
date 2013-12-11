@@ -1,0 +1,8 @@
+<stack>
+  <description brief="state_machines">state_machines</description>
+  <author>REEM at IRI</author>
+  <license>BSD</license>  
+  <review status="unreviewed" notes=""/>
+  <url></url>
+  <depend stack="ros" />
+</stack>

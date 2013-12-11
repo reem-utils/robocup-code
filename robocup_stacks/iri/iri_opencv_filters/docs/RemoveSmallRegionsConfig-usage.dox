@@ -1,0 +1,7 @@
+\subsubsection usage Usage
+\verbatim
+<node name="RemoveSmallRegionsAlgorithm" pkg="iri_opencv_filters" type="RemoveSmallRegionsAlgorithm">
+  <param name="min_area_threshold" type="int" value="20" />
+</node>
+\endverbatim
+

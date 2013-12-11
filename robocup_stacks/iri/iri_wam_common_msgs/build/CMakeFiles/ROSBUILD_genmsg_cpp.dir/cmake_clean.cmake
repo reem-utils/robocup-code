@@ -1,0 +1,42 @@
+FILE(REMOVE_RECURSE
+  "../src/iri_wam_common_msgs/msg"
+  "../src/iri_wam_common_msgs/srv"
+  "../msg_gen"
+  "../srv_gen"
+  "../msg_gen"
+  "../srv_gen"
+  "CMakeFiles/ROSBUILD_genmsg_cpp"
+  "../msg_gen/cpp/include/iri_wam_common_msgs/SimpleBhandPickUpAction.h"
+  "../msg_gen/cpp/include/iri_wam_common_msgs/SimpleBhandPickUpGoal.h"
+  "../msg_gen/cpp/include/iri_wam_common_msgs/SimpleBhandPickUpActionGoal.h"
+  "../msg_gen/cpp/include/iri_wam_common_msgs/SimpleBhandPickUpResult.h"
+  "../msg_gen/cpp/include/iri_wam_common_msgs/SimpleBhandPickUpActionResult.h"
+  "../msg_gen/cpp/include/iri_wam_common_msgs/SimpleBhandPickUpFeedback.h"
+  "../msg_gen/cpp/include/iri_wam_common_msgs/SimpleBhandPickUpActionFeedback.h"
+  "../msg_gen/cpp/include/iri_wam_common_msgs/LWPRTrajectoryReturningForceEstimationAction.h"
+  "../msg_gen/cpp/include/iri_wam_common_msgs/LWPRTrajectoryReturningForceEstimationGoal.h"
+  "../msg_gen/cpp/include/iri_wam_common_msgs/LWPRTrajectoryReturningForceEstimationActionGoal.h"
+  "../msg_gen/cpp/include/iri_wam_common_msgs/LWPRTrajectoryReturningForceEstimationResult.h"
+  "../msg_gen/cpp/include/iri_wam_common_msgs/LWPRTrajectoryReturningForceEstimationActionResult.h"
+  "../msg_gen/cpp/include/iri_wam_common_msgs/LWPRTrajectoryReturningForceEstimationFeedback.h"
+  "../msg_gen/cpp/include/iri_wam_common_msgs/LWPRTrajectoryReturningForceEstimationActionFeedback.h"
+  "../msg/SimpleBhandPickUpAction.msg"
+  "../msg/SimpleBhandPickUpGoal.msg"
+  "../msg/SimpleBhandPickUpActionGoal.msg"
+  "../msg/SimpleBhandPickUpResult.msg"
+  "../msg/SimpleBhandPickUpActionResult.msg"
+  "../msg/SimpleBhandPickUpFeedback.msg"
+  "../msg/SimpleBhandPickUpActionFeedback.msg"
+  "../msg/LWPRTrajectoryReturningForceEstimationAction.msg"
+  "../msg/LWPRTrajectoryReturningForceEstimationGoal.msg"
+  "../msg/LWPRTrajectoryReturningForceEstimationActionGoal.msg"
+  "../msg/LWPRTrajectoryReturningForceEstimationResult.msg"
+  "../msg/LWPRTrajectoryReturningForceEstimationActionResult.msg"
+  "../msg/LWPRTrajectoryReturningForceEstimationFeedback.msg"
+  "../msg/LWPRTrajectoryReturningForceEstimationActionFeedback.msg"
+)
+
+# Per-language clean rules from dependency scanning.
+FOREACH(lang)
+  INCLUDE(CMakeFiles/ROSBUILD_genmsg_cpp.dir/cmake_clean_${lang}.cmake OPTIONAL)
+ENDFOREACH(lang)

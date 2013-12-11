@@ -1,0 +1,30 @@
+<!--
+  Application:
+    Segment clothes
+  Description:
+    Given a pointcloud of a plane with an object(s) on it, it will get an mask of the segmented object(s).
+  Args:
+    -
+  Files:
+    -
+  Robot:
+    Estirabot
+  Author:
+    David Martínez (dmartinez@iri.upc.edu)
+  Date:
+    27 June 2012
+-->
+
+<launch>
+  <!-- declare arg to be passed in -->
+  <arg name="input_pointcloud" /> 
+
+    
+     	<node pkg="iri_sift" name="iri_sift" type="iri_sift">
+		<remap from="~/image_in" to="/camera/rgb/image_color"/> 
+	</node>
+
+    
+    
+
+</launch>

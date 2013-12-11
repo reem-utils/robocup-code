@@ -1,0 +1,14 @@
+# target poses
+geometry_msgs/PoseStamped[] poses
+# true if you want to use the main arm
+bool[] secondary_arm
+# coefficients of the plane against which it will calculate the offset of the hand
+float32[] plane_coefficients
+# 0 -> move to initial position
+# 1 -> standar move
+uint8 movement_type
+---
+# true if every pose movement was completed successfully
+bool success
+# if fails to reach a pose, its index is saved in the following array
+uint32[] too_far_points_indexes

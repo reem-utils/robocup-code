@@ -1,0 +1,4 @@
+<launch>
+	<!-- Run smach -->
+	<node pkg="iri_door_detector" type="Open_The_Door.py" name="Open_The_Door" output="screen"/> 
+</launch>

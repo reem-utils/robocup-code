@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<launch>
+
+    <!-- follow_operator_test SMACH -->
+    <node pkg="gesture_recognition_test"
+        type="gesture_recognition_test.py"
+        name="sm_gesture_recognition_test"
+        output="screen">
+    </node>
+
+</launch>

@@ -1,0 +1,7 @@
+\subsubsection usage Usage
+\verbatim
+<node name="SiftAlgorithm" pkg="iri_sift" type="SiftAlgorithm">
+  <param name="descriptors_file" type="str" value="vocabulary.yaml" />
+</node>
+\endverbatim
+

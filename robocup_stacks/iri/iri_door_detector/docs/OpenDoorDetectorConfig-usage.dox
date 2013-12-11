@@ -1,0 +1,22 @@
+\subsubsection usage Usage
+\verbatim
+<node name="OpenDoorDetectorAlgorithm" pkg="iri_door_detector" type="OpenDoorDetectorAlgorithm">
+  <param name="min_x" type="int" value="300" />
+  <param name="max_x" type="int" value="750" />
+  <param name="min_y" type="int" value="850" />
+  <param name="max_y" type="int" value="1200" />
+  <param name="debugging_images" type="int" value="0" />
+  <param name="no_simulator" type="bool" value="True" />
+  <param name="DSC" type="bool" value="False" />
+  <param name="SVP" type="bool" value="False" />
+  <param name="SVL" type="bool" value="False" />
+  <param name="SFC" type="bool" value="False" />
+  <param name="Range_filter" type="bool" value="True" />
+  <param name="Persp_filter" type="bool" value="True" />
+  <param name="Geom_filter" type="bool" value="True" />
+  <param name="Size_filter" type="bool" value="True" />
+  <param name="Aspect_filter" type="bool" value="True" />
+  <param name="security_distance" type="double" value="0.5" />
+</node>
+\endverbatim
+

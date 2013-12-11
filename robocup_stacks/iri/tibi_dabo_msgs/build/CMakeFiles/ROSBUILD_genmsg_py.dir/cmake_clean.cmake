@@ -1,0 +1,41 @@
+FILE(REMOVE_RECURSE
+  "../src/tibi_dabo_msgs/msg"
+  "../msg_gen"
+  "../msg_gen"
+  "CMakeFiles/ROSBUILD_genmsg_py"
+  "../src/tibi_dabo_msgs/msg/__init__.py"
+  "../src/tibi_dabo_msgs/msg/_sequenceAction.py"
+  "../src/tibi_dabo_msgs/msg/_sequenceGoal.py"
+  "../src/tibi_dabo_msgs/msg/_sequenceActionGoal.py"
+  "../src/tibi_dabo_msgs/msg/_sequenceResult.py"
+  "../src/tibi_dabo_msgs/msg/_sequenceActionResult.py"
+  "../src/tibi_dabo_msgs/msg/_sequenceFeedback.py"
+  "../src/tibi_dabo_msgs/msg/_sequenceActionFeedback.py"
+  "../src/tibi_dabo_msgs/msg/_guideGoalAction.py"
+  "../src/tibi_dabo_msgs/msg/_guideGoalGoal.py"
+  "../src/tibi_dabo_msgs/msg/_guideGoalActionGoal.py"
+  "../src/tibi_dabo_msgs/msg/_guideGoalResult.py"
+  "../src/tibi_dabo_msgs/msg/_guideGoalActionResult.py"
+  "../src/tibi_dabo_msgs/msg/_guideGoalFeedback.py"
+  "../src/tibi_dabo_msgs/msg/_guideGoalActionFeedback.py"
+  "../src/tibi_dabo_msgs/msg/_battery_status.py"
+  "../msg/sequenceAction.msg"
+  "../msg/sequenceGoal.msg"
+  "../msg/sequenceActionGoal.msg"
+  "../msg/sequenceResult.msg"
+  "../msg/sequenceActionResult.msg"
+  "../msg/sequenceFeedback.msg"
+  "../msg/sequenceActionFeedback.msg"
+  "../msg/guideGoalAction.msg"
+  "../msg/guideGoalGoal.msg"
+  "../msg/guideGoalActionGoal.msg"
+  "../msg/guideGoalResult.msg"
+  "../msg/guideGoalActionResult.msg"
+  "../msg/guideGoalFeedback.msg"
+  "../msg/guideGoalActionFeedback.msg"
+)
+
+# Per-language clean rules from dependency scanning.
+FOREACH(lang)
+  INCLUDE(CMakeFiles/ROSBUILD_genmsg_py.dir/cmake_clean_${lang}.cmake OPTIONAL)
+ENDFOREACH(lang)

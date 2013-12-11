@@ -1,0 +1,15 @@
+<launch>
+
+   <!--
+   	That config file must be loaded by the navigation system.
+   <rosparam file="$(find coord_translator)/config/mmap.yaml" command="load" ns="mmap" />
+	-->
+
+  <!-- service -->
+  <node pkg ="next_location_provider"
+        type="get_next_probable_location_service.py"
+        name="next_location_provider"
+        output="screen">
+  </node>
+
+</launch>

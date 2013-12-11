@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<launch>
+
+
+  <!-- follow_operator_test SMACH -->
+  <node pkg ="bpm_analysis_test"
+        type="bpm_analysis_test.py"
+        name="bpm_analysis_test"
+        output="screen">
+  </node>
+
+</launch>
+

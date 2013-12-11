@@ -1,0 +1,5 @@
+move_base_topic_goal: "/move_by/move_base_simple/goal"
+gotolocation_markers_length: 10
+gotolocation_markers_lifetime: 3.0
+gotolocation_markers_show_only_last_marker: False
+gotolocation_markers_enable_arrows: True

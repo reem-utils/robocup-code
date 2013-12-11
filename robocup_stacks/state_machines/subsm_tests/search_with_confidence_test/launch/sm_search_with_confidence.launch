@@ -1,0 +1,30 @@
+<launch>
+
+
+
+  <!-- fake action server nodes -->
+<!-- <include file="$(find object_recognition_mock)/launch/object_recognition_mock.launch" /> -->
+<!-- <include file="$(find arm_navigation_mock)/launch/arm_navigation_mock.launch" /> -->
+<!-- <include file="$(find close_hand_mock)/launch/close_hand_mock.launch" /> -->
+  
+  <!-- before all this we need:
+  reem_robocup_gazebo reem_empty_world.launch 
+  running...
+  and when that runs... we need:
+  reem_robocup_gazebo_plugins objects_on_table_with_hack.launch 
+  finished... then we can execute the next stuff -->
+
+
+ <!-- <include file="$(find blort_ros)/launch/tracking_histogram_with_kinect.launch" />
+  <include file="$(find pal_vision_segmentation)/launch/histogram_pringles_segment_with_kinect.launch" />
+  <include file="$(find blort_ros)/launch/view_control.launch" /> -->
+
+
+  <!-- sm_search_with_confidence SMACH -->
+  <node pkg ="search_with_confidence_test"
+        type="sm_search_with_confidence_launcher.py"
+        name="sm_search_with_confidence"
+        output="screen">
+  </node>
+
+</launch>

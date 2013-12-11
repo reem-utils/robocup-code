@@ -1,0 +1,10 @@
+\subsubsection usage Usage
+\verbatim
+<node name="FloodfillSegmentationAlgorithm" pkg="iri_opencv_filters" type="FloodfillSegmentationAlgorithm">
+  <param name="floodfill_threshold" type="int" value="6" />
+  <param name="floodfill_min_area" type="int" value="100" />
+  <param name="floodfill_seed_num" type="int" value="5" />
+  <param name="colorspace_lab" type="bool" value="True" />
+</node>
+\endverbatim
+

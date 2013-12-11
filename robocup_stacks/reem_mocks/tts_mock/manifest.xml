@@ -1,0 +1,17 @@
+<package>
+  <description brief="tts_mock">
+
+     Fake TTS service.
+
+  </description>
+  <author>Siegfried Gevatter</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url></url>
+  <depend package="rospy"/>
+  <depend package="actionlib"/>
+  <depend package="actionlib_msgs"/>
+  <depend package="pal_smach_utils"/>
+  <depend package="text_to_speech" />
+
+</package>

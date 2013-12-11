@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<launch>
+    	
+   <include file="$(find iri_motion_detector_mock)/launch/iri_motion_detector_mock.launch" />
+   <include file="$(find move_base_mock)/launch/move_base_mock.launch" />
+
+    <!-- Static Transformation -->
+   <node pkg="tf" type="static_transform_publisher" name="static_transform" args="1 0 0 0 0 0 openni_depth_optical_frame base_link 100" />
+
+
+    <!-- SMACH -->
+    <node pkg="iri_motion_detector_test" 
+          name="iri_motion_detector_test" 
+          type="iri_motion_detector_test.py"
+          output="screen">
+          <remap from="/move_by/move_base" to="/move_base"/>
+    </node>
+
+</launch>
+

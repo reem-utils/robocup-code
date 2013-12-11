@@ -1,0 +1,16 @@
+<package>
+  <description brief="table_top_collision_mock">
+
+     table_top_collision_mock
+
+  </description>
+  <author>ros</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/table_top_collision_mock</url>
+  <depend package="rospy"/>
+  <depend package="tabletop_collision_map_processing" />
+
+</package>
+
+

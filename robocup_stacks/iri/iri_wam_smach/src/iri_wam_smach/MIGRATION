@@ -1,0 +1,4 @@
+SM_WAM_MoveFromPose:
+    - ik service is now mandatory
+
+wam_cartesian_move [deleted]

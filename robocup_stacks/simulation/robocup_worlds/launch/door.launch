@@ -1,0 +1,5 @@
+<launch>
+<!-- load door -->
+   <param name="door_description" command="$(find xacro)/xacro.py '$(find robocup_worlds)/objects/door.urdf'" />
+   <node pkg="gazebo" type="spawn_model" args="-urdf -param door_description -n doorbot -model doorbot" respawn="false" name="door_description"/>  
+   </launch>

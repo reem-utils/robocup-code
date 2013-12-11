@@ -1,0 +1,17 @@
+<launch>
+  <!-- required system nodes -->
+  <include file="$(find move_base_mock)/launch/move_base_mock.launch"/> 
+  <include file="$(find person_detector_mock)/launch/person_detector_mock.launch" /> 
+  <include file="$(find tts_mock)/launch/tts_mock.launch" /> 
+  <include file="$(find navigation_sm_mock)/launch/navigation_sm_mock.launch" />
+  <include file="$(find poi_current_position_sm_mock)/launch/lookupTransform_mock.launch" />
+
+
+  <!-- approach_person_test SMACH -->
+  <node pkg ="approach_person_test"
+        type="approach_person_test.py"
+        name="approach_person_test"
+        output="screen">
+  </node>
+
+</launch>

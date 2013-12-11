@@ -1,0 +1,16 @@
+<package>
+  <description brief="reem_final_approach_mock">
+
+     reem_final_approach_mock
+
+  </description>
+  <author>student</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/reem_final_approach_mock</url>
+  <depend package="rospy"/>
+  <depend package="reem_final_approach"/>
+
+</package>
+
+

@@ -1,0 +1,33 @@
+<package>
+  <description brief="move_arm_to_object_grasp_and_back_test">
+
+     move_arm_to_object_grasp_and_back_test
+
+  </description>
+  <author></author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/move_arm_to_object_grasp_and_back_test</url>
+  <depend package="actionlib"/>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  
+  <depend package="geometry_msgs"/>
+  <depend package="arm_navigation_msgs" />
+  <depend package="actionlib_msgs" />
+  <depend package="object_manipulation_msgs" />
+  <depend package="trajectory_msgs" />
+  <depend package="control_msgs" />
+  <depend package="tf" />
+  <depend package="std_srvs" />
+
+  
+
+  
+  <!-- Other packages -->
+  <depend package="pal_smach_utils"/>
+
+</package>
+
+

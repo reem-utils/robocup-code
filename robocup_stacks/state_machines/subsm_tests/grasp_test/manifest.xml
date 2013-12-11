@@ -1,0 +1,39 @@
+<package>
+  <description brief="grasp_test">
+
+     grasp_test
+
+  </description>
+  <author>Sammy Pfeiffer</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url></url>
+  <depend package="actionlib"/>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  
+  <depend package="geometry_msgs"/>
+  <depend package="move_base_msgs"/>
+  <depend package="arm_navigation_msgs" />
+  <depend package="actionlib_msgs" />
+  <depend package="object_manipulation_msgs" />
+  <depend package="control_msgs" />
+  <depend package="tf" />
+  <depend package="std_srvs" />
+  <depend package="trajectory_msgs" />
+
+  
+
+  
+  <!-- Other packages -->
+  <depend package="pal_smach_utils"/>
+  <depend package="blort_ros" />
+  <depend package="iri_moped_handler" />
+
+
+
+</package>
+
+
+

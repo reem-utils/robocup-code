@@ -1,0 +1,47 @@
+<package>
+  <description brief="restaurant">
+
+     Restaurant State Machine
+
+  </description>
+  <author>Siegfried Gevatter and Miguel Angel Rodriguez</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url></url>
+
+  <depend package="actionlib"/>
+  <depend package="actionlib_msgs"/>
+  <depend package="arm_navigation_msgs"/>
+  <depend package="control_msgs"/>
+  <depend package="follow_me"/> 
+  <depend package="geometry_msgs"/>
+  <depend package="move_base_msgs"/>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <depend package="std_srvs" />
+  <depend package="tf"/>
+  <depend package="trajectory_msgs"/>
+  
+  <depend package="pal_smach_utils"/>
+  
+  <!-- Mock stuff -->
+  <depend package="iri_perception_msgs"/>
+  <depend package="move_base"/>
+  <depend package="pal_interaction_msgs"/>
+  <depend package="text_to_speech"/>
+  <depend package="object_recognition_mock"/>
+  <depend package="coord_translator"/>
+  <depend package="pal_navigation_msgs"/>
+  <depend package="dynamic_reconfigure"/>
+  
+  <!-- The following packages are optional when running without mocks: -->
+  <!--  <depend package="pr_msgs"/> -->
+  <!-- <depend package="pal_interaction_msgs"/> -->
+  <!-- <depend package="iri_moped_handler"/>-->
+  <!-- <depend package="blort_ros"/> -->
+  <depend package="object_manipulation_msgs" />
+  <depend package="reem_final_approach" />
+  <depend package="reem_tabletop_manipulation_launch" />
+
+</package>

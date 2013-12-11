@@ -1,0 +1,31 @@
+#This is a MOCK package made of two elements, both related to the speech recognition package ASR.
+
+	1)Service:
+
+	version 2.0:
+	Now we have a server that just print on screen what you send him as
+	configuration data. Just because there is no Response in the new Service.
+	The client just sends mock-configuration data to the server.
+
+	Warning: there are still pieces of old code laying around. I'll try
+	to clean up as soon as possible.
+
+	version 1.0:
+	--This is made of a service of two messages ( a request and a response ).
+	Both have the same structure, made of five strings ( except the last one
+	which is a bool in the Request ). These five strings correspond to
+	basic parameters for a correct Speech recognition. 
+	What it does is when you send the 5 configuration data, the service answers
+	confirming that your data was recieved.  
+
+	2)Topic: Usersaid.
+	--This is made up of basically  a message type named asrresult.msg and 
+	a node named usersaid_publisher.py. It writes on the topic 'usersaid'
+	every second ( 1 second seemed the minimum rate that a speech recognition
+	can work). In it it writes in the corresponding variables:
+		a)ssml = 'This parrot is no more!'
+		b)confidence =2(The system is pretty sure of what the speaker said)
+		c)start = 0
+		d)end = 1
+	There's also a reader implemented in order to test the topic publisher itself.
+		 

@@ -1,0 +1,11 @@
+#goal definition
+geometry_msgs/PoseStamped target_pose
+int32                     target_id  
+---
+#result definition
+int32    result_code
+string   result_type
+---
+#feedback
+float32 distance
+

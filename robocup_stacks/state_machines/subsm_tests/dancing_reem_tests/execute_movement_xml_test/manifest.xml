@@ -1,0 +1,23 @@
+<package>
+  <description brief="execute_movement_xml_test">
+
+     execute_movement_xml_test
+
+  </description>
+  <author>RDaneelOlivaw</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/execute_movement_xml_test</url>
+  <depend package="dancing_reem"/>
+  <depend package="pal_smach_utils"/>
+  <depend package="smach_ros"/>
+  <depend package="smach"/>
+  <depend package="rospy"/>
+  <depend package="actionlib"/>
+  <depend package="pal_control_msgs"/>
+  <depend package="coord_translator"/>
+  
+  <!--depend package="alive_engine" -->
+</package>
+
+

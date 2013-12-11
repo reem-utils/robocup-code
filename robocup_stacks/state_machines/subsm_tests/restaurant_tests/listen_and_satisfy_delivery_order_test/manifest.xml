@@ -1,0 +1,24 @@
+<package>
+  <description brief="listen_and_satisfy_delivery_order_test">
+
+     listen_and_satisfy_delivery_order_test
+
+  </description>
+  <author>RDaneelOlivaw</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/listen_and_satisfy_delivery_order_test</url>
+  <depend package="pal_smach_utils"/>
+  <depend package="rospy"/>
+  <depend package="smach_ros"/>
+  <depend package="smach"/>
+  <depend package="text_to_speech"/>
+  <depend package="std_srvs"/>
+  <!-- <depend package="pr_msgs" /> -->
+  <depend package="reem_tabletop_manipulation_launch" />
+  <depend package="reem_final_approach"/>
+  <depend package="coord_translator" />
+
+</package>
+
+

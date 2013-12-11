@@ -1,0 +1,14 @@
+<launch>
+    
+  <!-- Fake Servers -->
+    <include file="$(find tts_mock)/launch/tts_mock.launch" />
+
+  <!-- EmergencySituation SMACH -->
+  <node pkg ="emergency_situation"
+        type="test_go_to_person.py"
+        name="test_go_to_person"
+        output="screen">
+  </node>
+
+</launch>
+

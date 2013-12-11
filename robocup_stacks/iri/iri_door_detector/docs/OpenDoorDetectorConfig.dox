@@ -1,0 +1,21 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~min_x" : \b [int] Minimum door width min: 50, default: 300, max: 1500
+- \b "~max_x" : \b [int] Maximum door width min: 50, default: 750, max: 1500
+- \b "~min_y" : \b [int] Minimum door height min: 50, default: 850, max: 1500
+- \b "~max_y" : \b [int] Maximum door height min: 50, default: 1200, max: 1500
+- \b "~debugging_images" : \b [int] Show Images for Debugging min: 0, default: 0, max: 2
+- \b "~no_simulator" : \b [bool] Run without simulation min: False, default: True, max: True
+- \b "~DSC" : \b [bool] Show Door Size Calibrator min: False, default: False, max: True
+- \b "~SVP" : \b [bool] Show Virtual Points min: False, default: False, max: True
+- \b "~SVL" : \b [bool] Show Virtual Lines min: False, default: False, max: True
+- \b "~SFC" : \b [bool] Show Door Frame Candidates min: False, default: False, max: True
+- \b "~Range_filter" : \b [bool] Apply Sensor Range filter min: False, default: True, max: True
+- \b "~Persp_filter" : \b [bool] Apply Perspective filter min: False, default: True, max: True
+- \b "~Geom_filter" : \b [bool] Apply Geometry filter min: False, default: True, max: True
+- \b "~Size_filter" : \b [bool] Apply Size filter min: False, default: True, max: True
+- \b "~Aspect_filter" : \b [bool] Apply Aspect ratio filter min: False, default: True, max: True
+- \b "~security_distance" : \b [double] Gap between robot and door min: 0.2, default: 0.5, max: 1.5
+

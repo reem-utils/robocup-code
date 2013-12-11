@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/mnt_flash/robocup2013
+ROB_INSPECT=robotInspection
+COORD_TRANS=coordTranslator
+HANGING_CLOTHES=hangingClothes
+FOLLOW_ME=followMe

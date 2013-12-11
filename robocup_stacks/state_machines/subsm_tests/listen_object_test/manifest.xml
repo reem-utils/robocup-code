@@ -1,0 +1,25 @@
+<package>
+  <description brief="listen_object_test">
+
+     listen_object_test
+
+  </description>
+  <author>Ricardo Tellez</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/release_test</url>
+  <depend package="actionlib"/>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+
+  <depend package="geometry_msgs"/>
+  <depend package="std_srvs" />
+  <depend package="pal_smach_utils"/>
+
+  <depend package="pal_interaction_msgs" />
+  <depend package="text_to_speech" />
+
+</package>
+
+

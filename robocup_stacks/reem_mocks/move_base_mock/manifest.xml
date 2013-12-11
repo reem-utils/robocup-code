@@ -1,0 +1,19 @@
+<package>
+  <description brief="move_base_mock">
+
+     move_base_mock
+
+  </description>
+  <author>RDaneelOlivaw</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/move_base_mock</url>
+  <depend package="actionlib"/>
+  <depend package="actionlib_msgs"/>
+  <depend package="rospy"/>
+  <depend package="std_msgs"/>
+  <depend package="move_base_msgs"/>
+
+</package>
+
+

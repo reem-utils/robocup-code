@@ -1,0 +1,52 @@
+<!-- take_farthest_drink -->
+<motion id = "pick_tray"  model = "body" type = "motion_action" >
+<motion_action>
+  <motion_aggregation id = "" >
+    <motion_basic id = "NO_ID"  type = "joint"  completion_required = "1" >
+      <dofs>1 1  1 1   1 1 1 1 1 1 1   1 1 1 1 1 1 1 </dofs>
+      <end_effector id = "" >
+        <op_frame link = "__BLANK__" >
+           <matrixHom>
+             <point_3D x = "0"  y = "0"  z = "0" ></point_3D>
+             <matrixRot rodrigues_x = "0"  rodrigues_y = "0"  rodrigues_z = "0" ></matrixRot>
+           </matrixHom>        
+        </op_frame>
+      </end_effector>
+      <goal derived = "goal_interpol" >
+        <goal_interpol>
+
+          <!-- START MOVEMENT -->
+
+          <!-- Tray_on_top-->
+          <point delta_time = "2.0" >
+          
+            <value> 0 0   0 0   0.3 0.4 -0.2 2.2 0.0 -1.0 0.9   -0.4 0.2 -0.1 0.6109 0 0 0 </value>
+          </point>
+
+          <!-- Rise right arm-->
+          <point delta_time = "2.0" >
+          
+            <value> 0 0   0 0   0.3 0.4 -0.2 2.2 0.0 -1.0 0.9   1.5 2.0 -1.5 2.2 0 0 1.2  </value>
+          </point>
+
+          <!-- approaching -->
+          <point delta_time = "2.0" >
+          
+            <value> 0 0   0 0   0.3 0.4 -0.2 2.2 0.0 -1.0 0.9   1.5 1.0 -1.1 2.2 0 -0.5 1.5  </value>
+          </point>
+
+          <!-- ready to pick -->
+          <point delta_time = "2.0" >
+          
+            <value> 0 0   0 0   0.3 0.4 -0.2 2.2 0.0 -1.0 0.9   1.5 0.7 -1.1 2.2 0 -0.5 1.5  </value>
+          </point>
+
+          
+
+        </goal_interpol>
+      </goal>
+      <controller kp = "4.0" ></controller>
+    </motion_basic>
+  </motion_aggregation>
+  </motion_action>
+</motion>

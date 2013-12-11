@@ -1,0 +1,16 @@
+<launch>
+
+  <!--<include file="$(find door_detector_pal)/launch/door_detector_pal.launch" />
+  <include file="$(find move_base_mock)/launch/move_base_mock.launch"/>
+  <include file="$(find tts_mock)/launch/tts_mock.launch" />-->
+
+
+
+  <!-- enter_room_test SMACH -->
+  <node pkg ="enter_door_test"
+        type="enter_room_test.py"
+        name="enter_room_test"
+        output="screen">
+  </node>
+
+</launch>

@@ -1,0 +1,17 @@
+<package>
+  <description brief="face_recongition_mock">
+
+     Fake service for face recognition.
+
+  </description>
+  <author>Siegfried Gevatter</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url></url>
+  <depend package="actionlib"/>
+  <depend package="actionlib_msgs"/>
+  <depend package="rospy"/>
+  <depend package="face_recognition"/>
+  <depend package="geometry_msgs"/>
+  <depend package="pal_vision_msgs"/>
+</package>

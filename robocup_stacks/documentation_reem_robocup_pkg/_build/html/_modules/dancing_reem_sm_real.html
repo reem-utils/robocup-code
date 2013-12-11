@@ -1,0 +1,241 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>dancing_reem_sm_real &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for dancing_reem_sm_real</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+<span class="c"># -*- encoding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">roslib</span>
+<span class="n">roslib</span><span class="o">.</span><span class="n">load_manifest</span><span class="p">(</span><span class="s">&#39;dancing_reem&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">smach</span>
+
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.global_common</span> <span class="kn">import</span> <span class="n">succeeded</span><span class="p">,</span> <span class="n">preempted</span><span class="p">,</span> <span class="n">aborted</span>
+
+<span class="kn">from</span> <span class="nn">init_dancing_reem</span> <span class="kn">import</span> <span class="n">InitDancingReem</span>
+<span class="kn">from</span> <span class="nn">bpm_analysis</span> <span class="kn">import</span> <span class="n">BpmAnalysisSM</span>
+<span class="kn">from</span> <span class="nn">stochastic_movement_selection</span> <span class="kn">import</span> <span class="n">StochasticMovementSelection</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.play_sound_sm</span> <span class="kn">import</span> <span class="n">PlaySoundOnceState</span><span class="p">,</span> <span class="n">StopSoundState</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.song_duration_sm</span> <span class="kn">import</span> <span class="n">SongDurationState</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.time_controlling_states</span> <span class="kn">import</span> <span class="n">GetCurrentROSTimeState</span><span class="p">,</span> <span class="n">TellIfSongHasFinished</span>
+<span class="kn">from</span> <span class="nn">handle_dancing_movement_files</span> <span class="kn">import</span> <span class="n">HandleDancingMovementFiles</span>
+<span class="c">#from pal_control_msgs.msg import MotionManagerGoal, MotionManagerAction</span>
+<span class="kn">from</span> <span class="nn">execute_movement</span> <span class="kn">import</span> <span class="n">ExecuteMovement</span>
+
+<span class="n">TESTING</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">BEAT_HARMONIC</span> <span class="o">=</span> <span class="mf">2.0</span>
+
+
+<div class="viewcode-block" id="GetMovementForDancingReemSM"><a class="viewcode-back" href="../pkg_documentation/dancing_reem/dancing_reem_doc.html#dancing_reem_sm_real.GetMovementForDancingReemSM">[docs]</a><span class="k">class</span> <span class="nc">GetMovementForDancingReemSM</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    INPUT_KEYS</span>
+<span class="sd">    _dict_available_movements: This dictionary has two termes:</span>
+<span class="sd">    1) name_of_area : Is the name of the postion.</span>
+<span class="sd">    2) list_available_movements_in_each_area :  Is a list in which we have all the steps and transitions available in that area/position.</span>
+
+<span class="sd">    LOCAL_KEYS</span>
+<span class="sd">    a) future_current_position : inticates the position in which the robot is now. This alows us to know which movements are safe or not.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="n">preempted</span><span class="p">,</span> <span class="n">aborted</span><span class="p">])</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="p">:</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;INIT_DANCING_REEM&#39;</span><span class="p">,</span>
+                                   <span class="n">InitDancingReem</span><span class="p">(),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;BPM_ANALYSIS&#39;</span><span class="p">,</span>
+                                                <span class="n">preempted</span><span class="p">:</span> <span class="n">preempted</span><span class="p">,</span>
+                                                <span class="n">aborted</span><span class="p">:</span> <span class="n">aborted</span><span class="p">},</span>
+                                   <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;initial_future_position_out&#39;</span><span class="p">:</span> <span class="s">&#39;future_current_position&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;initial_current_position_out&#39;</span><span class="p">:</span> <span class="s">&#39;current_position&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;next_movement_name_out&#39;</span><span class="p">:</span> <span class="s">&#39;selected_movement&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;prob_vector_out&#39;</span><span class="p">:</span> <span class="s">&#39;probability_vector&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;repeat_out&#39;</span><span class="p">:</span> <span class="s">&#39;repeat_out&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;dict_movement_databse_out&#39;</span><span class="p">:</span> <span class="s">&#39;dict_available_movements&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;old_movement_name_path_out&#39;</span><span class="p">:</span> <span class="s">&#39;old_movement_name_path&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;time_sent_last_movement_out&#39;</span><span class="p">:</span> <span class="s">&#39;time_sent_last_movement&#39;</span><span class="p">})</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;BPM_ANALYSIS&#39;</span><span class="p">,</span>
+                                   <span class="n">BpmAnalysisSM</span><span class="p">(),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;GET_SONG_DURATION&#39;</span><span class="p">,</span>
+                                                <span class="n">preempted</span><span class="p">:</span> <span class="n">preempted</span><span class="p">,</span>
+                                                <span class="n">aborted</span><span class="p">:</span> <span class="n">aborted</span><span class="p">},</span>
+                                   <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;bpm_out&#39;</span><span class="p">:</span> <span class="s">&#39;song_bpm&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;song_path_out&#39;</span><span class="p">:</span> <span class="s">&#39;song_path&#39;</span><span class="p">})</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;GET_SONG_DURATION&#39;</span><span class="p">,</span>
+                                   <span class="n">SongDurationState</span><span class="p">(),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;PLAY_SONG&#39;</span><span class="p">,</span>
+                                                <span class="n">preempted</span><span class="p">:</span> <span class="n">preempted</span><span class="p">,</span>
+                                                <span class="n">aborted</span><span class="p">:</span> <span class="n">aborted</span><span class="p">},</span>
+                                   <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;in_song_path&#39;</span><span class="p">:</span> <span class="s">&#39;song_path&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;song_duration_out&#39;</span><span class="p">:</span> <span class="s">&#39;song_duration&#39;</span><span class="p">})</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;PLAY_SONG&#39;</span><span class="p">,</span>
+                                   <span class="n">PlaySoundOnceState</span><span class="p">(),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;SET_TIME&#39;</span><span class="p">,</span>
+                                                <span class="n">preempted</span><span class="p">:</span> <span class="n">preempted</span><span class="p">,</span>
+                                                <span class="n">aborted</span><span class="p">:</span> <span class="n">aborted</span><span class="p">},</span>
+                                   <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;sound_file_path&#39;</span><span class="p">:</span> <span class="s">&#39;song_path&#39;</span><span class="p">})</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;SET_TIME&#39;</span><span class="p">,</span>
+                                   <span class="n">GetCurrentROSTimeState</span><span class="p">(),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;MODIFY_NEXT_MOVEMENT_SPEED&#39;</span><span class="p">,</span>
+                                                <span class="n">preempted</span><span class="p">:</span> <span class="n">preempted</span><span class="p">,</span>
+                                                <span class="n">aborted</span><span class="p">:</span> <span class="n">aborted</span><span class="p">},</span>
+                                   <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;starting_ros_time_out&#39;</span><span class="p">:</span> <span class="s">&#39;time_song_started_playing&#39;</span><span class="p">})</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;STOCHASTIC_MOVEMENT_SELECTION&#39;</span><span class="p">,</span>
+                                   <span class="n">StochasticMovementSelection</span><span class="p">(),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;MODIFY_NEXT_MOVEMENT_SPEED&#39;</span><span class="p">,</span>
+                                                <span class="n">preempted</span><span class="p">:</span> <span class="n">preempted</span><span class="p">,</span>
+                                                <span class="n">aborted</span><span class="p">:</span> <span class="n">aborted</span><span class="p">},</span>
+                                   <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;in_probability_vector&#39;</span><span class="p">:</span> <span class="s">&#39;probability_vector&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;in_prev_current_position&#39;</span><span class="p">:</span> <span class="s">&#39;current_position&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;in_movement_database_dict&#39;</span><span class="p">:</span> <span class="s">&#39;dict_available_movements&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;in_current_position&#39;</span><span class="p">:</span> <span class="s">&#39;future_current_position&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;probability_vector&#39;</span><span class="p">:</span> <span class="s">&#39;probability_vector&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;selected_random_movement_out&#39;</span><span class="p">:</span> <span class="s">&#39;selected_movement&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;new_current_position_out&#39;</span><span class="p">:</span> <span class="s">&#39;future_current_position&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;new_prev_current_position_out&#39;</span><span class="p">:</span> <span class="s">&#39;current_position&#39;</span><span class="p">})</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;MODIFY_NEXT_MOVEMENT_SPEED&#39;</span><span class="p">,</span>
+                                   <span class="n">HandleDancingMovementFiles</span><span class="p">(</span><span class="n">TESTING</span><span class="p">,</span> <span class="n">BEAT_HARMONIC</span><span class="p">),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;TELL_IF_SONG_HAS_FINISHED&#39;</span><span class="p">,</span>
+                                                <span class="s">&#39;ended&#39;</span><span class="p">:</span> <span class="s">&#39;TELL_IF_SONG_HAS_FINISHED&#39;</span><span class="p">,</span>
+                                                <span class="n">preempted</span><span class="p">:</span> <span class="n">preempted</span><span class="p">,</span>
+                                                <span class="n">aborted</span><span class="p">:</span> <span class="n">aborted</span><span class="p">},</span>
+                                   <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;in_bpm_to_use&#39;</span><span class="p">:</span> <span class="s">&#39;song_bpm&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;in_movement_to_modifie&#39;</span><span class="p">:</span> <span class="s">&#39;selected_movement&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;in_actual_pos&#39;</span><span class="p">:</span> <span class="s">&#39;current_position&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;modified_movement_name_path_out&#39;</span><span class="p">:</span> <span class="s">&#39;next_movement_name_path&#39;</span><span class="p">})</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;TELL_IF_SONG_HAS_FINISHED&#39;</span><span class="p">,</span>
+                                   <span class="n">TellIfSongHasFinished</span><span class="p">(),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;song_not_finished&#39;</span><span class="p">:</span> <span class="s">&#39;EXECUTE_MOVEMENT&#39;</span><span class="p">,</span>
+                                                <span class="s">&#39;song_finished&#39;</span><span class="p">:</span> <span class="s">&#39;STOP_SOUND&#39;</span><span class="p">,</span>
+                                                <span class="n">preempted</span><span class="p">:</span> <span class="n">preempted</span><span class="p">,</span>
+                                                <span class="n">aborted</span><span class="p">:</span> <span class="n">aborted</span><span class="p">},</span>
+                                   <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;in_starting_ros_time&#39;</span><span class="p">:</span> <span class="s">&#39;time_song_started_playing&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;song_duration&#39;</span><span class="p">:</span> <span class="s">&#39;song_duration&#39;</span><span class="p">})</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;EXECUTE_MOVEMENT&#39;</span><span class="p">,</span>
+                                   <span class="n">ExecuteMovement</span><span class="p">(</span><span class="n">BEAT_HARMONIC</span><span class="p">),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;STOCHASTIC_MOVEMENT_SELECTION&#39;</span><span class="p">,</span>
+                                                <span class="n">preempted</span><span class="p">:</span> <span class="n">preempted</span><span class="p">,</span>
+                                                <span class="n">aborted</span><span class="p">:</span> <span class="n">aborted</span><span class="p">},</span>
+                                   <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;in_old_movement_name_path&#39;</span><span class="p">:</span> <span class="s">&#39;old_movement_name_path&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;in_time_sent_last_movement&#39;</span><span class="p">:</span> <span class="s">&#39;time_sent_last_movement&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;in_next_movement_name_path&#39;</span><span class="p">:</span> <span class="s">&#39;next_movement_name_path&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;in_repeat&#39;</span><span class="p">:</span> <span class="s">&#39;repeat_out&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;in_execute_bpm&#39;</span><span class="p">:</span> <span class="s">&#39;song_bpm&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;time_sent_last_movement_out&#39;</span><span class="p">:</span> <span class="s">&#39;time_sent_last_movement&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;old_movement_name_path_out&#39;</span><span class="p">:</span> <span class="s">&#39;old_movement_name_path&#39;</span><span class="p">})</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;STOP_SOUND&#39;</span><span class="p">,</span>
+                                   <span class="n">StopSoundState</span><span class="p">(),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="n">succeeded</span><span class="p">,</span>
+                                                <span class="n">preempted</span><span class="p">:</span> <span class="n">preempted</span><span class="p">,</span>
+                                                <span class="n">aborted</span><span class="p">:</span> <span class="n">aborted</span><span class="p">},</span>
+                                   <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;sound_file_path&#39;</span><span class="p">:</span> <span class="s">&#39;sound_file_path&#39;</span><span class="p">})</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_documentation/pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

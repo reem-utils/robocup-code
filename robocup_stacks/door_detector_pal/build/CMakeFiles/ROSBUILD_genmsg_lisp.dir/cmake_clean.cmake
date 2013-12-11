@@ -1,0 +1,39 @@
+FILE(REMOVE_RECURSE
+  "../src/door_detector_pal/msg"
+  "../msg_gen"
+  "../msg_gen"
+  "CMakeFiles/ROSBUILD_genmsg_lisp"
+  "../msg_gen/lisp/DoorDetectorAction.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_DoorDetectorAction.lisp"
+  "../msg_gen/lisp/DoorDetectorGoal.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_DoorDetectorGoal.lisp"
+  "../msg_gen/lisp/DoorDetectorActionGoal.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_DoorDetectorActionGoal.lisp"
+  "../msg_gen/lisp/DoorDetectorResult.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_DoorDetectorResult.lisp"
+  "../msg_gen/lisp/DoorDetectorActionResult.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_DoorDetectorActionResult.lisp"
+  "../msg_gen/lisp/DoorDetectorFeedback.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_DoorDetectorFeedback.lisp"
+  "../msg_gen/lisp/DoorDetectorActionFeedback.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_DoorDetectorActionFeedback.lisp"
+  "../msg/DoorDetectorAction.msg"
+  "../msg/DoorDetectorGoal.msg"
+  "../msg/DoorDetectorActionGoal.msg"
+  "../msg/DoorDetectorResult.msg"
+  "../msg/DoorDetectorActionResult.msg"
+  "../msg/DoorDetectorFeedback.msg"
+  "../msg/DoorDetectorActionFeedback.msg"
+)
+
+# Per-language clean rules from dependency scanning.
+FOREACH(lang)
+  INCLUDE(CMakeFiles/ROSBUILD_genmsg_lisp.dir/cmake_clean_${lang}.cmake OPTIONAL)
+ENDFOREACH(lang)

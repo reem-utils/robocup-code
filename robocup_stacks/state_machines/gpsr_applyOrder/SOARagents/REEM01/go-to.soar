@@ -1,0 +1,72 @@
+#Go to states that the Robot will move from one room to another
+#Maybe should also be defined the function 'explore'
+#Go to room is generated dynamically in function of the possible rooms that the robot knows that exist
+#Go to person is predefined and checks if a person is in a location, so it can go to that location to find that person (it seems logic to go to the location where a person is located if you stored where s/he was
+
+
+sp {REEM01*propose*go-to-kitchen
+   (state <s> ^name REEM01
+              ^goal <g>
+              ^Rlocation {<l> <> kitchen})
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name go-to
+         ^destination kitchen)
+}
+
+sp {REEM01*propose*go-to-person
+   (state <s> ^name REEM01
+              ^goal <g>
+              ^Rlocation <loc1>
+              ^person.location {<loc2> <> <loc1>})
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name go-to
+         ^destination <loc2>)
+}
+
+sp {REEM01*apply*go-to
+   (state <s> ^name REEM01
+              ^operator <o>
+              ^io.output-link <out>)
+   (<o> ^name go-to
+        ^destination <l>)
+-->
+   (<out> ^go-to.destination <l>)
+}
+
+sp {REEM01*elaborate*not-near
+   (state <s> ^name REEM01
+              ^person <p>
+              ^io.input-link <input>)
+   (<p> ^near ok)
+   (<input> ^performed go-to)
+-->
+   (<p> ^near ko)
+}
+
+sp {REEM01*elaborate*performed-go-to
+   (state <s> ^name REEM01
+              ^io <i>)
+   (<i> ^input-link <in>)
+   (<in> ^performed go-to
+         ^location <loc>)
+-->
+   (<s> ^Rlocation <loc>)
+}
+
+#sp {REEM01*elaborate*remove*goto
+#   (state <s> ^name REEM01
+#              ^io.output-link <ol>)
+#   (<ol> ^<att> <value>)
+#   (<value> ^status complete)
+#-->
+#   (<ol> ^<att> <value> -)
+#}
+
+#sp {apply*operator*remove-command
+#(state <s> ^name REEM01
+#           ^io <io>)
+#(<io> ^<out>.<val>.status complete)
+#-->
+#   (<io> ^<out> <val> -)}

@@ -1,0 +1,20 @@
+<package>
+  <description brief="iri_opencv_filters">
+
+     iri_opencv_filters is a collection of ros nodes implementing opencv operations.
+
+  </description>
+  <author>David Martinez</author>
+  <license>LGPL</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/iri_opencv_filters</url>
+  <depend package="roscpp"/>
+  <depend package="iri_base_algorithm"/>
+  <!--<depend package="pcl"/>-->
+  <depend package="opencv2" />
+  <depend package="cv_bridge" />
+  <depend package="iri_perception_msgs" />
+
+</package>
+
+

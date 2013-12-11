@@ -1,0 +1,4 @@
+<launch>
+	<include file="$(find iri_people_tracking_rai)/launch/reemTest.launch" />
+    <node pkg="find_closest_person_test" name="go_to_closest_person_test" type="go_to_closest_person_test.py" output="screen"/>
+</launch>

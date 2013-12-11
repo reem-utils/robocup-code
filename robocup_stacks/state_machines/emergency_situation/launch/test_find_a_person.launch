@@ -1,0 +1,14 @@
+<launch>
+  
+  <!-- Fake Servers -->
+  
+  
+  <!-- EmergencySituation SMACH -->
+  <node pkg ="emergency_situation"
+        type="test_find_a_person.py"
+        name="test_find_a_person"
+        output="screen">
+  </node>
+<node pkg="tf" type="static_transform_publisher" name="static_transform_stereo" args="0 0 0 -0.5 0.5 -0.5 0.5 stereo_link stereo_optical_frame 100"/>
+</launch>
+

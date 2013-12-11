@@ -1,0 +1,7 @@
+\subsubsection usage Usage
+\verbatim
+<node name="RemoveBackgroundAlgorithm" pkg="iri_opencv_filters" type="RemoveBackgroundAlgorithm">
+  <param name="threshold" type="int" value="20" />
+</node>
+\endverbatim
+

@@ -1,0 +1,9 @@
+<stack>
+  <description brief="reem_mocks">
+      Fake servers, mock objects, etc. for REEM@IRI.
+  </description>
+  <author>REEM at IRI</author>
+  <license>Unknown</license>  
+  <review status="unreviewed" notes=""/>
+  <url></url>
+</stack>

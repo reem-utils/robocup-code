@@ -1,0 +1,19 @@
+<package>
+  <description brief="listen_delivery_order_test">
+
+     listen_delivery_order_test
+
+  </description>
+  <author>RDaneelOlivaw</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/listen_delivery_order_test</url>
+  <depend package="pal_smach_utils"/>
+  <depend package="rospy"/>
+  <depend package="text_to_speech"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+
+</package>
+
+

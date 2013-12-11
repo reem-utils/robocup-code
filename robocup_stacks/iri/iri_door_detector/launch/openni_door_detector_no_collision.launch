@@ -1,0 +1,10 @@
+<launch>
+
+	<!-- Release arms from collision state -->
+	<node pkg="simple_trajectory" type="simple_trajectory_left" name="simple_trajectory_left"/>
+	<node pkg="simple_trajectory" type="simple_trajectory_right" name="simple_trajectory_right"/>
+
+	<!-- launch door detection algorithm -->
+  	<include file="$(find iri_door_detector)/launch/openni_door_detector.launch"/>
+
+</launch>

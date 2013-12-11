@@ -1,0 +1,14 @@
+source _firstload.soar
+pushd all
+source all_source.soar
+popd
+pushd elaborations
+source elaborations_source.soar
+popd
+source deliver.soar
+source dummy.soar
+source go-to.soar
+source goal1.soar
+source goto-closest-person.soar
+source recognize-person.soar
+source initialize-REEM01.soar

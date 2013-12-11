@@ -1,0 +1,22 @@
+<launch>
+ 
+<!-- putting sprite urdf file -->		
+  <param name="sprite" textfile="$(find robocup_worlds)/objects/sprite.urdf" />
+  <node name="spawn_sprite" pkg="gazebo" type="spawn_model" args="-urdf -param sprite -model sprite -x 6.5 -y 9.15 -z 0.8 -R 3.1416" respawn="false" output="screen" />
+
+<!-- putting coke urdf file -->		
+  <param name="coke" textfile="$(find robocup_worlds)/objects/coke.urdf" />
+  <node name="spawn_coke" pkg="gazebo" type="spawn_model" args="-urdf -param coke -model coke -x 6.35 -y 9.2 -z 0.8 -R 3.1416" respawn="false" output="screen" />
+
+<!-- putting pringles urdf file -->		
+  <param name="pringles" textfile="$(find robocup_worlds)/objects/pringles.urdf" />
+  <node name="spawn_pringles" pkg="gazebo" type="spawn_model" args="-urdf -param pringles -model pringles -x 6.8 -y 9.4 -z 0.83 -R 3.1416" respawn="false" output="screen" />
+
+<!-- putting goldengrahams urdf file -->		
+  <param name="goldengrahams" textfile="$(find robocup_worlds)/objects/goldengrahams.urdf" />
+  <node name="spawn_goldengrahams" pkg="gazebo" type="spawn_model" args="-urdf -param goldengrahams -model goldengrahams -x 6.20 -y 7.40 -z 0.8 -Y 0.5" respawn="false" output="screen" />
+
+
+</launch>
+
+

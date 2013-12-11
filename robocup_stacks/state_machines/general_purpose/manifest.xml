@@ -1,0 +1,30 @@
+<package>
+  <description brief="general_purpose">
+
+     General Purpose Service Robot
+
+  </description>
+  <author>Siegfried Gevatter</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url></url>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <depend package="actionlib"/>
+  <depend package="actionlib_msgs"/>
+  <depend package="geometry_msgs"/>
+  <depend package="move_base_msgs"/>
+  <depend package="tf"/>
+  <depend package="pal_smach_utils"/>
+  <!-- Stuff needed at runtime -->
+  <!-- ... put stuff here once we move on from mock implementations ... -->
+
+  <!-- Mock stuff -->
+  <depend package="door_detector_pal"/>
+  <depend package="face_recognition"/>
+  <depend package="iri_perception_msgs"/>
+  <depend package="text_to_speech"/>
+
+</package>
+
+

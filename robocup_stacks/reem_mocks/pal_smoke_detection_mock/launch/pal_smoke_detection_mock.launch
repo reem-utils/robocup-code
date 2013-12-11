@@ -1,0 +1,7 @@
+<launch>
+
+  <node
+    pkg="pal_smoke_detection_mock" type="smoke_detection_mock.py"
+    name="pal_smoke_detection" /> 
+    
+</launch>

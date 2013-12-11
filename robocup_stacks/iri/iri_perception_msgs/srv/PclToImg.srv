@@ -1,0 +1,5 @@
+#request
+sensor_msgs/PointCloud2 pointcloud
+---
+#response
+sensor_msgs/Image image

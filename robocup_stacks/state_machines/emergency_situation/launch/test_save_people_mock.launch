@@ -1,0 +1,22 @@
+<launch>
+  
+  <!-- Fake Servers -->
+  
+  <include file="$(find coord_translator)/launch/coord_translator.launch" />
+  <include file="$(find move_base_mock)/launch/move_base_mock.launch" />
+  <include file="$(find tts_mock)/launch/tts_mock.launch" />
+  <!--<include file="$(find speech_recognition_mock)/launch/speech_recognition_mock.launch" />-->
+  <include file="$(find poi_current_position_sm_mock)/launch/lookupTransform_mock.launch" />
+
+  <!-- FACE RECOGNITION MOCK IS HERE -->
+  <include file="$(find face_recognition_mock)/launch/face_recognition_mock.launch"/>
+  
+  <!-- EmergencySituation SMACH -->
+  <node pkg ="emergency_situation"
+        type="test_save_people.py"
+        name="test_save_people"
+        output="screen">
+  </node>
+
+</launch>
+

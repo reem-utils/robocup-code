@@ -1,0 +1,17 @@
+<launch>
+  
+  <!-- Fake Servers -->
+  
+  <!-- include file="$(find tts_mock)/launch/tts_mock.launch" /> -->
+  <!--<include file="$(find speech_recognition_mock)/launch/speech_recognition_mock.launch"/>-->
+
+
+  <!-- EmergencySituation SMACH -->
+  <node pkg ="emergency_situation"
+        type="test_answer_person.py"
+        name="test_listen_yes_no"
+        output="screen">
+  </node>
+
+</launch>
+

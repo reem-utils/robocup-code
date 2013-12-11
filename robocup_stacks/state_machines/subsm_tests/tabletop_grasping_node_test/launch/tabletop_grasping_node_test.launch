@@ -1,0 +1,13 @@
+<launch>
+
+  <include file="$(find reem_tabletop_manipulation_launch)/launch/tabletop_manipulation_local_db.launch">
+    <arg name="sim" value="true" />  
+    <arg name="use_snapshotter" value="false" />  
+    <arg name="load_kinematics" value="true" />  
+    <arg name="load_move_arm" value="true" />  
+    <arg name="load_move_arm_warehouse" value="false" />  
+  </include>
+
+  <!-- <node name="tabletop_grasping_node_test" pkg="tabletop_grasping_node_test" type="tabletop_grasping_node_test.py" respawn="false" output="screen" /> -->
+
+</launch>

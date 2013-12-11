@@ -1,0 +1,7 @@
+<launch>
+
+  <node
+    pkg="gesture_recognition_mock" type="gesture_recognition_mock.py"
+    name="gesture_recognition_mock"/>
+
+</launch>

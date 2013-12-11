@@ -1,0 +1,9 @@
+<launch>
+
+    <node pkg ="furniture_detector_service"
+        type="furniture_detector_server"
+        name="furniture_detector_server"
+        output="screen">
+    </node>
+
+</launch>

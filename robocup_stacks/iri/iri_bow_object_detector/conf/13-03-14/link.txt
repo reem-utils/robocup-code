@@ -1,0 +1,1 @@
+https://devel.iri.upc.edu/wf/labrobotica/classifiers/iri_bow_object_detector/13-03-14/lapel_linear_classifier_n1_goodimas2.pkl

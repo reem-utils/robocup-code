@@ -1,0 +1,16 @@
+string action_name     # name of the action
+
+string target_name     # name of the target to act upon
+
+int32 prep_timelimit     # max time to spend before moving the robot
+
+int32 execution_timelimit  # max time to spend while moving the robot
+---
+uint8 result
+string info
+
+uint8 DONE=0
+uint8 UNKNOWN_COMMAND=1
+uint8 UNAVAILABLE=2
+uint8 TIMEOUT=3
+uint8 ERROR=4

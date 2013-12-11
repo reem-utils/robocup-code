@@ -1,0 +1,7 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~move_base_topic_goal" : \b [str] The move_base topic goal you want to use min: , default: /move_base_simple/goal, max: 
+- \b "~nav_goal_x" : \b [double] X position of the nav_goal(person detected) min: -inf, default: 1.5, max: inf
+

@@ -1,0 +1,244 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>fases_set_up_restaurant &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for fases_set_up_restaurant</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+<span class="c"># -.- coding: utf-8 -.-</span>
+<span class="c"># vim: expandtab ts=4 sw=4</span>
+<span class="c"># Author RDaneelOlivaw</span>
+
+<span class="kn">import</span> <span class="nn">roslib</span>
+<span class="n">roslib</span><span class="o">.</span><span class="n">load_manifest</span><span class="p">(</span><span class="s">&#39;pal_smach_utils&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">smach</span>
+<span class="kn">import</span> <span class="nn">rospy</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.global_common</span> <span class="kn">import</span> <span class="n">succeeded</span><span class="p">,</span> <span class="n">preempted</span><span class="p">,</span> <span class="n">aborted</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.robot_controllers_activation</span> <span class="kn">import</span> <span class="n">StopRobotControllers</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.run_script_on_robot</span> <span class="kn">import</span> <span class="n">RunScriptOnRobot</span><span class="p">,</span> <span class="n">ROBOT_SCRIPTS_PATH</span>
+<span class="c">#from pal_smach_utils.utils.run_script_local import RunScriptLocal</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.grasping.initialise_and_close_grasp</span> <span class="kn">import</span> <span class="n">InitGraspPipelineSM</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.speech.sound_action</span> <span class="kn">import</span> <span class="n">SpeakActionState</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.colors</span> <span class="kn">import</span> <span class="n">Colors</span>
+<span class="kn">from</span> <span class="nn">smach</span> <span class="kn">import</span> <span class="n">CBState</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.robot_controllers_activation</span> <span class="kn">import</span> <span class="n">StartRobotControllers</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="n">Colors</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="InitialRestaurantFaseSetUp"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#fases_set_up_restaurant.InitialRestaurantFaseSetUp">[docs]</a><span class="k">class</span> <span class="nc">InitialRestaurantFaseSetUp</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Stops all the the services not needed during all the test and/or the initial fase.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                    <span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="n">preempted</span><span class="p">,</span> <span class="n">aborted</span><span class="p">])</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="c">## STARTS</span>
+            <span class="nd">@smach.cb_interface</span><span class="p">(</span><span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">])</span>
+            <span class="k">def</span> <span class="nf">print_things</span><span class="p">(</span><span class="n">userdata</span><span class="p">):</span>
+                <span class="n">rospy</span><span class="o">.</span><span class="n">logwarn</span><span class="p">(</span><span class="n">colors</span><span class="o">.</span><span class="n">BACKGROUND_GREEN</span> <span class="o">+</span> <span class="s">&quot;STARTING ALL the things that should be started for restaurant.</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">colors</span><span class="o">.</span><span class="n">NATIVE_COLOR</span><span class="p">))</span>
+                <span class="k">return</span> <span class="n">succeeded</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;STARTING_INITIAL_RESTAURANT_FASE_SET_UP&#39;</span><span class="p">,</span>
+                                   <span class="n">CBState</span><span class="p">(</span><span class="n">print_things</span><span class="p">),</span>
+                                   <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;in_learn_person&#39;</span><span class="p">:</span> <span class="s">&quot;in_learn_person&quot;</span><span class="p">},</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;START_PERSON_SERVER&#39;</span><span class="p">})</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;START_PERSON_SERVER&quot;</span><span class="p">,</span>
+                                       <span class="n">RunScriptOnRobot</span><span class="p">(</span><span class="n">script_name</span><span class="o">=</span><span class="s">&quot;personServerStart.sh&quot;</span><span class="p">),</span>
+                                       <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;PEOPLE_TRACKING_RAI_START&quot;</span><span class="p">,</span>
+                                                    <span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;PEOPLE_TRACKING_RAI_START&quot;</span><span class="p">})</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;PERSON SERVER NOT LAUNCHED; NOTHING TO STOP&quot;</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                In case of starting, it gives aborted when the service to start is already running.</span>
+<span class="sd">                Thats why we continue.</span>
+<span class="sd">                &quot;&quot;&quot;</span>
+                <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;PEOPLE_TRACKING_RAI_START&quot;</span><span class="p">,</span>
+                                       <span class="n">RunScriptOnRobot</span><span class="p">(</span><span class="n">script_name</span><span class="o">=</span><span class="s">&quot;iri_people_tracking_raiStart.sh&quot;</span><span class="p">),</span>
+                                       <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;START_GRASP_PROTOCOL&quot;</span><span class="p">,</span>
+                                                    <span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;START_GRASP_PROTOCOL&quot;</span><span class="p">})</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;People TRacking NOT LAUNCHED; NOTHING TO STOP&quot;</span><span class="p">)</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;START_GRASP_PROTOCOL&quot;</span><span class="p">,</span>
+                                   <span class="n">InitGraspPipelineSM</span><span class="p">(),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;STOPPING_INITIAL_RESTAURANT_FASE_SET_UP&quot;</span><span class="p">,</span>
+                                                <span class="n">aborted</span><span class="p">:</span> <span class="n">aborted</span><span class="p">,</span>
+                                                <span class="n">preempted</span><span class="p">:</span> <span class="n">aborted</span><span class="p">})</span>
+
+            <span class="c"># STOPS</span>
+            <span class="nd">@smach.cb_interface</span><span class="p">(</span><span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">])</span>
+            <span class="k">def</span> <span class="nf">print_things</span><span class="p">(</span><span class="n">userdata</span><span class="p">):</span>
+                <span class="n">rospy</span><span class="o">.</span><span class="n">logwarn</span><span class="p">(</span><span class="n">colors</span><span class="o">.</span><span class="n">BACKGROUND_RED</span> <span class="o">+</span> <span class="s">&quot;STOPPING ALL the things that should be stopped in restaurant init.</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">colors</span><span class="o">.</span><span class="n">NATIVE_COLOR</span><span class="p">))</span>
+                <span class="k">return</span> <span class="n">succeeded</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;STOPPING_INITIAL_RESTAURANT_FASE_SET_UP&#39;</span><span class="p">,</span>
+                                   <span class="n">CBState</span><span class="p">(</span><span class="n">print_things</span><span class="p">),</span>
+                                   <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;in_learn_person&#39;</span><span class="p">:</span> <span class="s">&quot;in_learn_person&quot;</span><span class="p">},</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;STOP_REEM_ALIVE&#39;</span><span class="p">})</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;STOP_REEM_ALIVE&quot;</span><span class="p">,</span>
+                                       <span class="n">RunScriptOnRobot</span><span class="p">(</span><span class="n">robot_scripts_path</span><span class="o">=</span><span class="n">ROBOT_SCRIPTS_PATH</span><span class="p">,</span> <span class="n">script_name</span><span class="o">=</span><span class="s">&quot;reemAliveStop.sh&quot;</span><span class="p">),</span>
+                                       <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;FINISHED_INIT_SERVICES_RESTAURANT_SET_UP&quot;</span><span class="p">,</span>
+                                                    <span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;FINISHED_INIT_SERVICES_RESTAURANT_SET_UP&quot;</span><span class="p">})</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;REEM ALIVE NOT LAUNCHED; NOTHING TO STOP&quot;</span><span class="p">)</span>
+
+            <span class="n">init_text</span> <span class="o">=</span> <span class="s">&quot;I&#39;m ready to start.&quot;</span>
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;FINISHED_INIT_SERVICES_RESTAURANT_SET_UP&#39;</span><span class="p">,</span>
+                                   <span class="n">SpeakActionState</span><span class="p">(</span><span class="n">init_text</span><span class="p">),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="n">succeeded</span><span class="p">})</span>
+
+</div>
+<div class="viewcode-block" id="DeliverRestaurantFaseSetUp"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#fases_set_up_restaurant.DeliverRestaurantFaseSetUp">[docs]</a><span class="k">class</span> <span class="nc">DeliverRestaurantFaseSetUp</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialises all the protocols that CompleteGraspPipelineStateMachine need to work.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                    <span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="n">preempted</span><span class="p">,</span> <span class="n">aborted</span><span class="p">])</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="p">:</span>
+
+            <span class="nd">@smach.cb_interface</span><span class="p">(</span><span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">])</span>
+            <span class="k">def</span> <span class="nf">print_things</span><span class="p">(</span><span class="n">userdata</span><span class="p">):</span>
+                <span class="n">rospy</span><span class="o">.</span><span class="n">logwarn</span><span class="p">(</span><span class="n">colors</span><span class="o">.</span><span class="n">BACKGROUND_RED</span> <span class="o">+</span> <span class="s">&quot;STOPPING the things that shouldn&#39;t be in restaurant DELIVER.&quot;</span> <span class="o">+</span> <span class="n">colors</span><span class="o">.</span><span class="n">NATIVE_COLOR</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">succeeded</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;STOPPING_RESTAURANT_DELIVER_FASE_SET_UP&#39;</span><span class="p">,</span>
+                                   <span class="n">CBState</span><span class="p">(</span><span class="n">print_things</span><span class="p">),</span>
+                                   <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;in_learn_person&#39;</span><span class="p">:</span> <span class="s">&quot;in_learn_person&quot;</span><span class="p">},</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;START_ALL_CONTROLLERS&#39;</span><span class="p">})</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;START_ALL_CONTROLLERS&quot;</span><span class="p">,</span>
+                                   <span class="n">StartRobotControllers</span><span class="p">(</span><span class="n">head</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;STOP_PEOPLE_TRACKING&quot;</span><span class="p">,</span>
+                                                <span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;STOP_PEOPLE_TRACKING&quot;</span><span class="p">,</span>
+                                                <span class="n">preempted</span><span class="p">:</span> <span class="n">preempted</span><span class="p">})</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;STOP_PEOPLE_TRACKING&quot;</span><span class="p">,</span>
+                                       <span class="n">RunScriptOnRobot</span><span class="p">(</span><span class="n">script_name</span><span class="o">=</span><span class="s">&quot;iri_people_tracking_raiStop.sh&quot;</span><span class="p">),</span>
+                                       <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;STOP_PERSON_SERVER&quot;</span><span class="p">,</span>
+                                                    <span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;STOP_PERSON_SERVER&quot;</span><span class="p">})</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;PEOPLE TRACKING NOT LAUNCHED; NOTHING TO STOP&quot;</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;STOP_PERSON_SERVER&quot;</span><span class="p">,</span>
+                                       <span class="n">RunScriptOnRobot</span><span class="p">(</span><span class="n">script_name</span><span class="o">=</span><span class="s">&quot;personServerStop.sh&quot;</span><span class="p">),</span>
+                                       <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;FINISHED_DELIVER_FASE_SERVICES_RESTAURANT_SET_UP&quot;</span><span class="p">,</span>
+                                                    <span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;FINISHED_DELIVER_FASE_SERVICES_RESTAURANT_SET_UP&quot;</span><span class="p">})</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;PERSON SERVER NOT LAUNCHED; NOTHING TO STOP&quot;</span><span class="p">)</span>
+
+            <span class="n">init_text</span> <span class="o">=</span> <span class="s">&quot;I&#39;m ready to start.&quot;</span>
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;FINISHED_DELIVER_FASE_SERVICES_RESTAURANT_SET_UP&#39;</span><span class="p">,</span>
+                                   <span class="n">SpeakActionState</span><span class="p">(</span><span class="n">init_text</span><span class="p">),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="n">succeeded</span><span class="p">})</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_documentation/pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

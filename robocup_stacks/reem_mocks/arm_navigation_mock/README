@@ -1,0 +1,16 @@
+----This package has implemented a mock object that simulates the movement of a robotic arm.
+It's an action server which accepts messages of type arm_navigation/arm_navigation_msgs/action/MoveArm.action.
+(http://www.ros.org/doc/api/move_arm_msgs/html/index-msg.html )-------
+
+	*Arm_Navigation Server & Client
+		@Server: What it does is give the clienta feedback saying
+		the state of the movement asked for ( Waiting, Moving or Ended ), 
+		and tells the time for competion in seconds and nanoseconds.
+		It just simulates a movement of 1 second suration.
+		In this first version of the mock, the movement it's always 
+		successfull.
+		
+		@Client: Just posts on screen the feedback given. As goal it gives
+		only the name of the movement.
+
+

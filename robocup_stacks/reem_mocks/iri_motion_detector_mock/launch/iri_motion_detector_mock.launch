@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node pkg="iri_motion_detector_mock" name="iri_motion_detector_mock" type="iri_motion_detector_mock.py" output="screen">
+	<remap from="/iri_motion_detector_mock" to="/iri_motion_detector" />
+  </node>
+
+</launch>
+

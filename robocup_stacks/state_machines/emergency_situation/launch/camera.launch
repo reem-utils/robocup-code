@@ -1,0 +1,27 @@
+<!-- Launches a camera node and visualizes video stream -->
+
+<launch>
+	
+	<!-- camera driver -->
+	<node 	pkg="uvc_cam2" 
+		type="sender" 
+		name="camera" 
+		output="screen">
+		<param name="device" type="str" value="/dev/video0" />
+		<param name="camera" type="str" value="/camera" />
+<!--		<param name="width" type="int" value="1280" />
+		<param name="height" type="int" value="720" />-->
+		<param name="fps" type="int" value="20" />
+	</node>
+	
+	<!-- Image window	 -->
+	<node 
+	pkg="image_view" 
+	type="image_view" 
+	name="image_view_out" >
+	<param name="window_name" value= "CAMERA VIEW" type="str" />
+	<remap from="/image"
+		 to="/camera/image_raw" />
+	</node>
+	
+</launch>

@@ -1,0 +1,5 @@
+# request
+sensor_msgs/Image image
+---
+# response
+iri_perception_msgs/DescriptorSet descriptor_set

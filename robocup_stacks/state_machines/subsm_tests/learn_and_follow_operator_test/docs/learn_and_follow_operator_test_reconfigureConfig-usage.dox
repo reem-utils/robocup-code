@@ -1,0 +1,8 @@
+\subsubsection usage Usage
+\verbatim
+<node name="learn_and_follow_operator_test" pkg="learn_and_follow_operator_test" type="learn_and_follow_operator_test">
+  <param name="move_base_topic_goal" type="str" value="/move_base_simple/goal" />
+  <param name="nav_goal_x" type="double" value="1.5" />
+</node>
+\endverbatim
+

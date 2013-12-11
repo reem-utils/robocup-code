@@ -1,0 +1,16 @@
+<launch>
+
+  <!-- start up the RoboCup world and launch REEM -->
+  <!--<include file="$(find robocup_worlds)/launch/robocup_house_png.launch"/>-->
+
+  <!-- load the map -->
+  <!--<node name="map_node" pkg="map_server" type="map_server"
+    args="$(find robocup_worlds)/navigation/subMap1.yaml" respawn="false" output="screen" />-->
+
+  <!-- start navigation -->
+  <include file="$(find rh2_ros_nav)/rh2_ros_navigation.launch"/>
+
+  <!-- start rviz -->
+  <node pkg="rviz" type="rviz" name="rviz" />
+	
+</launch>

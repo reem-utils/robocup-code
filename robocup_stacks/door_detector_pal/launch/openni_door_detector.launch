@@ -1,0 +1,7 @@
+ <launch>
+  <include file="$(find openni_launch)/launch/openni.launch">
+    <arg name="camera" value="head_mount_xtion" />
+    <arg name="depth_registration" value="true" />
+    <arg name="publish_tf" value="false" />
+  </include>
+ </launch>

@@ -1,0 +1,16 @@
+<package>
+  <description brief="back_camera_server_mock">
+
+     back_camera_server_mock
+
+  </description>
+  <author>vaio</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/back_camera_server_mock</url>
+  <depend package="pal_vision_msgs"/>
+  <depend package="std_msgs"/>
+
+</package>
+
+

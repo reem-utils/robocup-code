@@ -1,0 +1,13 @@
+<launch>
+
+  <!-- load the configuration file -->
+  <rosparam file="$(find cocktail_party)/config/cocktail_party.yaml" command="load" ns="cocktail_party" />
+
+  <!-- Cocktail Party SMACH -->
+  <node pkg ="cocktail_party"
+        type="cocktail_party_launch.py"
+        name="cocktail_party_launch"
+        output="screen">
+  </node>
+
+</launch>

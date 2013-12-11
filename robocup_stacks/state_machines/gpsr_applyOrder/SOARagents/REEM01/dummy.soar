@@ -1,0 +1,11 @@
+#sp {dummy-elaborate-goal-ok
+#   (state <s> ^name REEM01
+#              ^io <i>)
+#   (<i> ^output-link.go-to <out>
+#        ^input-link <in>)
+#   (<out> ^destination kitchen)
+#-->
+#   (<in> ^location kitchen
+#         ^performed go-to)
+#   (<out> ^status complete)
+#}

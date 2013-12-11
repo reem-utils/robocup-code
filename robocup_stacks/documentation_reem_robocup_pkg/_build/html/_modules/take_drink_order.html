@@ -1,0 +1,337 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>take_drink_order &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for take_drink_order</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">rospy</span>
+<span class="kn">import</span> <span class="nn">smach</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.global_common</span> <span class="kn">import</span> <span class="n">succeeded</span><span class="p">,</span> <span class="n">aborted</span><span class="p">,</span> <span class="n">preempted</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">from</span> <span class="nn">pal_interaction_msgs.msg</span> <span class="kn">import</span> <span class="n">asrresult</span>  <span class="c"># , actiontag</span>
+
+<span class="kn">from</span> <span class="nn">pal_smach_utils.speech.grammar_state</span> <span class="kn">import</span> <span class="n">GrammarState</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.topic_reader</span> <span class="kn">import</span> <span class="n">TopicReaderState</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.speech.sound_action</span> <span class="kn">import</span> <span class="n">SpeakActionState</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.drink_order</span> <span class="kn">import</span> <span class="n">DrinkOrder</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.colors</span> <span class="kn">import</span> <span class="n">Colors</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.cocktail_party_variables</span> <span class="kn">import</span> <span class="n">cocktail_party_variables</span> <span class="k">as</span> <span class="n">variables</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="n">Colors</span><span class="p">()</span>
+
+<span class="n">warning</span> <span class="o">=</span> <span class="s">&quot;warning&quot;</span>
+<span class="n">drink_changed</span> <span class="o">=</span> <span class="s">&quot;repeated_drink_changed&quot;</span>
+<span class="c"># The size of list ALLOWD_DRINKS need be at least 3, because are 3 drink orders in robocup, otherwise AnalizeRepeatedDrink will raiseValueError</span>
+
+<span class="n">COUNT_NUMBER</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">COUNT_WARNING</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">LEN_DRINKS</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">variables</span><span class="o">.</span><span class="n">ALLOWED_DRINKS</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">CountCheck</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="n">warning</span><span class="p">,</span> <span class="n">aborted</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userdata</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;Checking count </span><span class="si">%d</span><span class="s">/</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="n">COUNT_NUMBER</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">==</span> <span class="n">COUNT_WARNING</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">warning</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">==</span> <span class="n">COUNT_NUMBER</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">return</span> <span class="n">aborted</span>
+
+        <span class="k">return</span> <span class="n">succeeded</span>
+
+
+<span class="k">class</span> <span class="nc">DebugDrinkOrder</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;out_drink_order&quot;</span><span class="p">],</span> <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userdata</span><span class="p">):</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;=========&gt;&gt;&gt;&gt; [DEBUG] New Drink </span><span class="si">%s</span><span class="s"> to </span><span class="si">%s</span><span class="s"> &lt;&lt;&lt;========================================&quot;</span><span class="p">,</span>
+            <span class="n">userdata</span><span class="o">.</span><span class="n">out_drink_order</span><span class="o">.</span><span class="n">drink</span><span class="p">,</span> <span class="n">userdata</span><span class="o">.</span><span class="n">out_drink_order</span><span class="o">.</span><span class="n">person_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">succeeded</span>
+
+
+<span class="k">class</span> <span class="nc">AnalizeRepeatedDrink</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;in_order&quot;</span><span class="p">,</span> <span class="s">&quot;drinks_already_requested&quot;</span><span class="p">],</span>
+            <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;out_drink_order&quot;</span><span class="p">],</span>
+            <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="n">drink_changed</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userdata</span><span class="p">):</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;=============&gt;&gt;&gt; Try identify </span><span class="si">%s</span><span class="s"> in list </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">userdata</span><span class="o">.</span><span class="n">in_order</span><span class="o">.</span><span class="n">drink</span><span class="p">,</span> <span class="n">userdata</span><span class="o">.</span><span class="n">drinks_already_requested</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_order</span><span class="o">.</span><span class="n">drink</span> <span class="ow">in</span> <span class="n">userdata</span><span class="o">.</span><span class="n">drinks_already_requested</span><span class="p">:</span>
+            <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="n">drink</span> <span class="o">=</span> <span class="n">variables</span><span class="o">.</span><span class="n">ALLOWED_DRINKS</span><span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">LEN_DRINKS</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
+                <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="n">colors</span><span class="o">.</span><span class="n">BACKGROUND_GREEN</span> <span class="o">+</span> <span class="s">&quot;Trying identify &#39;</span><span class="si">%s</span><span class="s">&#39; in </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">drink</span><span class="p">,</span> <span class="n">userdata</span><span class="o">.</span><span class="n">drinks_already_requested</span><span class="p">,</span> <span class="n">colors</span><span class="o">.</span><span class="n">NATIVE_COLOR</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">drink</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">userdata</span><span class="o">.</span><span class="n">drinks_already_requested</span><span class="p">:</span>
+                    <span class="n">userdata</span><span class="o">.</span><span class="n">out_drink_order</span> <span class="o">=</span> <span class="n">DrinkOrder</span><span class="p">(</span><span class="n">userdata</span><span class="o">.</span><span class="n">in_order</span><span class="o">.</span><span class="n">person_name</span><span class="p">,</span> <span class="n">drink</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">drink_changed</span>
+        <span class="k">return</span> <span class="n">succeeded</span>
+
+
+<div class="viewcode-block" id="TakeDrinkOrderStateMachine"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#take_drink_order.TakeDrinkOrderStateMachine">[docs]</a><span class="k">class</span> <span class="nc">TakeDrinkOrderStateMachine</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;TakeDrinkOrderStateMachine.</span>
+
+<span class="sd">    Use this StateMachine to take drink orders.</span>
+<span class="sd">    Steps of this State Machine:</span>
+<span class="sd">        Enable the grammar defined on cocktail_party.yaml file as drinks_grammar_name; ask what the person want to drink; get the drink name;</span>
+<span class="sd">        If the drink was already requested or the robot can&#39;t understand what the person is saying, then a new drink will be asigned to the</span>
+<span class="sd">        person. The asigned drink is a random drink of &#39;allowed_drinks&#39; variable defined on cocktail_party.yaml file.</span>
+
+<span class="sd">    Important:</span>
+<span class="sd">        The same drink names should be on &#39;allowed_drinks&#39; variable and in the grammar defined on &#39;drinks_grammar_name&#39; variable.</span>
+<span class="sd">        Both variables &#39;allowed_drinks and drinks_grammar_name&#39; are defined on cocktail_party.yaml file.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor for TakeDrinkOrderStateMachine</span>
+
+<span class="sd">        Input keys:</span>
+<span class="sd">            @type in_person_name: string</span>
+<span class="sd">            @param in_person_name: The person name that want a drink.</span>
+
+<span class="sd">            @type drinks_already_requested: list of string</span>
+<span class="sd">            @param drinks_already_requested: The drink names already requested.</span>
+
+<span class="sd">        Output keys:</span>
+<span class="sd">            @type out_drink_order: pal_smach_utils/src/pal_smach_utils/utils/DrinkOrder</span>
+<span class="sd">            @return out_drink_order: A DrinkOrder object with the fields person_name and drink.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="n">preempted</span><span class="p">,</span> <span class="n">aborted</span><span class="p">],</span>
+            <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;in_person_name&#39;</span><span class="p">,</span> <span class="s">&quot;drinks_already_requested&quot;</span><span class="p">],</span> <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;out_drink_order&#39;</span><span class="p">])</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_drink_name</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">count_check</span> <span class="o">=</span> <span class="n">CountCheck</span><span class="p">()</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&#39;ENABLE_GRAMMAR&#39;</span><span class="p">,</span>
+                <span class="n">GrammarState</span><span class="p">(</span><span class="n">variables</span><span class="o">.</span><span class="n">DRINKS_GRAMMAR_NAME</span><span class="p">,</span> <span class="n">enabled</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;TAKE_ORDERS_TTS&#39;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;TAKE_ORDERS_TTS&quot;</span><span class="p">,</span> <span class="n">preempted</span><span class="p">:</span> <span class="s">&quot;TAKE_ORDERS_TTS&quot;</span><span class="p">})</span>
+
+            <span class="k">def</span> <span class="nf">orders_welcome_text_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">):</span>
+                <span class="n">tts</span> <span class="o">=</span> <span class="s">&quot;What do you want to drink </span><span class="si">%s</span><span class="s">?&quot;</span> <span class="o">%</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_person_name</span>
+                <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="n">colors</span><span class="o">.</span><span class="n">BACKGROUND_GREEN</span> <span class="o">+</span> <span class="n">tts</span> <span class="o">+</span> <span class="n">colors</span><span class="o">.</span><span class="n">NATIVE_COLOR</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">tts</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&#39;TAKE_ORDERS_TTS&#39;</span><span class="p">,</span>
+                <span class="n">SpeakActionState</span><span class="p">(</span><span class="n">text_cb</span><span class="o">=</span><span class="n">orders_welcome_text_cb</span><span class="p">,</span> <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;in_person_name&quot;</span><span class="p">]),</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;TAKE_ORDER&#39;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;TTS_FAILED&quot;</span><span class="p">,</span> <span class="n">preempted</span><span class="p">:</span> <span class="s">&quot;TTS_FAILED&quot;</span><span class="p">})</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&quot;TTS_FAILED&quot;</span><span class="p">,</span>
+                <span class="n">SpeakActionState</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s">&quot;What do you want to drink?&quot;</span><span class="p">),</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;TAKE_ORDER&quot;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;TAKE_ORDER&quot;</span><span class="p">,</span> <span class="n">preempted</span><span class="p">:</span> <span class="s">&quot;TAKE_ORDER&quot;</span><span class="p">}</span>
+            <span class="p">)</span>
+
+            <span class="k">def</span> <span class="nf">take_order_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">last_drink_name</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="k">print</span> <span class="n">colors</span><span class="o">.</span><span class="n">BACKGROUND_GREEN</span><span class="p">,</span> <span class="s">&quot;MESSAGE: &quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">message</span><span class="p">),</span> <span class="n">colors</span><span class="o">.</span><span class="n">NATIVE_COLOR</span>
+
+                <span class="n">actiontag</span> <span class="o">=</span> <span class="p">[</span><span class="n">tag</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">message</span><span class="o">.</span><span class="n">tags</span> <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="s">&#39;action&#39;</span><span class="p">]</span>
+                <span class="n">drinktag</span> <span class="o">=</span> <span class="p">[</span><span class="n">tag</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">message</span><span class="o">.</span><span class="n">tags</span> <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="s">&#39;object&#39;</span><span class="p">]</span>  <span class="c"># drink</span>
+                <span class="k">if</span> <span class="n">actiontag</span> <span class="ow">and</span> <span class="n">actiontag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s">&#39;bring&#39;</span><span class="p">:</span>
+                    <span class="k">print</span> <span class="s">&quot;</span><span class="se">\n\n</span><span class="s">DRINK TAG: &quot;</span><span class="p">,</span> <span class="n">drinktag</span>
+                    <span class="n">userdata</span><span class="o">.</span><span class="n">out_drink_order</span> <span class="o">=</span> <span class="n">DrinkOrder</span><span class="p">(</span><span class="n">userdata</span><span class="o">.</span><span class="n">in_person_name</span><span class="p">,</span> <span class="n">drinktag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">last_drink_name</span> <span class="o">=</span> <span class="n">drinktag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+                    <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;==========&gt;&gt;&gt; New drink: (</span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">userdata</span><span class="o">.</span><span class="n">in_person_name</span><span class="p">,</span> <span class="n">drinktag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+                    <span class="k">return</span> <span class="n">succeeded</span>
+                <span class="k">return</span> <span class="n">aborted</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&#39;TAKE_ORDER&#39;</span><span class="p">,</span>
+                <span class="n">TopicReaderState</span><span class="p">(</span>
+                    <span class="n">topic_name</span><span class="o">=</span><span class="n">variables</span><span class="o">.</span><span class="n">T_USERSAID</span><span class="p">,</span>
+                    <span class="n">msg_type</span><span class="o">=</span><span class="n">asrresult</span><span class="p">,</span>
+                    <span class="n">timeout</span><span class="o">=</span><span class="n">variables</span><span class="o">.</span><span class="n">TAKE_SINGLE_ORDER_TIMEOUT</span><span class="p">,</span>
+                    <span class="n">callback</span><span class="o">=</span><span class="n">take_order_cb</span><span class="p">,</span>
+                    <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;in_person_name&#39;</span><span class="p">],</span>
+                    <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;out_drink_order&#39;</span><span class="p">]),</span>
+                <span class="c">#remapping={&#39;order&#39;: &#39;order1&#39;},</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;ANALIZE_REPEATED_DRINK&quot;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&#39;COUNT_CHECK&#39;</span><span class="p">,</span> <span class="n">preempted</span><span class="p">:</span> <span class="s">&quot;COUNT_CHECK&quot;</span><span class="p">})</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&quot;COUNT_CHECK&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">count_check</span><span class="p">,</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;TAKE_ORDER&quot;</span><span class="p">,</span> <span class="n">warning</span><span class="p">:</span> <span class="s">&quot;SPEAK_HIGHER_PLEASE&quot;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;ASSIGN_A_DRINK&quot;</span><span class="p">}</span>
+                <span class="p">)</span>
+
+            <span class="k">def</span> <span class="nf">speak_higher_please_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">):</span>
+                <span class="n">tts</span> <span class="o">=</span> <span class="s">&quot;I&#39;m sorry </span><span class="si">%s</span><span class="s">! Can you speak the drink name higher please?&quot;</span> <span class="o">%</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_person_name</span>
+                <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="n">colors</span><span class="o">.</span><span class="n">BACKGROUND_GREEN</span> <span class="o">+</span> <span class="n">tts</span> <span class="o">+</span> <span class="n">colors</span><span class="o">.</span><span class="n">NATIVE_COLOR</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">tts</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&quot;SPEAK_HIGHER_PLEASE&quot;</span><span class="p">,</span>
+                <span class="n">SpeakActionState</span><span class="p">(</span><span class="n">text_cb</span><span class="o">=</span><span class="n">speak_higher_please_cb</span><span class="p">,</span> <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;in_person_name&quot;</span><span class="p">]),</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;TAKE_ORDER&quot;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;TAKE_ORDER&quot;</span><span class="p">,</span> <span class="n">preempted</span><span class="p">:</span> <span class="s">&quot;TAKE_ORDER&quot;</span><span class="p">}</span>
+                <span class="p">)</span>
+
+            <span class="k">def</span> <span class="nf">assign_a_drink_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">):</span>
+                <span class="n">userdata</span><span class="o">.</span><span class="n">out_drink_order</span> <span class="o">=</span> <span class="n">DrinkOrder</span><span class="p">(</span><span class="n">userdata</span><span class="o">.</span><span class="n">in_person_name</span><span class="p">,</span> <span class="n">variables</span><span class="o">.</span><span class="n">ALLOWED_DRINKS</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                    <span class="n">drink</span> <span class="o">=</span> <span class="n">variables</span><span class="o">.</span><span class="n">ALLOWED_DRINKS</span><span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">LEN_DRINKS</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
+                    <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="n">colors</span><span class="o">.</span><span class="n">BACKGROUND_GREEN</span> <span class="o">+</span> <span class="s">&quot;Trying identify &#39;</span><span class="si">%s</span><span class="s">&#39; in </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">drink</span><span class="p">,</span> <span class="n">userdata</span><span class="o">.</span><span class="n">drinks_already_requested</span><span class="p">,</span> <span class="n">colors</span><span class="o">.</span><span class="n">NATIVE_COLOR</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">drink</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">userdata</span><span class="o">.</span><span class="n">drinks_already_requested</span><span class="p">:</span>
+                        <span class="n">userdata</span><span class="o">.</span><span class="n">out_drink_order</span> <span class="o">=</span> <span class="n">DrinkOrder</span><span class="p">(</span><span class="n">userdata</span><span class="o">.</span><span class="n">in_person_name</span><span class="p">,</span> <span class="n">drink</span><span class="p">)</span>
+                        <span class="n">tts</span> <span class="o">=</span> <span class="s">&quot;I&#39;m sorry </span><span class="si">%s</span><span class="s">. I can&#39;t understand what you are requesting. I&#39;ll bring </span><span class="si">%s</span><span class="s"> for you!&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">userdata</span><span class="o">.</span><span class="n">in_person_name</span><span class="p">,</span> <span class="n">drink</span><span class="p">)</span>
+                        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="n">colors</span><span class="o">.</span><span class="n">BACKGROUND_GREEN</span> <span class="o">+</span> <span class="n">tts</span> <span class="o">+</span> <span class="n">colors</span><span class="o">.</span><span class="n">NATIVE_COLOR</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="n">tts</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&quot;ASSIGN_A_DRINK&quot;</span><span class="p">,</span>
+                <span class="n">SpeakActionState</span><span class="p">(</span><span class="n">text_cb</span><span class="o">=</span><span class="n">assign_a_drink_cb</span><span class="p">,</span> <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;in_person_name&quot;</span><span class="p">,</span> <span class="s">&quot;drinks_already_requested&quot;</span><span class="p">],</span> <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;out_drink_order&quot;</span><span class="p">]),</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;DISABLE_GRAMMAR&quot;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;ASSIGN_A_DRINK&quot;</span><span class="p">,</span> <span class="n">preempted</span><span class="p">:</span> <span class="s">&quot;DISABLE_GRAMMAR&quot;</span><span class="p">}</span>
+                <span class="p">)</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&quot;ANALIZE_REPEATED_DRINK&quot;</span><span class="p">,</span>
+                <span class="n">AnalizeRepeatedDrink</span><span class="p">(),</span>
+                <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;in_order&quot;</span><span class="p">:</span> <span class="s">&quot;out_drink_order&quot;</span><span class="p">},</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;DEBUG_DRINK&quot;</span><span class="p">,</span> <span class="n">drink_changed</span><span class="p">:</span> <span class="s">&quot;REPEATED_DRINK_WARNING&quot;</span><span class="p">}</span>
+                <span class="p">)</span>
+
+            <span class="k">def</span> <span class="nf">repeated_drink_warning</span><span class="p">(</span><span class="n">userdata</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">count_check</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">tts</span> <span class="o">=</span> <span class="s">&quot;I&#39;m sorry! I understood </span><span class="si">%s</span><span class="s"> and this drink has already been requested. I will get </span><span class="si">%s</span><span class="s"> for you!&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_drink_name</span><span class="p">,</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_order</span><span class="o">.</span><span class="n">drink</span><span class="p">)</span>
+                <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="n">colors</span><span class="o">.</span><span class="n">BACKGROUND_GREEN</span> <span class="o">+</span> <span class="n">tts</span> <span class="o">+</span> <span class="n">colors</span><span class="o">.</span><span class="n">NATIVE_COLOR</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">tts</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&quot;REPEATED_DRINK_WARNING&quot;</span><span class="p">,</span>
+                <span class="n">SpeakActionState</span><span class="p">(</span><span class="n">text_cb</span><span class="o">=</span><span class="n">repeated_drink_warning</span><span class="p">,</span> <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;in_order&quot;</span><span class="p">]),</span>
+                    <span class="c"># output_keys=[&quot;out_drink_order&quot;]),</span>
+                <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;in_order&#39;</span><span class="p">:</span> <span class="s">&#39;out_drink_order&#39;</span><span class="p">},</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;DISABLE_GRAMMAR&quot;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;DISABLE_GRAMMAR&quot;</span><span class="p">,</span> <span class="n">preempted</span><span class="p">:</span> <span class="s">&quot;DISABLE_GRAMMAR&quot;</span><span class="p">}</span>
+                <span class="p">)</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&quot;DEBUG_DRINK&quot;</span><span class="p">,</span>
+                <span class="n">DebugDrinkOrder</span><span class="p">(),</span>
+                <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;drink_order&quot;</span><span class="p">:</span> <span class="s">&quot;out_order&quot;</span><span class="p">},</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;CONFIRM_ORDER&quot;</span><span class="p">}</span>
+                <span class="p">)</span>
+
+            <span class="k">def</span> <span class="nf">confirm_order_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">count_check</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">tts</span> <span class="o">=</span> <span class="s">&quot;Okay </span><span class="si">%s</span><span class="s">! I&#39;ll get </span><span class="si">%s</span><span class="s"> for you.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">userdata</span><span class="o">.</span><span class="n">in_order</span><span class="o">.</span><span class="n">person_name</span><span class="p">,</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_order</span><span class="o">.</span><span class="n">drink</span><span class="p">)</span>
+                <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="n">colors</span><span class="o">.</span><span class="n">BACKGROUND_GREEN</span> <span class="o">+</span> <span class="n">tts</span> <span class="o">+</span> <span class="n">colors</span><span class="o">.</span><span class="n">NATIVE_COLOR</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">tts</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&quot;CONFIRM_ORDER&quot;</span><span class="p">,</span>
+                <span class="n">SpeakActionState</span><span class="p">(</span><span class="n">text_cb</span><span class="o">=</span><span class="n">confirm_order_cb</span><span class="p">,</span> <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;in_order&quot;</span><span class="p">]),</span>
+                <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;in_order&quot;</span><span class="p">:</span> <span class="s">&quot;out_drink_order&quot;</span><span class="p">},</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;DISABLE_GRAMMAR&quot;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;DISABLE_GRAMMAR&quot;</span><span class="p">,</span> <span class="n">preempted</span><span class="p">:</span> <span class="s">&quot;DISABLE_GRAMMAR&quot;</span><span class="p">})</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&#39;DISABLE_GRAMMAR&#39;</span><span class="p">,</span>
+                <span class="n">GrammarState</span><span class="p">(</span><span class="n">variables</span><span class="o">.</span><span class="n">DRINKS_GRAMMAR_NAME</span><span class="p">,</span> <span class="n">enabled</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="n">succeeded</span><span class="p">})</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_documentation/pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

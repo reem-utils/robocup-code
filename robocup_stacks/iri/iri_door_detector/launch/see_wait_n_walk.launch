@@ -1,0 +1,7 @@
+<launch>
+	<!-- Run smach -->
+	<node pkg="iri_door_detector" type="See_Wait_N_Walk.py" name="See_Wait_N_Walk" output="screen"/> 
+	<!-- other available smachs
+		Open_The_Door.py 
+		See_Wait_N_Walk.py-->
+</launch>

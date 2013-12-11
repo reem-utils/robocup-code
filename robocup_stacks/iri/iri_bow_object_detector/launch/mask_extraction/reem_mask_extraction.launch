@@ -1,0 +1,62 @@
+<!--
+  Application:
+    BoW object detector
+  Description:
+    Recognizes objects
+  Args:
+    Openni device ROS adress (kinect/asus/...)
+  Files:
+    -
+  Robot:
+    Estirabot
+  Author:
+    David Martínez (dmartinez@iri.upc.edu)
+  Date:
+    27 June 2012
+-->
+
+<launch>
+    <!-- Need to supply the openni device ROS adress ex: /kinect/camera -->
+    <arg name="input_topic" /> 
+
+    <!-- Run a passthrough filter to remove background -->
+    <node pkg="nodelet" type="nodelet" name="passthrough" args="load pcl/PassThrough pcl_manager" output="screen">
+        <remap from="~input" to="$(arg input_topic)" />
+        <remap from="~output" to="pcl_distance_filtered" />
+        <rosparam>
+            filter_field_name: z
+            filter_limit_min: 0.1
+            filter_limit_max: 0.9
+            filter_limit_negative: False
+            keep_organized: True
+        </rosparam>
+    </node>
+    
+    <node pkg="nodelet" type="nodelet" name="pcl_manager" args="manager" output="screen" />
+    
+    <node pkg="iri_pcl_filters" type="pcl_to_image" name="pcl_to_image"  output="screen">
+        <remap from="input" to="pcl_distance_filtered" />
+    </node>
+    
+    <node pkg="iri_opencv_filters" name="morphological_close" type="morphological_op_node">
+        <remap from="~/image_in" to="output_image"/> 
+        <param name="~/morph_element_size" value="17" />
+        <param name="~/morph_operation" value="close" />
+    </node>
+    
+    <node pkg="iri_opencv_filters" name="remove_small_regions" type="remove_small_regions_node">
+        <remap from="~/image_in" to="morphological_close/image_out"/> 
+        <param name="~/min_area_threshold" value="30" />
+    </node>
+    
+    <node pkg="iri_opencv_filters" name="fill_holes" type="fill_holes_node">
+        <remap from="~/image_in" to="remove_small_regions/image_out"/> 
+        <remap from="~/image_out" to="cloth_mask" />
+    </node>
+    
+</launch>
+
+<!-- launch-prefix="xterm -e gdb - -args" -->
+
+
+

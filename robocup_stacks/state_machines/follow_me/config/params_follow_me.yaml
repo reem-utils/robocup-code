@@ -1,0 +1,64 @@
+#WARNING: TODO IF NO VALUE INTRODUCED, DOESN'T WORK
+
+#set_distance_new_location.py
+#Times that after losing a person and going 2m from the last known location
+#we look for candidates again. We will prefferably put a number lower than
+# the NUMBER_TIMES_BEFORE_LOST to avoid looking too much before considering again
+#that we have lost the track of the person again.
+number_times_after_lost_before_loosing_again: 2
+
+#:::::learn_person.py
+# the max distance from the robot at which a person can be enrolled
+max_distance: 1.5
+# the max distance in the 'y' axis at which a person can be enrolled
+max_displace: 0.35
+# the max velocity at which a person is allowed to be moving to be considered still
+max_still_velocity: 5.0
+# This is the time the SM will wait until retry. Used to avoid too quick retries (too much use of CPU)
+sleep_time_when_fails: 0.5 # in seconds. 
+# This is the minumum confidence that we alow for a face recognition to be True
+minimum_confidence: 0.0
+
+#:::::track_operator.py
+#seconds, Time after which we will preempt movement,and start tracking again.
+concurrence_waiting_time: 1.0
+#Times that we search for a plausible candidate and we find none
+#so we consider that we have lost the person and we move 2m from
+#the last known location.
+number_times_before_lost: 55
+#Distance that you want to go out passed the elevator door.
+door_distance: 0.3
+#Standard speed of a human walking metres/second
+human_max_speed_walk: 1.5
+#Enable filter number one in process data that filters people that 
+#are below MAX_DISTANCE_FROM_OLDPOS
+enable_max_dist_filter: False
+#Enable filter number two in process data that filters people that
+# have a speed coherent to how the personmoved before
+enable_speed_coherence_filter: False
+#Distance that we want the robot to keep from the persons position. [S.I.: metres]
+normal_distance_between_robot_person: 1.0
+#Distance that we want the robot to keep from the persons last known position. [S.I.: metres]
+distance_from_last_known_pos: 0.0
+#These are all the vocabs that in the POI_GRAMMAR
+stopwait_vocab: 'stopwait'
+poi_grammar_vocab: ['POI1','POI2','POI3','POI4',stopwait_vocab]
+#These are parameters for sending movements to the Robot. [S.I.: metres and radians]
+min_dist_to_ask_robot_to_move: 0.0
+min_radians_to_ask_robot_to_turn: 0.0
+#Debugging option
+debugging_flag: False 
+
+
+#:::::follow_filters.py
+#metres, maximum distance that a coandidate must be from the last
+# known position of the person folowed.
+max_distance_from_oldpos: 0.5
+#Corresponds to the acceptable degrees between
+#the old speed vector and the new when looking for an acceptable candidate.
+# 0 < x < 180
+min_degrees_similarity: 45
+
+
+
+

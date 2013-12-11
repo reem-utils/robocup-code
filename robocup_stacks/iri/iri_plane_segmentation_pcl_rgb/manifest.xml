@@ -1,0 +1,24 @@
+<package>
+  <description brief="iri_plane_segmentation_pcl_rgb">
+
+     iri_plane_segmentation_pcl_rgb is a package for segmenting a plane given a pointcloud.
+     It publishes a pointcloud with all points set to black except the ones belonging to the plane.
+     Also publishes a image of the segmented pointcloud.
+     
+     By modifing its parameters, it can include or remove objects that are on the plane.
+
+  </description>
+  <author>David Martinez</author>
+  <license>LGPL</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/iri_plane_segmentation_pcl_rgb</url>
+  <depend package="roscpp"/>
+  <depend package="iri_base_algorithm"/>
+  <depend package="pcl"/>
+  <depend package="sensor_msgs"/>
+  <depend package="opencv2"/>
+  <depend package="cv_bridge" />
+
+</package>
+
+

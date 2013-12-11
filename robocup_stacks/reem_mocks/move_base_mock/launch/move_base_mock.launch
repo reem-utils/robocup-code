@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<launch>
+        <rosparam file="$(find move_base_mock)/config/poi.yaml" command="load" ns="poi" />
+
+	<node 
+	  pkg='move_base_mock' type='move_base_mock_server.py'
+	  name='move_base_mock_server'
+	  output="screen" />
+
+</launch>

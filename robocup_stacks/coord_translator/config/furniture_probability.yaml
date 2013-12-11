@@ -1,0 +1,9 @@
+#Syntax: furniture name: probability of that furniture having objects on top.
+#All the furniture names must be in the database for that the furniture_detector_service uses!
+furniture_probability:
+    cadira: 0.6
+    shelf:  0.8
+    Chairs: 0.4
+    Armchairs: 0.45
+    Sideboards: 0.88
+    Tables: 0.95

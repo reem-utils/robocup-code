@@ -1,0 +1,13 @@
+<launch>
+  
+  <!-- Fake Servers -->
+
+  <!-- EmergencySituation SMACH -->
+  <node pkg ="emergency_situation"
+        type="test_go_to_exit_and_follow_checker.py"
+        name="test_go_to_exit_and_follow_checker"
+        output="screen">
+  </node>
+
+</launch>
+

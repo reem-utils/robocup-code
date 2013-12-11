@@ -1,0 +1,19 @@
+<launch>
+    <!-- REMEMBER TO DO $ export USE_RGBD_SENSOR=true -->
+
+    <!--<include file="$(find reem_tabletop_manipulation_launch)/launch/tabletop_perception.launch" >
+        <arg name="sim" value="false" />
+        <arg name="use_snapshotter" value="true" />
+    </include>-->
+    
+    <!--<include file="$(find reem_tabletop_manipulation_launch)/launch/rviz.launch" />-->
+
+    <include file="$(find furniture_detector_service)/launch/furniture_detector_service.launch"/>
+
+    <node pkg ="detect_table_test"
+        type="detect_furniture_test.py"
+        name="detect_furniture_test"
+        output="screen">
+    </node>
+
+</launch>

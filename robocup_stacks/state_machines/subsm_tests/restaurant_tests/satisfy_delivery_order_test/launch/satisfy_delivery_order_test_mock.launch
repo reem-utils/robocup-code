@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- load the Parameters configuration file -->
+	<rosparam file="$(find follow_me)/config/params_follow_me.yaml"
+	    command="load" ns="params_follow_me" />
+
+  <!-- load the configuration file -->
+  <rosparam file="$(find restaurant)/config/restaurant.yaml"
+      command="load" ns="restaurant" />
+
+  <!-- load the mock configuration file -->
+  <rosparam file="$(find restaurant)/config/simulation.yaml"
+      command="load" ns="mock_config" />
+
+  <!-- required system nodes -->
+  <include file="$(find coord_translator)/launch/coord_translator.launch" />
+  <include file="$(find move_base_mock)/launch/move_base_mock.launch"/>
+  <include file="$(find navigation_sm_mock)/launch/navigation_sm_mock.launch" />
+  <include file="$(find poi_current_position_sm_mock)/launch/lookupTransform_mock.launch" />
+  <include file="$(find tts_mock)/launch/tts_mock.launch" />
+  <include file="$(find close_hand_mock)/launch/close_hand_mock.launch" />
+  <include file="$(find arm_navigation_mock)/launch/arm_navigation_mock.launch" />
+  <!--<include file="$(find tabletop_grasping_mock)/launch/tabletop_grasping.launch" /> -->
+  
+  <!-- Restaurant SMACH -->
+  <node pkg ="satisfy_delivery_order_test"
+        type="satisfy_delivery_order_test.py"
+        name="sm_satisfy_delivery_order_test"
+        output="screen">
+  </node>
+
+</launch>

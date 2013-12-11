@@ -1,0 +1,14 @@
+<package>
+  <description brief="bind">
+
+     bind
+
+  </description>
+  <author>Albert</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/bind</url>
+
+</package>
+
+

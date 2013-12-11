@@ -1,0 +1,14 @@
+<package>
+  <description brief="rh2_ros_nav">
+
+     rh2_ros_nav
+
+  </description>
+  <author>REEM@IRI</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url></url>
+
+</package>
+
+

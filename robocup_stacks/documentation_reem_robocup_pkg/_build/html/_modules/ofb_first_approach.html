@@ -1,0 +1,245 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ofb_first_approach &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for ofb_first_approach</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+<span class="kn">import</span> <span class="nn">roslib</span>
+<span class="n">roslib</span><span class="o">.</span><span class="n">load_manifest</span><span class="p">(</span><span class="s">&#39;pal_smach_utils&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">smach</span>
+
+<span class="kn">from</span> <span class="nn">smach</span> <span class="kn">import</span> <span class="n">StateMachine</span><span class="p">,</span> <span class="n">CBState</span>
+<span class="kn">from</span> <span class="nn">smach_ros</span> <span class="kn">import</span> <span class="n">ServiceState</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.global_common</span> <span class="kn">import</span> <span class="n">succeeded</span><span class="p">,</span> <span class="n">preempted</span><span class="p">,</span> <span class="n">aborted</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.speech.sound_action</span> <span class="kn">import</span> <span class="n">SpeakActionFromPoolStateMachine</span>
+<span class="kn">from</span> <span class="nn">next_location_provider.srv</span> <span class="kn">import</span> <span class="n">NextProbableLocation</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.object_finding_algorithms.object_check_states</span> <span class="kn">import</span> <span class="n">CheckObjectAndRemoveFromList</span><span class="p">,</span> <span class="n">CheckRemaining</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.object_finding_algorithms.tell_move_and_recognize_sm</span> <span class="kn">import</span> <span class="n">TellGoRecognizeSM</span>
+
+
+<div class="viewcode-block" id="OFBFirstApproach"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#ofb_first_approach.OFBFirstApproach">[docs]</a><span class="k">class</span> <span class="nc">OFBFirstApproach</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="p">):</span>
+
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Object finding state machine.</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">        - target_object_key: string indicating the name of the input_key that has the name of the object you want to find</span>
+<span class="sd">        - target_frame: the frame in what you want the output object&#39;s location.</span>
+<span class="sd">    Keys:</span>
+<span class="sd">        - in_room_name: Name of the room where the robot is and has to search objects.</span>
+<span class="sd">        - out_object_found: Information about the found object</span>
+<span class="sd">        - out_location_inside_room_name: name of the location where the object was found. I.E. the table.</span>
+<span class="sd">    Notes:</span>
+<span class="sd">        - If there are objects remaining in a location, it will go to that location again, rather than searching for objects</span>
+<span class="sd">        in another room.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_object_key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">target_frame</span><span class="o">=</span><span class="s">&#39;/map&#39;</span><span class="p">):</span>
+        <span class="n">input_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;in_room_name&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">target_object_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">input_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target_object_key</span><span class="p">)</span>
+
+        <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="n">preempted</span><span class="p">,</span> <span class="n">aborted</span><span class="p">],</span>
+                                    <span class="n">input_keys</span><span class="o">=</span><span class="n">input_keys</span><span class="p">,</span>
+                                    <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;out_object_found&#39;</span><span class="p">,</span> <span class="s">&#39;out_location_inside_room_name&#39;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">target_object_key</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">target_object_key</span> <span class="o">=</span> <span class="s">&#39;in_target_object&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">userdata</span><span class="o">.</span><span class="n">in_target_object</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>  <span class="c"># No target object set! Before set to str(None), changed for SearchObjectWCSM</span>
+            <span class="n">going_to_pool</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;I&#39;m going to the </span><span class="si">%s</span><span class="s"> to look for objects.&quot;</span><span class="p">,</span> <span class="s">&quot;Maybe I find objects on the </span><span class="si">%s</span><span class="s">. I&#39;ll have a look.&quot;</span><span class="p">,</span>
+                             <span class="s">&quot;Why don&#39;t I search objects on the </span><span class="si">%s</span><span class="s">?&quot;</span><span class="p">,</span> <span class="s">&quot;I think there can be objects on the </span><span class="si">%s</span><span class="s">.&quot;</span><span class="p">]</span>
+            <span class="n">object_not_found_pool</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;I can&#39;t see any object on the </span><span class="si">%s</span><span class="s">.&quot;</span><span class="p">,</span> <span class="s">&quot;It seems that there aren&#39;t objects on the </span><span class="si">%s</span><span class="s">.&quot;</span><span class="p">,</span>
+                                     <span class="s">&quot;I haven&#39;t found any object on the </span><span class="si">%s</span><span class="s">.&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">going_to_pool</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;I&#39;m going to the </span><span class="si">%s</span><span class="s"> to look if it&#39;s there.&quot;</span><span class="p">,</span> <span class="s">&quot;Maybe I find it on the </span><span class="si">%s</span><span class="s">. I&#39;ll have a look.&quot;</span><span class="p">,</span>
+                             <span class="s">&quot;Why don&#39;t I search it on the </span><span class="si">%s</span><span class="s">?&quot;</span><span class="p">,</span> <span class="s">&quot;I think it can be on the </span><span class="si">%s</span><span class="s">.&quot;</span><span class="p">]</span>
+            <span class="n">object_not_found_pool</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;I can&#39;t see it on the </span><span class="si">%s</span><span class="s">.&quot;</span><span class="p">,</span> <span class="s">&quot;It seems that it isn&#39;t on the </span><span class="si">%s</span><span class="s">.&quot;</span><span class="p">,</span>
+                                     <span class="s">&quot;I haven&#39;t found it on the </span><span class="si">%s</span><span class="s">.&quot;</span><span class="p">]</span>
+
+        <span class="n">object_found_pool</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;I can see the </span><span class="si">%s</span><span class="s"> on the </span><span class="si">%s</span><span class="s">.&quot;</span><span class="p">,</span> <span class="s">&quot;Is that the </span><span class="si">%s</span><span class="s"> on the </span><span class="si">%s</span><span class="s">? I think so!&quot;</span><span class="p">,</span>
+                             <span class="s">&quot;The </span><span class="si">%s</span><span class="s"> is just there on the </span><span class="si">%s</span><span class="s">.&quot;</span><span class="p">,</span> <span class="s">&quot;I found the </span><span class="si">%s</span><span class="s"> on the </span><span class="si">%s</span><span class="s">.&quot;</span><span class="p">,</span>
+                             <span class="s">&quot;Can&#39;t you see the </span><span class="si">%s</span><span class="s">? Is there, on the </span><span class="si">%s</span><span class="s">!&quot;</span><span class="p">]</span>
+
+        <span class="n">cant_reach_pool</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;I can&#39;t reach the </span><span class="si">%s</span><span class="s">.&quot;</span><span class="p">,</span> <span class="s">&quot;There is no path to the </span><span class="si">%s</span><span class="s">.&quot;</span><span class="p">,</span> <span class="s">&quot;The </span><span class="si">%s</span><span class="s"> is unreachable.&quot;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">userdata</span><span class="o">.</span><span class="n">objects_data</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c"># To avoid errors the first time the check_if_remaining is called</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">def</span> <span class="nf">check_room_name</span><span class="p">(</span><span class="n">userdata</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">userdata</span><span class="o">.</span><span class="n">o_room_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">userdata</span><span class="o">.</span><span class="n">i_room_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="s">&#39;_&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">succeeded</span>
+
+            <span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;CHECK_ROOM_NAME&#39;</span><span class="p">,</span>
+                             <span class="n">CBState</span><span class="p">(</span><span class="n">check_room_name</span><span class="p">,</span>
+                                     <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;in_room_name&#39;</span><span class="p">],</span>
+                                     <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;out_room_name&#39;</span><span class="p">],</span> <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">]),</span>
+                             <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;i_room_name&#39;</span><span class="p">:</span> <span class="s">&#39;in_room_name&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;o_room_name&#39;</span><span class="p">:</span> <span class="s">&#39;in_room_name&#39;</span><span class="p">},</span>
+                             <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;CHECK_IF_OBJECTS_REMAINING&#39;</span><span class="p">})</span>
+
+            <span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;CHECK_IF_OBJECTS_REMAINING&#39;</span><span class="p">,</span> <span class="n">CheckRemaining</span><span class="p">(),</span>
+                             <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;in_obj_list&#39;</span><span class="p">:</span> <span class="s">&#39;objects_data&#39;</span><span class="p">},</span>
+                             <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;empty&#39;</span><span class="p">:</span> <span class="s">&#39;GET_NEXT_PROB_LOCATION&#39;</span><span class="p">,</span>
+                                          <span class="s">&#39;remaining&#39;</span><span class="p">:</span> <span class="s">&#39;TELL_GO_RECOGNIZE&#39;</span><span class="p">})</span>  <span class="c"># FIXME transition to &#39;CHECK_IF_OBJECT_FOUND&#39; to check it works.</span>
+
+            <span class="nd">@smach.cb_interface</span><span class="p">(</span><span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;out_location_name&#39;</span><span class="p">,</span> <span class="s">&#39;out_location_pose&#39;</span><span class="p">])</span>
+            <span class="k">def</span> <span class="nf">next_prob_location_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+                <span class="n">userdata</span><span class="o">.</span><span class="n">out_location_name</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">location</span>
+                <span class="n">userdata</span><span class="o">.</span><span class="n">out_location_pose</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">loc_position</span>
+                <span class="k">return</span> <span class="n">succeeded</span>
+
+            <span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;GET_NEXT_PROB_LOCATION&#39;</span><span class="p">,</span>
+                             <span class="n">ServiceState</span><span class="p">(</span><span class="s">&#39;get_next_probable_location&#39;</span><span class="p">,</span>
+                                          <span class="n">NextProbableLocation</span><span class="p">,</span>
+                                          <span class="n">request_slots</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;room&#39;</span><span class="p">],</span>
+                                          <span class="n">response_cb</span><span class="o">=</span><span class="n">next_prob_location_cb</span><span class="p">,</span>
+                                          <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;out_location_name&#39;</span><span class="p">,</span> <span class="s">&#39;out_location_pose&#39;</span><span class="p">],</span>
+                                          <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;room&#39;</span><span class="p">]),</span>
+                             <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;TELL_GO_RECOGNIZE&#39;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="n">aborted</span><span class="p">},</span>  <span class="c"># FIXME aborted?</span>
+                             <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;out_location_name&#39;</span><span class="p">:</span> <span class="s">&#39;out_location_inside_room_name&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;out_location_pose&#39;</span><span class="p">:</span> <span class="s">&#39;location_pose_in_map&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;room&#39;</span><span class="p">:</span> <span class="s">&#39;in_room_name&#39;</span><span class="p">})</span>
+
+            <span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;TELL_GO_RECOGNIZE&#39;</span><span class="p">,</span> <span class="n">TellGoRecognizeSM</span><span class="p">(</span><span class="n">msg_pool</span><span class="o">=</span><span class="n">going_to_pool</span><span class="p">,</span> <span class="n">arg_key</span><span class="o">=</span><span class="s">&#39;location_name&#39;</span><span class="p">),</span>
+                             <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;location_name&#39;</span><span class="p">:</span> <span class="s">&#39;out_location_inside_room_name&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;out_objects_data&#39;</span><span class="p">:</span> <span class="s">&#39;objects_data&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;in_target_object&#39;</span><span class="p">:</span> <span class="n">target_object_key</span><span class="p">,</span>
+                                        <span class="s">&#39;in_location_pose_in_map&#39;</span><span class="p">:</span> <span class="s">&#39;location_pose_in_map&#39;</span><span class="p">},</span>
+                             <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;move_failed&#39;</span><span class="p">:</span> <span class="s">&#39;TELL_CANT_REACH&#39;</span><span class="p">,</span>
+                                          <span class="s">&#39;no_object_found&#39;</span><span class="p">:</span> <span class="s">&#39;CHECK_IF_OBJECT_FOUND&#39;</span><span class="p">,</span>
+                                          <span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;CHECK_IF_OBJECT_FOUND&#39;</span><span class="p">,</span>
+                                          <span class="n">aborted</span><span class="p">:</span> <span class="n">aborted</span><span class="p">})</span>  <span class="c"># FIXME aborted should abort everything?</span>
+
+            <span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;TELL_CANT_REACH&#39;</span><span class="p">,</span> <span class="n">SpeakActionFromPoolStateMachine</span><span class="p">(</span><span class="n">cant_reach_pool</span><span class="p">,</span> <span class="n">arg_key</span><span class="o">=</span><span class="s">&#39;location_name&#39;</span><span class="p">),</span>
+                             <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;GET_NEXT_PROB_LOCATION&#39;</span><span class="p">},</span>  <span class="c"># FIXME aborted to GET_NEXT or again to the move?</span>
+                             <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;location_name&#39;</span><span class="p">:</span> <span class="s">&#39;out_location_inside_room_name&#39;</span><span class="p">})</span>
+
+            <span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;CHECK_IF_OBJECT_FOUND&#39;</span><span class="p">,</span>
+                             <span class="n">CheckObjectAndRemoveFromList</span><span class="p">(</span><span class="n">target_frame</span><span class="p">),</span>
+                             <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;out_object_found&#39;</span><span class="p">:</span> <span class="s">&#39;out_object_found&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;in_objects_data&#39;</span><span class="p">:</span> <span class="s">&#39;objects_data&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;out_objects_data&#39;</span><span class="p">:</span> <span class="s">&#39;objects_data&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;in_target_object&#39;</span><span class="p">:</span> <span class="n">target_object_key</span><span class="p">},</span>
+                             <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;PREPARE_POOL_ARGS&#39;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&#39;TELL_NO_OBJECT_FOUND&#39;</span><span class="p">})</span>
+
+            <span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;TELL_NO_OBJECT_FOUND&#39;</span><span class="p">,</span>
+                             <span class="n">SpeakActionFromPoolStateMachine</span><span class="p">(</span><span class="n">object_not_found_pool</span><span class="p">,</span> <span class="n">arg_key</span><span class="o">=</span><span class="s">&#39;location_name&#39;</span><span class="p">),</span>
+                             <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;location_name&#39;</span><span class="p">:</span> <span class="s">&#39;out_location_inside_room_name&#39;</span><span class="p">},</span>
+                             <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;GET_NEXT_PROB_LOCATION&#39;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="n">aborted</span><span class="p">})</span>
+
+            <span class="nd">@smach.cb_interface</span><span class="p">(</span><span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;in_first_object&#39;</span><span class="p">,</span> <span class="s">&#39;in_location_name&#39;</span><span class="p">],</span> <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;out_tell_arg&#39;</span><span class="p">],</span>
+                                <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">])</span>
+            <span class="k">def</span> <span class="nf">prepare_userdata</span><span class="p">(</span><span class="n">userdata</span><span class="p">):</span>
+                <span class="n">userdata</span><span class="o">.</span><span class="n">out_tell_arg</span> <span class="o">=</span> <span class="p">(</span><span class="n">userdata</span><span class="o">.</span><span class="n">in_first_object</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_location_name</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">succeeded</span>
+
+            <span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;PREPARE_POOL_ARGS&#39;</span><span class="p">,</span>
+                             <span class="n">CBState</span><span class="p">(</span><span class="n">prepare_userdata</span><span class="p">,</span>
+                                     <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;in_first_object&#39;</span><span class="p">,</span> <span class="s">&#39;in_location_name&#39;</span><span class="p">],</span>
+                                     <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;out_tell_arg&#39;</span><span class="p">],</span> <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">]),</span>
+                             <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;in_first_object&#39;</span><span class="p">:</span> <span class="s">&#39;out_object_found&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;in_location_name&#39;</span><span class="p">:</span> <span class="s">&#39;out_location_inside_room_name&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;out_tell_arg&#39;</span><span class="p">:</span> <span class="s">&#39;tell_arg&#39;</span><span class="p">},</span>
+                             <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;TELL_OBJECT_RECOGNIZED&#39;</span><span class="p">})</span>
+
+            <span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;TELL_OBJECT_RECOGNIZED&#39;</span><span class="p">,</span>
+                             <span class="n">SpeakActionFromPoolStateMachine</span><span class="p">(</span><span class="n">object_found_pool</span><span class="p">,</span> <span class="n">arg_key</span><span class="o">=</span><span class="s">&quot;tell_arg&quot;</span><span class="p">),</span>
+                             <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;tell_arg&#39;</span><span class="p">:</span> <span class="s">&#39;tell_arg&#39;</span><span class="p">},</span>
+                             <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="n">succeeded</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="n">aborted</span><span class="p">})</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_documentation/pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

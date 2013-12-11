@@ -1,0 +1,10 @@
+<launch>
+
+  <!-- Cocktail SMACH -->
+  <node pkg ="cocktail_party"
+        type="test_generico.py"
+        name="test_generico"
+        output="screen">
+  </node>
+
+</launch>

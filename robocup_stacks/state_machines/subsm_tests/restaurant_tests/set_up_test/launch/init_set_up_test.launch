@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+  
+  <!-- Restaurant SMACH -->
+  <node pkg ="set_up_test"
+        type="init_set_up_test.py"
+        name="sm_init_set_up_test"
+        output="screen">
+  </node>
+
+</launch>

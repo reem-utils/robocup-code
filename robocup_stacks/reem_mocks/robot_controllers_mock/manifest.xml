@@ -1,0 +1,17 @@
+<package>
+  <description brief="robot_controllers_mock">
+
+     robot_controllers_mock
+
+  </description>
+  <author>student</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/robot_controllers_mock</url>
+  <depend package="rospy"/>
+  <depend package="pal_srvs"/>
+
+
+</package>
+
+

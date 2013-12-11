@@ -1,0 +1,279 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>set_distance_new_location &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for set_distance_new_location</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+<span class="c"># vim: expandtab ts=4 sw=4</span>
+<span class="c">### set_distance_new_location.py ###</span>
+
+<span class="kn">import</span> <span class="nn">rospy</span>
+<span class="kn">import</span> <span class="nn">smach</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.global_common</span> <span class="kn">import</span> <span class="n">succeeded</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.math_utils</span> <span class="kn">import</span> <span class="n">normalize_vector</span><span class="p">,</span> <span class="n">vector_magnitude</span><span class="p">,</span> <span class="n">multiply_vector</span>
+
+<span class="kn">from</span> <span class="nn">geometry_msgs.msg</span> <span class="kn">import</span> <span class="n">Quaternion</span><span class="p">,</span> <span class="n">PoseStamped</span>
+<span class="kn">from</span> <span class="nn">tf.transformations</span> <span class="kn">import</span> <span class="n">quaternion_from_euler</span>
+
+<span class="c">#Times that after losing a person and going 2m from the last known location</span>
+<span class="c">#we look for candidates again. We will prefferably put a number lower than</span>
+<span class="c"># the NUMBER_TIMES_BEFORE_LOST to avoid looking too much before considering again</span>
+<span class="c">#that we have lost the track of the person again.</span>
+<span class="c">#Its loads the value from a .yalm, and if it&#39;s empty, will load the second value</span>
+<span class="n">NUMBER_TIMES_AFTER_LOST_BEFORE_LOOSING_AGAIN</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">get_param</span><span class="p">(</span><span class="s">&#39;/params_follow_me/number_times_after_lost_before_loosing_again&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Set_L50_New_Location</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                 <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">],</span> <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;FO_people_location&#39;</span><span class="p">],</span>
+                                 <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;l50_navgoal&#39;</span><span class="p">,</span> <span class="s">&#39;l50_lost_person&#39;</span><span class="p">])</span>
+
+        <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userdata</span><span class="p">):</span>
+            <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&#39;Calculating Vectors for 50cm distance ;P&#39;</span><span class="p">)</span>
+            <span class="n">distance</span> <span class="o">=</span> <span class="mf">0.5</span>
+            <span class="n">pose</span> <span class="o">=</span> <span class="n">userdata</span><span class="o">.</span><span class="n">FO_people_location</span>
+            <span class="n">unit_vector</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+
+            <span class="n">k</span> <span class="o">=</span> <span class="n">vector_magnitude</span><span class="p">(</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+            <span class="n">distance_des</span> <span class="o">=</span> <span class="n">k</span> <span class="o">-</span> <span class="n">distance</span>
+            <span class="n">dist_vector</span> <span class="o">=</span> <span class="n">multiply_vector</span><span class="p">(</span><span class="n">unit_vector</span><span class="p">,</span> <span class="n">distance_des</span><span class="p">)</span>
+
+            <span class="n">alfa</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">dist_vector</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">dist_vector</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">alfa</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span>
+                <span class="n">alfa</span> <span class="o">=</span> <span class="n">alfa</span> <span class="o">-</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+
+            <span class="n">alfa_degree</span> <span class="o">=</span> <span class="p">(</span><span class="n">alfa</span> <span class="o">*</span> <span class="mi">360</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+
+            <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&#39;$$$$$$$$$$$$$Real Distance:</span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+            <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&#39;$$$$$$$$$$$$$Desired Distance:</span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">distance_des</span><span class="p">))</span>
+            <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&#39;$$$$$$$$$$$$$ALFA ==&gt; :</span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">alfa_degree</span><span class="p">))</span>
+            <span class="n">nav_goal</span> <span class="o">=</span> <span class="n">PoseStamped</span><span class="p">()</span>
+            <span class="n">nav_goal</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+            <span class="n">nav_goal</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">&quot;/base_link&quot;</span>
+            <span class="n">nav_goal</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">dist_vector</span>
+            <span class="n">nav_goal</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span> <span class="o">=</span> <span class="n">Quaternion</span><span class="p">(</span><span class="o">*</span><span class="n">quaternion_from_euler</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">alfa</span><span class="p">))</span>
+            <span class="n">userdata</span><span class="o">.</span><span class="n">l50_navgoal</span> <span class="o">=</span> <span class="n">nav_goal</span>
+            <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&#39;This is the Nav Goal We send to REEM: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nav_goal</span><span class="p">))</span>
+            <span class="n">userdata</span><span class="o">.</span><span class="n">l50_lost_person</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="n">succeeded</span>
+
+
+<span class="k">class</span> <span class="nc">Set_L200_Old_location</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                             <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">],</span> <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;sm_FO_old_pos&#39;</span><span class="p">],</span>
+                             <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;l200_navgoal&#39;</span><span class="p">,</span> <span class="s">&#39;l200_lost_person&#39;</span><span class="p">,</span> <span class="s">&#39;l200_no_people_counter&#39;</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userdata</span><span class="p">):</span>
+
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&#39;Calculating Vectors for 200cm distance ;P&#39;</span><span class="p">)</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="mf">2.0</span>
+        <span class="n">pose</span> <span class="o">=</span> <span class="n">userdata</span><span class="o">.</span><span class="n">sm_FO_old_pos</span>
+        <span class="n">unit_vector</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+
+        <span class="n">k</span> <span class="o">=</span> <span class="n">vector_magnitude</span><span class="p">(</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+        <span class="n">distance_des</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="n">distance</span>
+        <span class="n">dist_vector</span> <span class="o">=</span> <span class="n">multiply_vector</span><span class="p">(</span><span class="n">unit_vector</span><span class="p">,</span> <span class="n">distance_des</span><span class="p">)</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&#39;$$$$$$$$$$$$$Real Distance:</span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&#39;$$$$$$$$$$$$$Desired Distance:</span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">distance_des</span><span class="p">))</span>
+        <span class="n">nav_goal</span> <span class="o">=</span> <span class="n">PoseStamped</span><span class="p">()</span>
+        <span class="n">nav_goal</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">nav_goal</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">&quot;/base_link&quot;</span>
+        <span class="n">nav_goal</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">dist_vector</span>
+        <span class="n">nav_goal</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span> <span class="o">=</span> <span class="n">Quaternion</span><span class="p">(</span><span class="o">*</span><span class="n">quaternion_from_euler</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">userdata</span><span class="o">.</span><span class="n">l200_navgoal</span> <span class="o">=</span> <span class="n">nav_goal</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&#39;This is the Nav Goal We send to REEM: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nav_goal</span><span class="p">))</span>
+        <span class="n">userdata</span><span class="o">.</span><span class="n">l200_lost_person</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">userdata</span><span class="o">.</span><span class="n">l200_no_people_counter</span> <span class="o">=</span> <span class="n">NUMBER_TIMES_AFTER_LOST_BEFORE_LOOSING_AGAIN</span>
+        <span class="k">return</span> <span class="n">succeeded</span>
+
+
+<div class="viewcode-block" id="Set_L_New_Location"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#set_distance_new_location.Set_L_New_Location">[docs]</a><span class="k">class</span> <span class="nc">Set_L_New_Location</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="p">):</span>
+
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This state does the following:</span>
+<span class="sd">        inputs --&gt;  distance: the distance you want the robots to keep between him and the person he has detected (S.I.:metres)</span>
+<span class="sd">                    we_lost_person: Boolean.    If false, it will just calculate the l_navgoal and will put the l_lost_person key to False</span>
+<span class="sd">                                                If true, it will calculate the l_navgoal and will put the l_lost_person key to True.</span>
+<span class="sd">                                                It will also evaluate the l_no_people_counter to NUMBER_TIMES_AFTER_LOST_BEFORE_LOOSING_AGAIN.</span>
+<span class="sd">                                                The new position will be L metres AWAY from the last know persons position, mainly because we</span>
+<span class="sd">                                                decided  that if we lose a person we will move a distance AHEAD to alow a new search, and prehaps find.</span>
+<span class="sd">        input_keys --&gt; &#39;FO_people_location&#39;:Type pose(). Pose where we have detected the person.</span>
+
+
+<span class="sd">        Notes:  l_no_people_counter we use it to keep track how many times we lost a person and will be used outside to select</span>
+<span class="sd">                whether we use we_lost_person = true or false.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">we_lost_person</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                             <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">],</span>
+                             <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;FO_people_location&#39;</span><span class="p">],</span>
+                             <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;l_navgoal&#39;</span><span class="p">,</span> <span class="s">&#39;l_lost_person&#39;</span><span class="p">,</span> <span class="s">&#39;l_no_people_counter&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span> <span class="o">=</span> <span class="n">distance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_we_lost_person</span> <span class="o">=</span> <span class="n">we_lost_person</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userdata</span><span class="p">):</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&#39;:: Calculating Vectors for </span><span class="si">%s</span><span class="s"> m distance ::&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_distance</span><span class="p">))</span>
+        <span class="c">#self._distance</span>
+        <span class="n">pose</span> <span class="o">=</span> <span class="n">userdata</span><span class="o">.</span><span class="n">FO_people_location</span>
+        <span class="n">unit_vector</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;pose.position is:</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="p">))</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;unit_vector is:</span><span class="se">\n</span><span class="s"> &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">unit_vector</span><span class="p">))</span>
+
+        <span class="n">k</span> <span class="o">=</span> <span class="n">vector_magnitude</span><span class="p">(</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;Magnitude of vector from Reem to person ==&gt; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_we_lost_person</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            If person is closer than the distance given, we wont move but we might rotate.</span>
+<span class="sd">            We want that if the person comes closer, the robot stays in the place.</span>
+<span class="sd">            Thats why we make desired distance zero if person too close.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span><span class="p">:</span>
+                <span class="n">distance_des</span> <span class="o">=</span> <span class="n">k</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">distance_des</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">distance_des</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span>
+
+        <span class="n">dist_vector</span> <span class="o">=</span> <span class="n">multiply_vector</span><span class="p">(</span><span class="n">unit_vector</span><span class="p">,</span> <span class="n">distance_des</span><span class="p">)</span>
+
+        <span class="n">alfa</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        We only calculate the turning if there is no base movement</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">distance_des</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">alfa</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;ALFA is: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">alfa</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; in degrees: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">alfa</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="n">alfa</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span>
+                <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;PERSON DETECTED BEHIND REEM, IMPOSSIBLE: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">alfa</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; in degrees: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">alfa</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;We will move so we WONT TURN, DESIRED_DISTANCE is &gt; 0  ==&gt; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">distance_des</span><span class="p">))</span>
+
+        <span class="n">alfa_degree</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">alfa</span><span class="p">)</span>
+
+        <span class="k">print</span> <span class="s">&quot;/********************************************/&quot;</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&#39;Distance from PERSON:</span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&#39;Person and REEM WANTED distance:</span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_distance</span><span class="p">))</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&#39;Distance that Reem will MOVE:</span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">distance_des</span><span class="p">))</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&#39;Degrees that Reem will TURN ==&gt; :</span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">alfa_degree</span><span class="p">))</span>
+        <span class="k">print</span> <span class="s">&quot;/********************************************/&quot;</span>
+
+        <span class="n">nav_goal</span> <span class="o">=</span> <span class="n">PoseStamped</span><span class="p">()</span>
+        <span class="n">nav_goal</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">nav_goal</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">&quot;/base_link&quot;</span>
+        <span class="n">nav_goal</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">dist_vector</span>
+        <span class="n">nav_goal</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span> <span class="o">=</span> <span class="n">Quaternion</span><span class="p">(</span><span class="o">*</span><span class="n">quaternion_from_euler</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">alfa</span><span class="p">))</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&#39;ALFA AND ORIENTATION ==&gt; :</span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">alfa_degree</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">nav_goal</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span><span class="p">))</span>
+        <span class="n">userdata</span><span class="o">.</span><span class="n">l_navgoal</span> <span class="o">=</span> <span class="n">nav_goal</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&#39;This is the Nav Goal We send to REEM: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nav_goal</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_we_lost_person</span><span class="p">:</span>
+            <span class="n">userdata</span><span class="o">.</span><span class="n">l_lost_person</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">userdata</span><span class="o">.</span><span class="n">l_lost_person</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">userdata</span><span class="o">.</span><span class="n">l_no_people_counter</span> <span class="o">=</span> <span class="n">NUMBER_TIMES_AFTER_LOST_BEFORE_LOOSING_AGAIN</span>
+
+        <span class="k">return</span> <span class="n">succeeded</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_documentation/pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

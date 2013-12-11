@@ -1,0 +1,249 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>cocktail_party_variables &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for cocktail_party_variables</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+<span class="c"># -.- coding: utf-8 -.-</span>
+<span class="kn">from</span> <span class="nn">roslib</span> <span class="kn">import</span> <span class="n">packages</span>
+<span class="kn">from</span> <span class="nn">rospy</span> <span class="kn">import</span> <span class="n">logwarn</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.colors</span> <span class="kn">import</span> <span class="n">Colors</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+
+<span class="n">CONFIG_FILE</span> <span class="o">=</span> <span class="n">packages</span><span class="o">.</span><span class="n">get_pkg_dir</span><span class="p">(</span><span class="s">&#39;cocktail_party&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;/config/cocktail_party.yaml&#39;</span>
+<span class="n">CONFIG</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">CONFIG_FILE</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">))</span>
+
+<span class="n">ROBOT_GRAMMAR_PATH</span> <span class="o">=</span> <span class="s">&quot;/mnt_flash/etc/interaction/sphinx/model/gram/en_US/&quot;</span>
+<span class="n">LOCAL_GRAMMAR_PATH</span> <span class="o">=</span> <span class="n">packages</span><span class="o">.</span><span class="n">get_pkg_dir</span><span class="p">(</span><span class="s">&#39;cocktail_party&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;/config/&quot;</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="n">Colors</span><span class="p">()</span>
+
+<div class="viewcode-block" id="CocktailPartyVariables"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#cocktail_party_variables.CocktailPartyVariables">[docs]</a><span class="k">class</span> <span class="nc">CocktailPartyVariables</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;CocktailPartyVariables class.</span>
+
+<span class="sd">    Use this class to get all variables required by the CocktailPartyStateMachine.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">print_variables</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor for CocktailPartyVariables.</span>
+
+<span class="sd">        @type print_variables: boolean</span>
+<span class="sd">        @param print_variables: If is not False, 0 or None, all the variables of this class and its values will be printed.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_variables</span> <span class="o">=</span> <span class="n">print_variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TOPICS</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SERVICES</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ACTIONS</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">MAP_LOCATIONS</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__set_variables</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__set_topics</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__set_services</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__set_actions</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__set_map_locations</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__print_variables</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__extract_from_gram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grammar_name</span><span class="p">,</span> <span class="n">first_sep</span><span class="p">,</span> <span class="n">second_sep</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Extract from a grammar file the values between first_sep and second_sep separators</span>
+<span class="sd">        First will try load the grammar files from the robot, if fails, will load from cocktail_party/config/</span>
+<span class="sd">        @type grammar_name: string</span>
+<span class="sd">        @param grammar_name: The grammar name, example: &#39;robocup/drinks&#39;</span>
+
+<span class="sd">        @type first_sep: string</span>
+<span class="sd">        @param first_sep: The first separator where starts the names that you want extract, example: &#39;&lt;objects&gt; =&#39;</span>
+
+<span class="sd">        @type second_sep: string</span>
+<span class="sd">        @param second_sep: The second separator, is where ends the names to extract, example: &#39;;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ROBOT_GRAMMAR</span> <span class="o">=</span> <span class="n">ROBOT_GRAMMAR_PATH</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">grammar_name</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.gram&quot;</span>
+        <span class="n">LOCAL_GRAMMAR</span> <span class="o">=</span> <span class="n">LOCAL_GRAMMAR_PATH</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">grammar_name</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.gram&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">FILE</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">ROBOT_GRAMMAR</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logwarn</span><span class="p">(</span><span class="n">colors</span><span class="o">.</span><span class="n">RED</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="n">colors</span><span class="o">.</span><span class="n">NATIVE_COLOR</span> <span class="o">+</span>
+                <span class="n">colors</span><span class="o">.</span><span class="n">YELLOW</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">Loading &#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span> <span class="o">%</span> <span class="n">LOCAL_GRAMMAR</span> <span class="o">+</span> <span class="n">colors</span><span class="o">.</span><span class="n">NATIVE_COLOR</span><span class="p">)</span>
+            <span class="n">FILE</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">LOCAL_GRAMMAR</span><span class="p">)</span>
+
+        <span class="n">file_content</span> <span class="o">=</span> <span class="n">FILE</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">file_content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">first_sep</span><span class="p">))[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">real_values</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">second_sep</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">no_spaces</span> <span class="o">=</span> <span class="n">real_values</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">values_list</span> <span class="o">=</span> <span class="n">no_spaces</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;|&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">values_list</span>
+
+    <span class="k">def</span> <span class="nf">__load_person_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PERSONS_NAME</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__extract_from_gram</span><span class="p">(</span><span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;people_grammar_name&#39;</span><span class="p">],</span> <span class="s">&#39;&lt;nameshort&gt; =&#39;</span><span class="p">,</span> <span class="s">&#39;;&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__load_drink_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Drinks that REEM can recognize AND are allowed at the competition.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ALLOWED_DRINKS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__extract_from_gram</span><span class="p">(</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;drinks_grammar_name&#39;</span><span class="p">],</span> <span class="s">&#39;&lt;objects&gt; =&#39;</span><span class="p">,</span> <span class="s">&#39;;&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__load_drink_names</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__load_person_names</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">DOOR_DISTANCE</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;door_distance&#39;</span><span class="p">]</span>  <span class="c"># CocktailPartyStateMachine. meters</span>
+        <span class="c">#self.RECOGNIZE_CALLER_TIMEOUT = CONFIG[&#39;recognize_caller_timeout&#39;)  # seconds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">NUMBER_PERSONS</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;number_persons&#39;</span><span class="p">]</span>  <span class="c"># TakeSeveralDrinkOrdersStateMachine, ServeOrdersStateMachine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">DRINKS_GRAMMAR_NAME</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;drinks_grammar_name&#39;</span><span class="p">]</span>  <span class="c"># TakeSeveralDrinkOrdersStateMachine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PEOPLE_GRAMMAR_NAME</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;people_grammar_name&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TAKE_SINGLE_ORDER_TIMEOUT</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;take_single_order_timeout&#39;</span><span class="p">]</span>  <span class="c"># TakeSeveralDrinkOrdersStateMachine. seconds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ROTATE_LEFT</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;rotation_left&#39;</span><span class="p">]</span>  <span class="c"># TakeSeveralDrinkOrdersStateMachine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ALL_AT_A_TIME</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;all_at_a_time&#39;</span><span class="p">]</span>  <span class="c"># CocktailPartyStateMachine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SLEEP_MOVE_CALLER</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;sleep_move_caller&#39;</span><span class="p">]</span>  <span class="c"># TakeSeveralDrinkOrdersStateMachine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ASK_TO_COME</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;ask_to_come&#39;</span><span class="p">]</span>
+
+        <span class="c">#topics T_*</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">T_USERSAID</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;topic_usersaid&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">T_RECOGNIZED_GESTURES</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;topic_recognized_gestures&#39;</span><span class="p">]</span>
+
+        <span class="c">#actions A_*</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A_MOVE_BASE</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;action_move_base&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A_MOVE_BY</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;action_move_by&#39;</span><span class="p">]</span>  <span class="c"># EnterRoomStateMachine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A_SOUND</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;action_sound&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A_FACE_RECOGNITION</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;action_face_recognition&#39;</span><span class="p">]</span>  <span class="c"># LearnFaceStateMachine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A_HEAD_CONTROLLER</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;action_head_controller&#39;</span><span class="p">]</span>
+
+        <span class="c">#services S_*</span>
+
+        <span class="c">#map_locations M_*</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">M_ROOM_DRINKS</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;room_drinks&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">M_EXIT</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;exit&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">M_PARTY_ROOM</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s">&#39;party_room&#39;</span><span class="p">]</span>  <span class="c"># CocktailPartyStateMachine. Where the people are</span>
+
+    <span class="k">def</span> <span class="nf">__set_topics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">variable_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;T_&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">TOPICS</span> <span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TOPICS</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">variable_name</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">__set_services</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">variable_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;S_&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">SERVICES</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SERVICES</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">variable_name</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">__set_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">variable_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;A_&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ACTIONS</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ACTIONS</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">variable_name</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">__set_map_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">variable_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;M_&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">MAP_LOCATIONS</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MAP_LOCATIONS</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">variable_name</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">__print_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">print_variables</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">variables_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="n">variables_name</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="s">&#39;- &#39;</span> <span class="o">*</span> <span class="mi">10</span>
+        <span class="k">print</span> <span class="n">colors</span><span class="o">.</span><span class="n">BACKGROUND_GREEN</span> <span class="o">+</span> <span class="n">_</span> <span class="o">+</span> <span class="s">&quot; COCKTAIL_PARTY VARIABLES &quot;</span> <span class="o">+</span> <span class="n">_</span> <span class="o">+</span> <span class="n">colors</span><span class="o">.</span><span class="n">NATIVE_COLOR</span>
+        <span class="k">print</span>
+        <span class="k">for</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="n">variables_name</span><span class="p">:</span>
+            <span class="k">print</span> <span class="n">colors</span><span class="o">.</span><span class="n">GREEN_BOLD</span> <span class="o">+</span> <span class="s">&quot;</span><span class="si">%-25s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">variable_name</span> <span class="o">+</span> <span class="s">&quot;: </span><span class="si">%s%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">colors</span><span class="o">.</span><span class="n">GREEN</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">variable_name</span><span class="p">])</span>
+        <span class="k">print</span> <span class="n">colors</span><span class="o">.</span><span class="n">NATIVE_COLOR</span>
+
+</div>
+<span class="n">cocktail_party_variables</span>  <span class="o">=</span> <span class="n">CocktailPartyVariables</span><span class="p">(</span><span class="n">print_variables</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">cocktail_party_variables</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_documentation/pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

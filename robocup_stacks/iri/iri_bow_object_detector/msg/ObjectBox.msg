@@ -1,0 +1,3 @@
+iri_perception_msgs/ImagePoint point1
+iri_perception_msgs/ImagePoint point2
+float32 value

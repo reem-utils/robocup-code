@@ -1,0 +1,22 @@
+<package>
+  <description brief="find_closest_person">
+
+     find_closest_person
+
+  </description>
+  <author>Gerard Canal</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/find_closest_person</url>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros" />
+  <depend package="iri_perception_msgs" />
+  <depend package="move_base" />
+  <depend package="move_base_msgs" />
+  <depend package="pal_smach_utils"/>
+  <depend package="text_to_speech" />
+  <depend package="face_recognition" />
+  <depend package="tf" />
+  <depend package="geometry_msgs" />
+</package>

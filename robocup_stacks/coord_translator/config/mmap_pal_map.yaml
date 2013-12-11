@@ -1,0 +1,17 @@
+poi:
+  submap_0:
+    poi_1: [submap_0, kitchen, 9.67, -3.91, -3.1415927410125732]
+    poi_2: [submap_0, charger, -0.11, 0.38, 0.0]
+    poi_3: [submap_0, software, -2.81, -1.54, 0.0]
+    poi_4: [submap_0, business, -0.47, -9.30, 0.0]
+    poi_5: [submap_0, exit, -0.749, -9.969, -1.665]
+    poi_6: [submap_0, registration table, 4.979, -0.693, 1.546]
+    poi_7: [submap_0, burrito_total, 1.32, 2.32, 1.0]
+    poi_8: [submap_0, table_7, 5.32, 4.32, 1.2]
+    poi_9: [submap_0, apple, 1.2, 4.3, 2.0]
+    poi_10: [submap_0, table_1, 0.5, 2.0, 1.2]
+    poi_11: [submap_0, people, -2.81, -1.54, 0.0]
+    poi_12: [submap_0, pringels, 2.81, 1.54, 0.0]
+    poi_13: [submap_0, food, 2.81, 1.54, 0.0]
+    poi_14: [submap_0, drinks, 2.81, -1.54, 0.0]
+

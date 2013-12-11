@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<launch>
+
+
+  <!-- follow_operator_test SMACH -->
+  <node pkg ="modify_next_movement_speed_test"
+        type="modify_next_movement_speed_test.py"
+        name="modify_next_movement_speed_test"
+        output="screen">
+  </node>
+
+</launch>

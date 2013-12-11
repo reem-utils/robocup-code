@@ -1,0 +1,39 @@
+<robot name="robocup_house">
+  <link name="robocup_house">
+
+    <inertial>
+      <!-- center of mass (com) is defined w.r.t. link local coordinate system -->
+      <origin xyz="0 0 0" />
+      <mass value="1000"/>
+	  <inertia ixx="9.9999999999999995e-07"  ixy="0"  ixz="0" iyy="9.9999999999999995e-07" iyz="0" izz="9.9999999999999995e-07" />
+    </inertial>
+    
+    <visual>
+      <!-- visual origin is defined w.r.t. link local coordinate system -->
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robocup_worlds/Media/models/robocup_house.stl" scale="1 1 1"/>
+      </geometry>
+    </visual>
+
+    <collision>
+      <!-- collision origin is defined w.r.t. link local coordinate system -->
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robocup_worlds/Media/models/robocup_house.stl" scale="1 1 1"/>
+      </geometry>
+    </collision>
+
+  </link>
+
+  <gazebo reference="robocup_house">
+    <material>Custom/wall</material>
+    <static>true</static>
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+
+  <gazebo>
+    <static>true</static>
+  </gazebo>
+
+</robot>

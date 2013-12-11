@@ -1,0 +1,44 @@
+<!-- -->
+<launch>
+
+  <!-- Start the core NOT REQUIRED BECAUSE GAZEBO STARTS A CORE
+  <master auto="start"/> -->
+
+  <!-- Run the Gazebo simulation -->
+
+  <!-- start up willow garage world. Write the name of the png file that defines the world inside the simulated.world file -->
+  <!-- <include file="$(find robocup_worlds)/launch/robocup_house_fuerte3.launch"/> -->
+
+  <!-- start REEM_H2 robot -->
+  <!-- <include file="$(find robocup_worlds)/launch/inside_house.launch"/> -->
+
+  <!-- Run the map server. Write the path to your map in the args param  -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find robocup_worlds)/navigation/subMap1.pgm 0.05"/> 
+
+  <!--- Run AMCL localiztion  --> 
+  <include file="$(find rh2_ros_nav)/rh2_amcl_diff.launch" />
+
+  <!-- Run the path planner --> 
+<!--   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find rh2_ros_nav)/move_base/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find rh2_ros_nav)/move_base/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find rh2_ros_nav)/move_base/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find rh2_ros_nav)/move_base/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find rh2_ros_nav)/move_base/base_local_planner_params.yaml" command="load" />
+  </node> -->
+
+<!--   <node pkg="move_by" type="move_by" respawn="false" name="move_by" output="screen">
+    <arg name="odom_topic" value="/base_odometry/odom"/>
+    <arg name="cmd_topic" value="/cmd_vel" />
+  </node> -->
+
+  <include file="$(find move_by)/launch/move_by.launch" >
+    <arg name="odom_topic" value="/base_odometry/odom"/>
+    <arg name="cmd_topic" value="/cmd_vel" />
+  </include>
+
+
+  <include file="$(find reem_gazebo)/launch/laser.launch" />
+
+</launch>
+

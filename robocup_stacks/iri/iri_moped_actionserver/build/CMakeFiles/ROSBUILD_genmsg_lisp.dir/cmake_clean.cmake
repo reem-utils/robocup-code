@@ -1,0 +1,39 @@
+FILE(REMOVE_RECURSE
+  "../src/iri_moped_actionserver/msg"
+  "../msg_gen"
+  "../msg_gen"
+  "CMakeFiles/ROSBUILD_genmsg_lisp"
+  "../msg_gen/lisp/mopedAction.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_mopedAction.lisp"
+  "../msg_gen/lisp/mopedGoal.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_mopedGoal.lisp"
+  "../msg_gen/lisp/mopedActionGoal.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_mopedActionGoal.lisp"
+  "../msg_gen/lisp/mopedResult.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_mopedResult.lisp"
+  "../msg_gen/lisp/mopedActionResult.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_mopedActionResult.lisp"
+  "../msg_gen/lisp/mopedFeedback.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_mopedFeedback.lisp"
+  "../msg_gen/lisp/mopedActionFeedback.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_mopedActionFeedback.lisp"
+  "../msg/mopedAction.msg"
+  "../msg/mopedGoal.msg"
+  "../msg/mopedActionGoal.msg"
+  "../msg/mopedResult.msg"
+  "../msg/mopedActionResult.msg"
+  "../msg/mopedFeedback.msg"
+  "../msg/mopedActionFeedback.msg"
+)
+
+# Per-language clean rules from dependency scanning.
+FOREACH(lang)
+  INCLUDE(CMakeFiles/ROSBUILD_genmsg_lisp.dir/cmake_clean_${lang}.cmake OPTIONAL)
+ENDFOREACH(lang)

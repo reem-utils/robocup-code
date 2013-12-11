@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<launch>
+	<node 
+	  pkg='close_hand_mock' type='close_hand_mock.py'
+	  name='close_hand_mock' />
+
+</launch>

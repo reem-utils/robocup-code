@@ -1,0 +1,9 @@
+int16 id
+bool HoldOnStall
+bool WaitForStart
+pr_msgs/Joints start_position
+pr_msgs/Joints end_position
+pr_msgs/Joints max_joint_vel
+pr_msgs/Joints max_joint_accel
+pr_msgs/WAMPrecomputedBlendElement[] macpieces
+float64 traj_duration

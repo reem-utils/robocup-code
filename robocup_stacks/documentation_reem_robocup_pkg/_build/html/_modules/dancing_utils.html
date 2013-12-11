@@ -1,0 +1,210 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>dancing_utils &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for dancing_utils</h1><div class="highlight"><pre>
+<span class="c"># -*- encoding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">roslib</span><span class="p">;</span> <span class="n">roslib</span><span class="o">.</span><span class="n">load_manifest</span><span class="p">(</span><span class="s">&#39;dancing_reem&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">os.path</span>
+<span class="kn">from</span> <span class="nn">roslib</span> <span class="kn">import</span> <span class="n">packages</span>
+
+<span class="c"># Word that identifies transition movements</span>
+<span class="n">TRANSITIONS_IDENTIFIER</span> <span class="o">=</span> <span class="s">&quot;transition&quot;</span>
+
+<span class="n">CURRENT_UPDATE_POS</span> <span class="o">=</span> <span class="s">&#39;middle&#39;</span>
+<span class="n">PREV_CURRENT_UPDATE_POS</span> <span class="o">=</span> <span class="s">&#39;middle&#39;</span>
+
+<span class="n">LINKING_STRING</span> <span class="o">=</span> <span class="s">&#39;_&#39;</span>
+
+<span class="n">PACKAGE_WHERE_TO_FIND_DANCING_MOVEMENTS</span> <span class="o">=</span> <span class="s">&#39;dancing_reem&#39;</span>
+<span class="n">DANCING_DATABASE_DIR</span> <span class="o">=</span> <span class="s">&#39;dancing_movements_database&#39;</span>
+
+<span class="n">DANCING_REEM_PKG</span> <span class="o">=</span> <span class="s">&#39;dancing_reem&#39;</span>
+<span class="n">NAME_MOVEMENTS_LIBRARY_DIR</span> <span class="o">=</span> <span class="s">&#39;dancing_movements_database&#39;</span>
+
+
+<span class="c"># FIXME, it seems taht this is obsolete now</span>
+<div class="viewcode-block" id="GetMovementDatabase"><a class="viewcode-back" href="../pkg_documentation/dancing_reem/dancing_reem_doc.html#dancing_utils.GetMovementDatabase">[docs]</a><span class="k">def</span> <span class="nf">GetMovementDatabase</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    It gets al the movements in the Database of tancing Reem and returns a dictionary with all the</span>
+<span class="sd">    structure.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">None</span>
+
+</div>
+<div class="viewcode-block" id="NameIsAStep"><a class="viewcode-back" href="../pkg_documentation/dancing_reem/dancing_reem_doc.html#dancing_utils.NameIsAStep">[docs]</a><span class="k">def</span> <span class="nf">NameIsAStep</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function returns true if the name given corresponds to a Step Name.</span>
+<span class="sd">    False if it is a transition.</span>
+<span class="sd">    The movement name format will be : name.xml</span>
+<span class="sd">    The Steps will have any kind of name except starting with &quot;transition&quot;.</span>
+<span class="sd">    The transitions will have &quot;transition_from_front_to_up.xml&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="ow">not</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">TRANSITIONS_IDENTIFIER</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="NumberOfTransitions"><a class="viewcode-back" href="../pkg_documentation/dancing_reem/dancing_reem_doc.html#dancing_utils.NumberOfTransitions">[docs]</a><span class="k">def</span> <span class="nf">NumberOfTransitions</span><span class="p">(</span><span class="n">database_dict</span><span class="p">,</span> <span class="n">current_pos</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gives the number os transitions in the current pos.</span>
+<span class="sd">    Raises an assertion in case there are no transitions. This is because all</span>
+<span class="sd">    the positions have to be linked by a minimum of ONE transition.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sub_database_list_transitions</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">TRANSITIONS_IDENTIFIER</span><span class="p">),</span> <span class="n">database_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">current_pos</span><span class="p">))</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sub_database_list_transitions</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">),</span> <span class="s">&quot;There are NO Transitions in this position. Its a DEAD END&quot;</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">sub_database_list_transitions</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="UpdatePosition"><a class="viewcode-back" href="../pkg_documentation/dancing_reem/dancing_reem_doc.html#dancing_utils.UpdatePosition">[docs]</a><span class="k">def</span> <span class="nf">UpdatePosition</span><span class="p">(</span><span class="n">movement_name</span><span class="p">,</span> <span class="n">current_position</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extracts from the movement name the position where it goes</span>
+<span class="sd">    and from where it comes from. It can be a Step or a transition.</span>
+<span class="sd">    If its a transition, the origin and destination are extracted from the name.</span>
+<span class="sd">    If it is a Step, the position will be the same, therefore thats why we need</span>
+<span class="sd">    as input the current position.</span>
+<span class="sd">    The transitions will have &quot;transition_from_name_of_pos_to_name_of_pos.xml&quot; this structure.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">print</span> <span class="s">&quot;THE MOVEMENT IS ===&gt; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">movement_name</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">NameIsAStep</span><span class="p">(</span><span class="n">movement_name</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&quot;Movement is a STEP&quot;</span>
+        <span class="k">print</span> <span class="s">&quot;NEW PREVIOUS POS == &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_position</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s">&quot;NEW CURRENT POS == &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_position</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">current_position</span><span class="p">,</span> <span class="n">current_position</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;Movement is a TRANSITION&quot;</span>
+        <span class="c"># Now we now that the movement_name is from a transition.</span>
+        <span class="c"># We stripout the .xml extension from the name.</span>
+        <span class="n">mov_name_without_xml</span> <span class="o">=</span> <span class="n">movement_name</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c"># We make a list of all the words separated by &#39;_&#39;.</span>
+        <span class="n">movement_name_word_list</span> <span class="o">=</span> <span class="n">mov_name_without_xml</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s">&#39;_&#39;</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s">&quot;MOVEMENT NAME WORD LIST == &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">movement_name_word_list</span><span class="p">)</span>
+        <span class="c"># We obtain the index in the list where we first find the words &#39;from&#39; and &#39;to&#39;.</span>
+        <span class="n">from_index</span> <span class="o">=</span> <span class="n">movement_name_word_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;from&#39;</span><span class="p">)</span>
+        <span class="n">to_index</span> <span class="o">=</span> <span class="n">movement_name_word_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;to&#39;</span><span class="p">)</span>
+        <span class="c"># We then extract the info of the prev pos which is in between the &#39;from&#39; and &#39;to&#39; words.</span>
+        <span class="n">new_previous_pos</span> <span class="o">=</span> <span class="n">LINKING_STRING</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">movement_name_word_list</span><span class="p">[</span><span class="n">from_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">to_index</span><span class="p">])</span>
+        <span class="c"># And we extract the destination pos that is after the &#39;to&#39; word.</span>
+        <span class="n">new_current_pos</span> <span class="o">=</span> <span class="n">LINKING_STRING</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">movement_name_word_list</span><span class="p">[</span><span class="n">to_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:])</span>
+        <span class="k">print</span> <span class="s">&quot;NEW PREVIOUS POS == &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">new_previous_pos</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s">&quot;NEW CURRENT POS == &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">new_current_pos</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_current_pos</span><span class="p">,</span> <span class="n">new_previous_pos</span>
+
+</div>
+<div class="viewcode-block" id="MoveNameToPath"><a class="viewcode-back" href="../pkg_documentation/dancing_reem/dancing_reem_doc.html#dancing_utils.MoveNameToPath">[docs]</a><span class="k">def</span> <span class="nf">MoveNameToPath</span><span class="p">(</span><span class="n">movement_name</span><span class="p">,</span> <span class="n">current_pos</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a movement name it returns the absolute path to that file.</span>
+<span class="sd">    In Case it doesn&#39;t exist, it will raise an assertion.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">base_package_path</span> <span class="o">=</span> <span class="n">packages</span><span class="o">.</span><span class="n">get_pkg_dir</span><span class="p">(</span><span class="n">PACKAGE_WHERE_TO_FIND_DANCING_MOVEMENTS</span><span class="p">)</span>
+    <span class="n">aux_database_dir_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_package_path</span><span class="p">,</span> <span class="n">DANCING_DATABASE_DIR</span><span class="p">)</span>
+    <span class="n">aux_area_dir_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">aux_database_dir_path</span><span class="p">,</span> <span class="n">current_pos</span><span class="p">)</span>
+    <span class="n">absolute_path_mov_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">aux_area_dir_path</span><span class="p">,</span> <span class="n">movement_name</span><span class="p">)</span>
+    <span class="k">print</span> <span class="nb">str</span><span class="p">(</span><span class="n">absolute_path_mov_name</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">absolute_path_mov_name</span><span class="p">)),</span> <span class="s">&quot;The path to the movement file doesn&#39;t exist&quot;</span>
+    <span class="k">return</span> <span class="n">absolute_path_mov_name</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_documentation/pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

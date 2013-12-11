@@ -1,0 +1,6 @@
+\subsubsection usage Usage
+\verbatim
+<node name="AsMoveBaseAlgorithm" pkg="as_move_base" type="AsMoveBaseAlgorithm">
+</node>
+\endverbatim
+

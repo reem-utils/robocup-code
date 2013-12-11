@@ -1,0 +1,211 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>st_reem_hand &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for st_reem_hand</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+
+<span class="kn">import</span> <span class="nn">roslib</span><span class="p">;</span> <span class="n">roslib</span><span class="o">.</span><span class="n">load_manifest</span><span class="p">(</span><span class="s">&#39;pal_smach_utils&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">rospy</span>
+<span class="kn">import</span> <span class="nn">smach</span>
+<span class="kn">import</span> <span class="nn">smach_ros</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">smach_ros</span> <span class="kn">import</span> <span class="n">SimpleActionState</span>
+<span class="kn">from</span> <span class="nn">actionlib_msgs.msg</span> <span class="kn">import</span> <span class="n">GoalStatus</span>
+
+<span class="c"># Action msgs</span>
+<span class="kn">from</span> <span class="nn">control_msgs.msg</span> <span class="kn">import</span> <span class="n">FollowJointTrajectoryAction</span><span class="p">,</span> <span class="n">FollowJointTrajectoryGoal</span>
+<span class="kn">from</span> <span class="nn">trajectory_msgs.msg</span> <span class="kn">import</span> <span class="n">JointTrajectoryPoint</span><span class="p">,</span> <span class="n">JointTrajectory</span>
+
+
+<span class="k">def</span> <span class="nf">grasp_hand_result_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="n">GoalStatus</span><span class="o">.</span><span class="n">SUCCEEDED</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&#39;succeeded&#39;</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c"># TODO: See if this is important, Hilario says maybe it&#39;s a problem of gazebo</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;Other than succeeded: result of right_hand_controller ( GOAL_TOLERANCE_VIOLATED=-5 ): &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">error_code</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">error_code</span> <span class="o">!=</span> <span class="n">result</span><span class="o">.</span><span class="n">GOAL_TOLERANCE_VIOLATED</span> <span class="ow">or</span> <span class="n">result</span><span class="o">.</span><span class="n">error_code</span> <span class="o">!=</span> <span class="n">result</span><span class="o">.</span><span class="n">PATH_TOLERANCE_VIOLATED</span><span class="p">:</span>
+            <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;Continuing even with this error as it&#39;s not really aborted...&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s">&#39;succeeded&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;aborted&#39;</span>
+
+<span class="k">def</span> <span class="nf">get_hand_goal</span><span class="p">(</span><span class="n">goal_positions</span><span class="p">):</span>
+    <span class="n">grasp_msg</span> <span class="o">=</span> <span class="n">FollowJointTrajectoryGoal</span><span class="p">()</span>
+
+    <span class="n">point1</span> <span class="o">=</span> <span class="n">JointTrajectoryPoint</span><span class="p">(</span>
+        <span class="n">positions</span><span class="o">=</span><span class="n">goal_positions</span><span class="p">,</span>
+        <span class="n">velocities</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
+        <span class="n">time_from_start</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Duration</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="n">grasp_msg</span><span class="o">.</span><span class="n">trajectory</span> <span class="o">=</span> <span class="n">JointTrajectory</span><span class="p">(</span>
+        <span class="n">joint_names</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;hand_right_thumb_joint&#39;</span><span class="p">,</span> <span class="s">&#39;hand_right_index_1_joint&#39;</span><span class="p">,</span> <span class="s">&#39;hand_right_middle_1_joint&#39;</span><span class="p">],</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">point1</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">grasp_msg</span>
+
+
+
+<span class="c">#*********</span>
+<span class="c"># open hand</span>
+<span class="k">def</span> <span class="nf">get_open_positions</span><span class="p">():</span>
+    <span class="c">#positions=[1.0, 0.2, 0.2]  # cant close too much or the object to grasp flies away</span>
+    <span class="n">positions</span><span class="o">=</span><span class="p">[</span><span class="mf">1.6</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">positions</span>
+
+
+<span class="k">def</span> <span class="nf">grasp_open_hand_goal_cb2</span><span class="p">(</span><span class="n">userdata</span><span class="p">,</span> <span class="n">old_goal</span><span class="p">):</span>
+    <span class="n">hand_goal</span> <span class="o">=</span> <span class="n">get_hand_goal</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;Sending hand goal:</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">hand_goal</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">hand_goal</span>
+
+
+<span class="k">def</span> <span class="nf">grasp_open_hand_goal_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">,</span> <span class="n">old_goal</span><span class="p">):</span>
+    <span class="n">hand_goal</span> <span class="o">=</span> <span class="n">get_hand_goal</span><span class="p">(</span><span class="n">get_open_positions</span><span class="p">())</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;Sending hand goal:</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">hand_goal</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">hand_goal</span>
+
+<div class="viewcode-block" id="OpenReemHand"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#st_reem_hand.OpenReemHand">[docs]</a><span class="k">class</span> <span class="nc">OpenReemHand</span><span class="p">(</span><span class="n">SimpleActionState</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Custom smach for openning REEM hand</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">follow_joint_trajectory_topic</span> <span class="o">=</span> <span class="s">&#39;/right_hand_controller/follow_joint_trajectory&#39;</span><span class="p">):</span>
+        <span class="n">SimpleActionState</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">follow_joint_trajectory_topic</span><span class="p">,</span>
+                                    <span class="n">FollowJointTrajectoryAction</span><span class="p">,</span>
+                                    <span class="n">goal_cb</span><span class="o">=</span><span class="n">grasp_open_hand_goal_cb</span><span class="p">,</span>
+                                    <span class="n">result_cb</span><span class="o">=</span><span class="n">grasp_hand_result_cb</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="OpenReemHand2"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#st_reem_hand.OpenReemHand2">[docs]</a><span class="k">class</span> <span class="nc">OpenReemHand2</span><span class="p">(</span><span class="n">SimpleActionState</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Custom smach for openning REEM hand</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">follow_joint_trajectory_topic</span> <span class="o">=</span> <span class="s">&#39;/right_hand_controller/follow_joint_trajectory&#39;</span><span class="p">):</span>
+        <span class="n">SimpleActionState</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">follow_joint_trajectory_topic</span><span class="p">,</span>
+                                    <span class="n">FollowJointTrajectoryAction</span><span class="p">,</span>
+                                    <span class="n">goal_cb</span><span class="o">=</span><span class="n">grasp_open_hand_goal_cb2</span><span class="p">,</span>
+                                    <span class="n">result_cb</span><span class="o">=</span><span class="n">grasp_hand_result_cb</span><span class="p">)</span>
+
+
+
+<span class="c">#*********</span>
+<span class="c"># close hand</span></div>
+<span class="k">def</span> <span class="nf">get_close_positions</span><span class="p">():</span>
+    <span class="c">#positions=[1.0, 0.2, 0.2]  # cant close too much or the object to grasp flies away</span>
+    <span class="c">#positions=[1.6,1.57,1.57]</span>
+    <span class="n">positions</span><span class="o">=</span><span class="p">[</span><span class="mf">1.6</span><span class="p">,</span><span class="mf">2.8</span><span class="p">,</span><span class="mf">2.8</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">positions</span>
+
+<span class="k">def</span> <span class="nf">grasp_close_hand_goal_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">,</span> <span class="n">old_goal</span><span class="p">):</span>
+    <span class="n">hand_goal</span> <span class="o">=</span> <span class="n">get_hand_goal</span><span class="p">(</span><span class="n">get_close_positions</span><span class="p">())</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;Sending hand goal:</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">hand_goal</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">hand_goal</span>
+
+<div class="viewcode-block" id="CloseReemHand"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#st_reem_hand.CloseReemHand">[docs]</a><span class="k">class</span> <span class="nc">CloseReemHand</span><span class="p">(</span><span class="n">SimpleActionState</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Custom smach for closing REEM hand</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">follow_joint_trajectory_topic</span> <span class="o">=</span> <span class="s">&#39;/right_hand_controller/follow_joint_trajectory&#39;</span><span class="p">):</span>
+        <span class="n">SimpleActionState</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">follow_joint_trajectory_topic</span><span class="p">,</span>
+                                    <span class="n">FollowJointTrajectoryAction</span><span class="p">,</span>
+                                    <span class="n">goal_cb</span><span class="o">=</span><span class="n">grasp_close_hand_goal_cb</span><span class="p">,</span>
+                                    <span class="n">result_cb</span><span class="o">=</span><span class="n">grasp_hand_result_cb</span><span class="p">)</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_documentation/pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

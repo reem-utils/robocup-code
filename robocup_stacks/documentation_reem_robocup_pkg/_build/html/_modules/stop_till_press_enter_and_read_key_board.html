@@ -1,0 +1,152 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>stop_till_press_enter_and_read_key_board &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for stop_till_press_enter_and_read_key_board</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+<span class="c"># -.- coding: utf-8 -.-</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">STOP TILL PRESS ENTER AND READ KEYBOARD</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">roslib</span>
+<span class="n">roslib</span><span class="o">.</span><span class="n">load_manifest</span><span class="p">(</span><span class="s">&#39;pal_smach_utils&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">rospy</span>
+<span class="kn">import</span> <span class="nn">smach</span>
+
+<span class="kn">from</span> <span class="nn">global_common</span> <span class="kn">import</span> <span class="n">succeeded</span><span class="p">,</span> <span class="n">preempted</span><span class="p">,</span> <span class="n">aborted</span>
+
+<span class="n">VOID_STRING</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+
+
+<div class="viewcode-block" id="StopTillPressEnterAndReadKeyBoard"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#stop_till_press_enter_and_read_key_board.StopTillPressEnterAndReadKeyBoard">[docs]</a><span class="k">class</span> <span class="nc">StopTillPressEnterAndReadKeyBoard</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Stops untill you press any key.</span>
+<span class="sd">    Outputs what you typed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">intro_text</span><span class="o">=</span><span class="s">&#39;Press any Key to continue, type EXIT to finish.&#39;</span><span class="p">,</span>
+                 <span class="n">abort_string</span><span class="o">=</span><span class="s">&#39;EXIT&#39;</span><span class="p">,</span>
+                 <span class="n">debugging</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+
+        <span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                             <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="n">preempted</span><span class="p">,</span> <span class="n">aborted</span><span class="p">],</span>
+                             <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;keyboard_input_out&#39;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_intro_text</span> <span class="o">=</span> <span class="n">intro_text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_abort_string</span> <span class="o">=</span> <span class="n">abort_string</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_debugging</span> <span class="o">=</span> <span class="n">debugging</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userdata</span><span class="p">):</span>
+
+        <span class="c">#Just for security.</span>
+        <span class="n">userdata</span><span class="o">.</span><span class="n">keyboard_input_out</span> <span class="o">=</span> <span class="n">VOID_STRING</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debugging</span><span class="p">:</span>
+            <span class="n">string_read</span> <span class="o">=</span> <span class="nb">raw_input</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_intro_text</span><span class="p">)</span>
+            <span class="n">userdata</span><span class="o">.</span><span class="n">keyboard_input_out</span> <span class="o">=</span> <span class="n">string_read</span>
+            <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;String read from Keyboard ==&quot;</span> <span class="o">+</span> <span class="n">string_read</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">string_read</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_abort_string</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">aborted</span>
+
+        <span class="k">return</span> <span class="n">succeeded</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_documentation/pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

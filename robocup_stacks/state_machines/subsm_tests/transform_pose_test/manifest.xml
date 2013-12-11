@@ -1,0 +1,19 @@
+<package>
+  <description brief="transform_pose_test">
+
+     transform_pose_test
+
+  </description>
+  <author>System User</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/transform_pose_test</url>
+  <depend package="rospy"/>
+  <depend package="pal_smach_utils"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+
+
+</package>
+
+

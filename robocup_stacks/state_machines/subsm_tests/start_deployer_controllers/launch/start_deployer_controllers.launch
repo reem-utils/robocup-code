@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <!-- start_deployer_controllers SMACH -->
+  <node pkg ="start_deployer_controllers"
+        type="start_deployer_controllers.py"
+        name="start_deployer_controllers"
+        output="screen">
+  </node>
+
+</launch>

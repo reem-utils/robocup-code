@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<launch>
+	<node 
+	  pkg='speech_recognition_mock' type='asrservice_server.py'
+	  name='asrservice_server' />
+
+	<node 
+	  pkg='speech_recognition_mock' type='usersaid_publisher.py'
+	  name='usersaid_publisher'  
+	/>
+	<!-- output="screen" -->
+	
+</launch>

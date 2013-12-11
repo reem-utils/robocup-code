@@ -1,0 +1,7 @@
+\subsubsection usage Usage
+\verbatim
+<node name="DoorCloudAlgorithm" pkg="iri_door_detector" type="DoorCloudAlgorithm">
+  <param name="no_simulator" type="bool" value="True" />
+</node>
+\endverbatim
+

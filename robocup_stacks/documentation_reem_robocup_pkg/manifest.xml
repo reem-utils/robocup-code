@@ -1,0 +1,28 @@
+<package>
+  <description brief="documentation_reem_robocup_pkg">
+
+     documentation_reem_robocup_pkg
+
+  </description>
+  <author>RDaneelOlivaw</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/documentation_reem_robocup_pkg</url>
+
+    <depend package="clean_up"/>
+    <depend package="restaurant"/>
+    <!-- <depend package="cloth_hanging"/> -->
+    <depend package="cocktail_party"/>
+    <depend package="pal_smach_utils"/>
+    <depend package="dancing_reem"/>
+    <depend package="emergency_situation"/>
+    <depend package="follow_me"/>
+    <depend package="general_purpose"/>
+    <depend package="gpsr"/>
+    <depend package="gpsr_applyOrder"/>
+    <depend package="gpsrSoar"/>
+    <depend package="robot_inspection"/>
+    <depend package="reem_hand_grasp_planner_cluster"/>
+</package>
+
+

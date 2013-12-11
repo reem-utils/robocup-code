@@ -1,0 +1,32 @@
+<launch>
+    <!-- REMEMBER TO DO $ export USE_RGBD_SENSOR=true -->
+
+    <!-- It may be better to run it manually
+    <include file="$(find rh2_ros_nav)/rh2_ros_navigation.launch" />
+    -->
+
+    <!-- The rh2_ros_nav includes the coord translator
+    <include file="$(find coord_translator)/launch/coord_translator.launch" />
+    -->
+    
+    <rosparam file="$(find coord_translator)/config/room_corners.yaml" command="load" ns="mmap" />
+
+    <include file="$(find tts_mock)/launch/tts_mock.launch" />
+    <include file="$(find move_base_mock)/launch/move_base_mock.launch"/>
+    <include file="$(find object_recognition_mock)/launch/object_recognition_mock.launch"/>
+
+    <!--<include file="$(find reem_tabletop_manipulation_launch)/launch/tabletop_perception.launch" >
+        <arg name="sim" value="true" />
+        <arg name="use_snapshotter" value="true" />
+    </include>-->
+
+    <node pkg="tf" type="static_transform_publisher" name="stereo_link_to_map" 
+          args="1.0 1.0 1.0 1.0 1.0 1.0 /head_2_link /map 40" />
+
+    <node pkg ="object_finding_behaviour_tests"
+        type="ofb_second_approach_test.py"
+        name="ofb_second_approach_test"
+        output="screen">
+    </node>
+
+</launch>

@@ -1,0 +1,21 @@
+<package>
+  <description brief="iri_moped_actionserver">
+
+     iri_moped_actionserver
+
+  </description>
+  <author>frigual</author>
+  <license>LGPL</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/iri_moped_actionserver</url>
+
+  <depend package="roscpp"/>
+  <depend package="iri_base_algorithm"/>
+  <depend package="sensor_msgs"/>
+  <depend package="iri_action_server"/>
+  <depend package="pr_msgs"/>
+  <depend package="moped2"/>
+
+</package>
+
+

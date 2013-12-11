@@ -1,0 +1,22 @@
+<launch>
+
+  <!-- fake action server nodes -->
+  <!--<include file="$(find door_detector_pal)/launch/door_detector_pal.launch" />-->
+  <include file="$(find face_recognition_mock)/launch/face_recognition_mock.launch" />
+  <include file="$(find person_detector_mock)/launch/person_detector_mock.launch" />
+  <include file="$(find tts_mock)/launch/tts_mock.launch" />
+
+  <node pkg="as_move_base"
+        type="as_move_base"
+        name="as_move_base"
+        output="screen">
+  </node>
+
+  <!-- Who is Who SMACH -->
+  <node pkg ="general_purpose"
+        type="general_purpose.py"
+        name="general_purpose"
+        output="screen">
+  </node>
+
+</launch>

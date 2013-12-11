@@ -1,0 +1,9 @@
+<launch>
+
+  <node pkg ="scan_table_mock"
+        type="scan_table_mock.py"
+        name="scan_table_mock"
+        output="screen">
+  </node>
+
+</launch>

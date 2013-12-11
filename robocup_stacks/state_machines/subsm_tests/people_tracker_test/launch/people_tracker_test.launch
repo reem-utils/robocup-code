@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<launch>
+    <rosparam file="$(find follow_me)/config/params_follow_me.yaml"
+            command="load"
+            ns="params_follow_me" />
+
+    <node pkg="people_tracker_test"
+        type="people_tracker_test.py"
+        name="people_tracker_test"
+        output="screen">
+    </node>
+</launch>
+

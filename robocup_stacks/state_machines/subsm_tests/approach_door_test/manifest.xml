@@ -1,0 +1,25 @@
+<package>
+  <description brief="approach_door_test">
+
+     approach_door_test
+
+  </description>
+  <author>student</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/approach_door_test</url>
+  <depend package="actionlib"/>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <depend package="actionlib_msgs" />
+  <depend package="pal_smach_utils"/>
+  <depend package="std_msgs" />
+  <depend package="tf" />
+  <depend package="visualization_msgs" />
+  <!-- <depend package="iri_door_detector" /> -->
+  <depend package="door_detector_pal" />
+
+</package>
+
+

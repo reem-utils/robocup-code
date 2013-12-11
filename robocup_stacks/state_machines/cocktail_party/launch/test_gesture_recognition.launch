@@ -1,0 +1,18 @@
+<launch>
+
+  <!-- load the configuration file -->
+  <rosparam file="$(find cocktail_party)/config/cocktail_party.yaml" command="load" ns="cocktail_party" />
+
+  <!--
+  <include file="$(find gesture_recognition_mock)/launch/gesture_recognition_mock.launch" />
+  <include file="$(find tts_mock)/launch/tts_mock.launch" />
+  -->
+
+  <!-- Cocktail SMACH -->
+  <node pkg ="cocktail_party"
+        type="test_gesture_recognition.py"
+        name="test_gesture_recognition"
+        output="screen">
+  </node>
+
+</launch>

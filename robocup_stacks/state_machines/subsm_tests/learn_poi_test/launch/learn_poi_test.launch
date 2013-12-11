@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<launch>
+
+
+  <!-- follow_operator_test SMACH -->
+  <node pkg ="learn_poi_test"
+        type="learn_poi_test.py"
+        name="learn_poi_test"
+        output="screen">
+  </node>
+
+</launch>

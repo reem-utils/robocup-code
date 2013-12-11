@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <!--Play Sound Node Launch-->
+  <include file="$(find sound_play)/soundplay_node.launch" />
+  <!-- Dancing_reem_sm_test SMACH -->
+  <node pkg="song_duration_test"
+        type="song_duration_test.py"
+        name="song_duration_test"
+        output="screen">
+  </node>
+
+</launch>

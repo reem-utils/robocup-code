@@ -1,0 +1,42 @@
+FILE(REMOVE_RECURSE
+  "../src/gpsrSoar/msg"
+  "../msg_gen"
+  "../msg_gen"
+  "CMakeFiles/ROSBUILD_genmsg_lisp"
+  "../msg_gen/lisp/gpsrActionAction.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_gpsrActionAction.lisp"
+  "../msg_gen/lisp/gpsrActionGoal.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_gpsrActionGoal.lisp"
+  "../msg_gen/lisp/gpsrActionActionGoal.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_gpsrActionActionGoal.lisp"
+  "../msg_gen/lisp/gpsrActionResult.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_gpsrActionResult.lisp"
+  "../msg_gen/lisp/gpsrActionActionResult.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_gpsrActionActionResult.lisp"
+  "../msg_gen/lisp/gpsrActionFeedback.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_gpsrActionFeedback.lisp"
+  "../msg_gen/lisp/gpsrActionActionFeedback.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_gpsrActionActionFeedback.lisp"
+  "../msg_gen/lisp/order.lisp"
+  "../msg_gen/lisp/_package.lisp"
+  "../msg_gen/lisp/_package_order.lisp"
+  "../msg/gpsrActionAction.msg"
+  "../msg/gpsrActionGoal.msg"
+  "../msg/gpsrActionActionGoal.msg"
+  "../msg/gpsrActionResult.msg"
+  "../msg/gpsrActionActionResult.msg"
+  "../msg/gpsrActionFeedback.msg"
+  "../msg/gpsrActionActionFeedback.msg"
+)
+
+# Per-language clean rules from dependency scanning.
+FOREACH(lang)
+  INCLUDE(CMakeFiles/ROSBUILD_genmsg_lisp.dir/cmake_clean_${lang}.cmake OPTIONAL)
+ENDFOREACH(lang)

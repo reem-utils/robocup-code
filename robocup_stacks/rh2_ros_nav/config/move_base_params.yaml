@@ -1,0 +1,9 @@
+controller_frequency: 10.0
+controller_patience: 10.0
+clearing_radius: 0.50
+footprint_padding: 0.015
+oscillation_timeout: 10.0
+base_local_planner: pal_local_planner/PalLocalPlanner
+planner_frequency: 3.0
+recovery_behavior_enabled: true
+shutdown_costmaps: true

@@ -1,0 +1,27 @@
+
+PRESENTATION
+****************
+
+------------------------------------------------
+
+P1 and P2 Entering the room
+----------------------------------------------------
+- P1: "Do you want to see what our amazing robot can do."
+- P2: "Ohh, I want to see it."
+- P1: "Look at this... hang this cloth."
+-----------------------------------------
+- Robot: "As you wish. Place the cloth in front of me, please."
+Robot starts parsing pcl
+- Robot: "I will grasp your cloth."
+         "Ugg. . .  It is an ugly polo. . .  let me help you choose a cool shirt next time."
+         "Using my Kinect camera I will analyze the cloth. . . I will select a good grasping point in the collar."
+- Robot: "I can't reach the cloth. Could you move it closer?"
+         "Ok, I will try to grasp it again."
+         "Using my Kinect camera I will analyze the cloth. . . I will select a good grasping point in the collar."
+Robot: still thinking
+Robot: Grasps
+- Robot: "Good!, I will take it to the hanger."
+Robot: moves to living room
+Robot: approaches hanger
+Robot: hangs the cloth
+End

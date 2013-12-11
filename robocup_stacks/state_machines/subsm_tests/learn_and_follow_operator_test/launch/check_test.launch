@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- load the configuration file -->
+    <!-- we leave the load of the params to also check that the param files are in place -->
+    <rosparam file="$(find follow_me)/config/params_follow_me.yaml"
+      command="load" ns="params_follow_me" />
+
+    <rosparam file="$(find common)/config/params_navigation.yaml"
+        command="load"
+        ns="params_navigation" />
+
+    <rosparam file="$(find learn_and_follow_operator_test)/config/params_learn_and_follow_operator_test.yaml"
+        command="load"
+        ns="params_learn_and_follow" />
+
+    <rosparam file="$(find restaurant)/config/restaurant.yaml"
+      command="load" ns="restaurant" />
+
+    <!-- follow_operator_test SMACH -->
+    <node pkg="learn_and_follow_operator_test"
+        type="check.py"
+        name="check_learn_and_follow"
+        output="screen">
+    </node>
+
+<!--
+    <node pkg="common"
+        type="navigation_reconfigure_server.py"
+        name="common_navigation"
+        output="screen">
+    </node> -->
+
+</launch>
+

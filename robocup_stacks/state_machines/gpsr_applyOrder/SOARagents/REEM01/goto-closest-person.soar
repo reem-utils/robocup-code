@@ -1,0 +1,29 @@
+sp {REEM01*propose*go-to-closest-person
+   (state <s> ^name REEM01
+              ^goal <g>
+              ^Rlocation <loc1>
+              ^person.location <loc1>)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name go-to-closest-person)
+}
+
+sp {REEM01*apply*go-to-closest-person
+   (state <s> ^name REEM01
+              ^operator <o>
+              ^io.output-link <out>)
+   (<o> ^name go-to-closest-person)
+-->
+   (<out> ^command go-to-closest-person)
+}
+
+sp {REEM01*elaborate*person*near
+   (state <s> ^name REEM01
+              ^io.input-link <in>
+              ^Rlocation <loc1>)
+   (<in> ^performed go-to-closest-person)
+-->
+   (<s> ^person <p>)
+   (<p> ^location <loc1>
+        ^near ok)
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- load the Parameters configuration file -->
+	<rosparam file="$(find follow_me)/config/params_follow_me.yaml"
+	    command="load" ns="params_follow_me" />
+
+  <!-- load the configuration file -->
+  <rosparam file="$(find restaurant)/config/restaurant.yaml"
+      command="load" ns="restaurant" />
+
+  <!-- load the mock configuration file -->
+  <rosparam file="$(find restaurant)/config/simulation.yaml"
+      command="load" ns="mock_config" />
+  
+  <!-- Restaurant SMACH -->
+  <node pkg ="search_object_and_grasp_test"
+        type="search_object_and_grasp_test.py"
+        name="sm_search_object_and_grasp_test"
+        output="screen">
+  </node>
+
+</launch>

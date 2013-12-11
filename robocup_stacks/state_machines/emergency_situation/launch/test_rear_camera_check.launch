@@ -1,0 +1,14 @@
+
+<launch>
+  
+  <!-- Fake Servers -->
+
+  <!-- EmergencySituation SMACH -->
+  <node pkg ="emergency_situation"
+        type="test_rear_camera_check.py"
+        name="test_follow_checker"
+        output="screen">
+  </node>
+
+</launch>
+

@@ -1,0 +1,20 @@
+<launch>
+    <!-- REMEMBER TO DO $ export USE_RGBD_SENSOR=true -->
+
+    <include file="$(find reem_manipulation_worlds)/launch/reem_high_white_table_manipulation.launch" />
+
+    <include file="$(find reem_tabletop_manipulation_launch)/launch/tabletop_perception.launch" >
+        <arg name="sim" value="true" />
+        <arg name="use_snapshotter" value="true" />
+    </include>
+    
+    <include file="$(find reem_tabletop_manipulation_launch)/launch/rviz.launch" />
+
+
+    <node pkg ="detect_table_test"
+        type="detect_tables_of_zone_test.py"
+        name="detect_tables_of_zone_test"
+        output="screen">
+    </node>
+
+</launch>

@@ -1,0 +1,28 @@
+<package>
+  <description brief="fetch_and_give_object_test">
+
+     fetch_and_give_object_test
+
+  </description>
+  <author>RDaneelOlivaw</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/fetch_and_give_object_test</url>
+  <depend package="actionlib"/>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <depend package="tf"/>
+
+  <depend package="geometry_msgs"/>
+  <depend package="std_srvs" />
+  <depend package="pal_smach_utils"/>
+  <depend package="follow_me"/>
+  <depend package="iri_perception_msgs" />
+  <depend package="poi_current_position_sm_mock" />
+  <depend package="arm_navigation_mock" />
+  <depend package="close_hand_mock" />
+
+</package>
+
+

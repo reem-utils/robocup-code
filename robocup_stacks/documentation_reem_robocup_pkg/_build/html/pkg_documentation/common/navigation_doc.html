@@ -1,0 +1,427 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Navigation &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="navigation">
+<h1>Navigation<a class="headerlink" href="#navigation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>Navigation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Here we have the modules for skills that help us move the robot.</p>
+<div class="section" id="module-elevator_handling">
+<span id="elevator-handling-py"></span><h3>elevator_handling.py<a class="headerlink" href="#module-elevator_handling" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-enter_room">
+<span id="enter-room-py"></span><h3>enter_room.py<a class="headerlink" href="#module-enter_room" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-find_and_recognize_person">
+<span id="find-and-recognize-person-py"></span><h3>find_and_recognize_person.py<a class="headerlink" href="#module-find_and_recognize_person" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-find_particular_people">
+<span id="find-particular-people-py"></span><h3>find_particular_people.py<a class="headerlink" href="#module-find_particular_people" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="follow-and-stop-py">
+<h3>follow_and_stop.py<a class="headerlink" href="#follow-and-stop-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-follow_operator">
+<span id="follow-operator-py"></span><h3>follow_operator.py<a class="headerlink" href="#module-follow_operator" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="get-current-pos-py">
+<h3>get_current_pos.py<a class="headerlink" href="#get-current-pos-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-go_to_closest_person">
+<span id="go-to-closest-person-py"></span><h3>go_to_closest_person.py<a class="headerlink" href="#module-go_to_closest_person" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-learn_person">
+<span id="learn-person-py"></span><h3>learn_person.py<a class="headerlink" href="#module-learn_person" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="learn_person.FaceProcessData">
+<em class="property">class </em><tt class="descclassname">learn_person.</tt><tt class="descname">FaceProcessData</tt><a class="reference internal" href="../../_modules/learn_person.html#FaceProcessData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_person.FaceProcessData" title="Permalink to this definition">¶</a></dt>
+<dd><p>You input a vector of names &#8216;process_names&#8217; and confidence &#8216;process_confidence&#8217;
+if (confidence &gt; MINIMUM_CONFIDENCE) &#8211;&gt;    it returns succeeded and</p>
+<blockquote>
+<div>the name of the highest confidence</div></blockquote>
+<dl class="docutils">
+<dt>else &#8211;&gt;    returns face_not_found and</dt>
+<dd>the name = &#8216;no_name&#8217;
+At the end it will wait t = SLEEP_TIME_WHEN_FAILS,
+after which the state will terminate.</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="learn_person.LearnPerson">
+<em class="property">class </em><tt class="descclassname">learn_person.</tt><tt class="descname">LearnPerson</tt><big>(</big><em>learn_face=False</em><big>)</big><a class="reference internal" href="../../_modules/learn_person.html#LearnPerson"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_person.LearnPerson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the perosnId and positions and speed data of the closest person in the people_tracking_learning area.
+This Area is defined by the params in the file params_follow_me in teh follow_me pkg.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="learn_person.PeopleTrackingProcessData">
+<em class="property">class </em><tt class="descclassname">learn_person.</tt><tt class="descname">PeopleTrackingProcessData</tt><a class="reference internal" href="../../_modules/learn_person.html#PeopleTrackingProcessData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_person.PeopleTrackingProcessData" title="Permalink to this definition">¶</a></dt>
+<dd><p>You input a vector of an array &#8216;process_peopleSet&#8217; type peopleTRacking.msg
+if (    distance between Reem and candidate &lt; MAX_DISTANCE and</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>the canditade is properly centered abs(pos.y) &lt; MAX_DISPLACEMENT  )</dt>
+<dd><dl class="first last docutils">
+<dt>&#8211;&gt; it returns succeeded and</dt>
+<dd>the Id of the candidate nearest to Reem and the whole peopleTracking message</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="docutils">
+<dt>else &#8211;&gt;    returns faulty_peopletrack and</dt>
+<dd>the name = &#8216;no_name&#8217;
+At the end it will wait t = SLEEP_TIME_WHEN_FAILS,
+after which the state will terminate.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-listen_and_satisfy_delivery_order">
+<span id="listen-and-satisfy-delivery-order-py"></span><h3>listen_and_satisfy_delivery_order.py<a class="headerlink" href="#module-listen_and_satisfy_delivery_order" title="Permalink to this headline">¶</a></h3>
+<p>LISTEN_AND_SATISFY_DELIVERY_ORDER.PY</p>
+<dl class="class">
+<dt id="listen_and_satisfy_delivery_order.ListenAndSatisfyDeliveryOrderSM">
+<em class="property">class </em><tt class="descclassname">listen_and_satisfy_delivery_order.</tt><tt class="descname">ListenAndSatisfyDeliveryOrderSM</tt><a class="reference internal" href="../../_modules/listen_and_satisfy_delivery_order.html#ListenAndSatisfyDeliveryOrderSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#listen_and_satisfy_delivery_order.ListenAndSatisfyDeliveryOrderSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>This SM listens to a delivery order of three objects to deliver
+in a maximum of two diferent locations. All the 5 locations must be
+memorised as POIS before using this SM, otherwise it will just give
+an error message telling you that it didnt find the locations that werent
+memorised.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="listen-command-for-follow-me-again-py">
+<h3>listen_command_for_follow_me_again.py<a class="headerlink" href="#listen-command-for-follow-me-again-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="listen-command-for-follow-me-py">
+<h3>listen_command_for_follow_me.py<a class="headerlink" href="#listen-command-for-follow-me-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="listen-command-for-gpsr-follow-py">
+<h3>listen_command_for_gpsr_follow.py<a class="headerlink" href="#listen-command-for-gpsr-follow-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-listen_command_for_restaurant">
+<span id="listen-command-for-restaurant-py"></span><h3>listen_command_for_restaurant.py<a class="headerlink" href="#module-listen_command_for_restaurant" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="listen-commands-py">
+<h3>listen_commands.py<a class="headerlink" href="#listen-commands-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-listen_to_command">
+<span id="listen-to-command-py"></span><h3>listen_to_command.py<a class="headerlink" href="#module-listen_to_command" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-memorise_ordering_location">
+<span id="memorise-ordering-location-py"></span><h3>memorise_ordering_location.py<a class="headerlink" href="#module-memorise_ordering_location" title="Permalink to this headline">¶</a></h3>
+<p>MEMORISE_ORDERING_LOCATION.PY</p>
+<dl class="class">
+<dt id="memorise_ordering_location.MemoriseOrderingLocation">
+<em class="property">class </em><tt class="descclassname">memorise_ordering_location.</tt><tt class="descname">MemoriseOrderingLocation</tt><a class="reference internal" href="../../_modules/memorise_ordering_location.html#MemoriseOrderingLocation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#memorise_ordering_location.MemoriseOrderingLocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Memorised the current position as the ordering location.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-move_action">
+<span id="move-action-py"></span><h3>move_action.py<a class="headerlink" href="#module-move_action" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="move_action.MoveActionState">
+<em class="property">class </em><tt class="descclassname">move_action.</tt><tt class="descname">MoveActionState</tt><big>(</big><em>frame_id='/base_link'</em>, <em>move_base_action_name='/move_base'</em>, <em>pose=None</em>, <em>goal_cb=None</em>, <em>goal_key=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/move_action.html#MoveActionState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#move_action.MoveActionState" title="Permalink to this definition">¶</a></dt>
+<dd><p>MoveActionState State.</p>
+<p>Use this State to move the robot.</p>
+<p>The input data you give has to be of type Pose</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-move_to_caller">
+<span id="move-to-caller-py"></span><h3>move_to_caller.py<a class="headerlink" href="#module-move_to_caller" title="Permalink to this headline">¶</a></h3>
+<p>Contains the MoveToCallerStateMachine</p>
+<dl class="class">
+<dt id="move_to_caller.MoveToCallerStateMachine">
+<em class="property">class </em><tt class="descclassname">move_to_caller.</tt><tt class="descname">MoveToCallerStateMachine</tt><big>(</big><em>ask_for_movement_msg_cb=None</em>, <em>rotation_left=True</em>, <em>input_keys=</em><span class="optional">[</span><span class="optional">]</span>, <em>output_keys=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../../_modules/move_to_caller.html#MoveToCallerStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#move_to_caller.MoveToCallerStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>MoveToCallerStateMachine.</p>
+<p>Use this State Machine to move the robot to someone that is waving the hand.</p>
+<dl class="docutils">
+<dt>Requirements:</dt>
+<dd>Kinect</dd>
+</dl>
+<p>When calling this State Machine, the robot will execute the script gestureRecognitionStart.sh that enables the kinect.
+Will look for someone waving the hand. If no movements are found, will rotate 90 degrees and look for movement again.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-move_to_object">
+<span id="move-to-object-py"></span><h3>move_to_object.py<a class="headerlink" href="#module-move_to_object" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="move_to_object.MoveToObjectBelongingLocSM">
+<em class="property">class </em><tt class="descclassname">move_to_object.</tt><tt class="descname">MoveToObjectBelongingLocSM</tt><a class="reference internal" href="../../_modules/move_to_object.html#MoveToObjectBelongingLocSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#move_to_object.MoveToObjectBelongingLocSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the target object is expected to be in a input key named <a href="#id2"><span class="problematic" id="id3">`</span></a>object_name&#8217;.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-move_to_room">
+<span id="move-to-room-py"></span><h3>move_to_room.py<a class="headerlink" href="#module-move_to_room" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="move_to_room.MoveToRoomStateMachine">
+<em class="property">class </em><tt class="descclassname">move_to_room.</tt><tt class="descname">MoveToRoomStateMachine</tt><big>(</big><em>announcement='%s</em>, <em>here I go!'</em>, <em>ignore_orientation=False</em><big>)</big><a class="reference internal" href="../../_modules/move_to_room.html#MoveToRoomStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#move_to_room.MoveToRoomStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the target room is expected to be in a input key named <a href="#id4"><span class="problematic" id="id5">`</span></a>room_name&#8217;.</p>
+<dl class="docutils">
+<dt>The announcement argument in the constructor is the text to be announced while going to the room.</dt>
+<dd>If it&#8217;s a string, a SpeakActionState is used. If it&#8217;s a list of strings, a SpeakActionFromPoolStateMachine is used.
+All the strings (either the single string or all the strings inside the list) must have a %s to be replaced for the room&#8217;s name.
+If the announcement argument equals None no speak action is used and the robot simply moves to the room.</dd>
+</dl>
+<p>The ignore_orientation parameter performs a dynamic reconfigure to ignore the orientation at the goal, if set to True</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-move_to_table">
+<span id="move-to-table-py"></span><h3>move_to_table.py<a class="headerlink" href="#module-move_to_table" title="Permalink to this headline">¶</a></h3>
+<p>MOVE_TO_TABLE.PY</p>
+<dl class="class">
+<dt id="move_to_table.MoveToTable">
+<em class="property">class </em><tt class="descclassname">move_to_table.</tt><tt class="descname">MoveToTable</tt><a class="reference internal" href="../../_modules/move_to_table.html#MoveToTable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#move_to_table.MoveToTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moves to a table in sight.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-navigation_state">
+<span id="navigation-state-py"></span><h3>navigation_state.py<a class="headerlink" href="#module-navigation_state" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-recognize_and_move_to_caller">
+<span id="recognize-and-move-to-caller-py"></span><h3>recognize_and_move_to_caller.py<a class="headerlink" href="#module-recognize_and_move_to_caller" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-return_to_ordering_location">
+<span id="return-to-ordering-location-py"></span><h3>return_to_ordering_location.py<a class="headerlink" href="#module-return_to_ordering_location" title="Permalink to this headline">¶</a></h3>
+<p>RETURN_TO_ORDERING_LOCATION.PY</p>
+<dl class="class">
+<dt id="return_to_ordering_location.ReturnToOrderingLocation">
+<em class="property">class </em><tt class="descclassname">return_to_ordering_location.</tt><tt class="descname">ReturnToOrderingLocation</tt><a class="reference internal" href="../../_modules/return_to_ordering_location.html#ReturnToOrderingLocation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#return_to_ordering_location.ReturnToOrderingLocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes the Reem return to a previously memorised location called ordering_location.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-satisfy_delivery_order">
+<span id="satisfy-delivery-order-py"></span><h3>satisfy_delivery_order.py<a class="headerlink" href="#module-satisfy_delivery_order" title="Permalink to this headline">¶</a></h3>
+<p>SATISFY_DELIVERY_ORDER.PY</p>
+<dl class="class">
+<dt id="satisfy_delivery_order.SatisfyDeliveryOrder">
+<em class="property">class </em><tt class="descclassname">satisfy_delivery_order.</tt><tt class="descname">SatisfyDeliveryOrder</tt><a class="reference internal" href="../../_modules/satisfy_delivery_order.html#SatisfyDeliveryOrder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#satisfy_delivery_order.SatisfyDeliveryOrder" title="Permalink to this definition">¶</a></dt>
+<dd><p>This SM That takes in a list of vectors, where for each object there is
+a location where to take that object.
+It basicaly take object 1 to location A, 2 to B and so on.
+Finishes when it has delivered all the objects in the list that are also in
+its POI memory banks. If a non memorised previously object is in the list
+it will just let you know that she doesnt have it memorised.</p>
+<dl class="docutils">
+<dt>&#64;Input_keys: in_delivery_order_list&#8211;&gt;  List of vector elements of two positions.</dt>
+<dd>Firstone is the object, secondone is the
+delivery location for that object.</dd>
+</dl>
+<p>Behaviour:
+#. If it cant fetch the object, it will just skip to the nextone in the list.
+#.If it has the object but then it cant deliver it, it will deliver the object
+in the location where she fetched it.
+#. If it cant return the object to its original place, then the statemachine aborts.
+should be improved in some way like, trying to put it else where or just drop the
+object to the floor.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-serve_drinks">
+<span id="serve-drinks-py"></span><h3>serve_drinks.py<a class="headerlink" href="#module-serve_drinks" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="serve_drinks.ServeDrinkStateMachine">
+<em class="property">class </em><tt class="descclassname">serve_drinks.</tt><tt class="descname">ServeDrinkStateMachine</tt><a class="reference internal" href="../../_modules/serve_drinks.html#ServeDrinkStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#serve_drinks.ServeDrinkStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>ServeDrinkStateMachine.</p>
+<dl class="docutils">
+<dt>Requirements:</dt>
+<dd>Kinect connected on the robot.
+Drinks located in a table in drinks_location.
+scripts/graspingStartNoKinect.sh should be previously launched.</dd>
+</dl>
+<p>Use this class to serve the drink orders.
+Steps of this State Machine:</p>
+<blockquote>
+<div>First, the kinect to use in the grasp will be activated. After this, the robot will move to drinks_location; enable the controllers of
+the head, left and right arm to be able to look for the objects and grasp; look for the object and grasp it if found; stop the kinect
+used on grasping to avoid conflicts with GestureRecognition driver if the person that has requested the drink is not in the same position;
+stop all controllers; back to the position where the person is located; try recognize the person. If the person is not in the same position,
+the robot will ask where the person is; The robot will serve the drink.</div></blockquote>
+</dd></dl>
+
+<dl class="class">
+<dt id="serve_drinks.ServeOrdersStateMachine">
+<em class="property">class </em><tt class="descclassname">serve_drinks.</tt><tt class="descname">ServeOrdersStateMachine</tt><big>(</big><em>number_persons</em><big>)</big><a class="reference internal" href="../../_modules/serve_drinks.html#ServeOrdersStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#serve_drinks.ServeOrdersStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>ServeOrdersStateMachine</p>
+<p>Use this class to serve the drink orders.
+This class will execute ServeDrinkStateMachine() iterating X times.
+X is number_persons.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-set_distance_new_location">
+<span id="set-distance-new-location-py"></span><h3>set_distance_new_location.py<a class="headerlink" href="#module-set_distance_new_location" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="set_distance_new_location.Set_L_New_Location">
+<em class="property">class </em><tt class="descclassname">set_distance_new_location.</tt><tt class="descname">Set_L_New_Location</tt><big>(</big><em>distance=0.5</em>, <em>we_lost_person=False</em><big>)</big><a class="reference internal" href="../../_modules/set_distance_new_location.html#Set_L_New_Location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#set_distance_new_location.Set_L_New_Location" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>This state does the following:</dt>
+<dd><dl class="first docutils">
+<dt>inputs &#8211;&gt;  distance: the distance you want the robots to keep between him and the person he has detected (S.I.:metres)</dt>
+<dd><dl class="first last docutils">
+<dt>we_lost_person: Boolean.    If false, it will just calculate the l_navgoal and will put the l_lost_person key to False</dt>
+<dd>If true, it will calculate the l_navgoal and will put the l_lost_person key to True.
+It will also evaluate the l_no_people_counter to NUMBER_TIMES_AFTER_LOST_BEFORE_LOOSING_AGAIN.
+The new position will be L metres AWAY from the last know persons position, mainly because we
+decided  that if we lose a person we will move a distance AHEAD to alow a new search, and prehaps find.</dd>
+</dl>
+</dd>
+</dl>
+<p>input_keys &#8211;&gt; &#8216;FO_people_location&#8217;:Type pose(). Pose where we have detected the person.</p>
+<dl class="last docutils">
+<dt>Notes:  l_no_people_counter we use it to keep track how many times we lost a person and will be used outside to select</dt>
+<dd>whether we use we_lost_person = true or false.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-track_operator">
+<span id="track-operator-py"></span><h3>track_operator.py<a class="headerlink" href="#module-track_operator" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="track_operator.PublishGoToLocationMarkers">
+<tt class="descclassname">track_operator.</tt><tt class="descname">PublishGoToLocationMarkers</tt><big>(</big><em>pose</em><big>)</big><a class="reference internal" href="../../_modules/track_operator.html#PublishGoToLocationMarkers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#track_operator.PublishGoToLocationMarkers" title="Permalink to this definition">¶</a></dt>
+<dd><p>The input is a Pose(). Publishes a blue sphere in the position of the goal.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="track_operator.applyFilterFour">
+<tt class="descclassname">track_operator.</tt><tt class="descname">applyFilterFour</tt><big>(</big><em>tracked_person=None</em>, <em>peopleSet=None</em><big>)</big><a class="reference internal" href="../../_modules/track_operator.html#applyFilterFour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#track_operator.applyFilterFour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to find the nearest person to the robot.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="track_operator.applyFilterOne">
+<tt class="descclassname">track_operator.</tt><tt class="descname">applyFilterOne</tt><big>(</big><em>tracked_person=None</em>, <em>peopleSet=None</em><big>)</big><a class="reference internal" href="../../_modules/track_operator.html#applyFilterOne"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#track_operator.applyFilterOne" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to find the last person we were tracking. To do this we only have to
+look for the same target id.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="track_operator.applyFilterThree">
+<tt class="descclassname">track_operator.</tt><tt class="descname">applyFilterThree</tt><big>(</big><em>tracked_person=None</em>, <em>peopleSet=None</em><big>)</big><a class="reference internal" href="../../_modules/track_operator.html#applyFilterThree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#track_operator.applyFilterThree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to find the nearest person to the last position
+of the last tracked person.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="track_operator.applyFilterTwo">
+<tt class="descclassname">track_operator.</tt><tt class="descname">applyFilterTwo</tt><big>(</big><em>tracked_person=None</em>, <em>peopleSet=None</em><big>)</big><a class="reference internal" href="../../_modules/track_operator.html#applyFilterTwo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#track_operator.applyFilterTwo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to find a person within a circle of MAX_LAST_POSITION_RADIUS radius around the last position
+of the last tracked person.</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="../../_sources/pkg_documentation/common/navigation_doc.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

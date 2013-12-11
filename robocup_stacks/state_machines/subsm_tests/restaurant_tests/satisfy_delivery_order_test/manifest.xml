@@ -1,0 +1,22 @@
+<package>
+  <description brief="satisfy_delivery_order_test">
+
+     satisfy_delivery_order_test
+
+  </description>
+  <author>icarus</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/satisfy_delivery_order_test</url>
+  <depend package="rospy"/>
+  <depend package="pal_smach_utils"/>
+  <depend package="text_to_speech"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <depend package="reem_tabletop_manipulation_launch" />
+  <depend package="object_manipulation_msgs" />
+  <depend package="reem_final_approach"/>
+
+</package>
+
+

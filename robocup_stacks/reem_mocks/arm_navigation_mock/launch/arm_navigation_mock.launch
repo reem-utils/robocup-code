@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<launch>
+	<node 
+	  pkg='arm_navigation_mock' type='arm_navigation_mock_server.py'
+	  name='arm_navigation_mock_server' />
+
+</launch>

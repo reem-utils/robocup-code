@@ -1,0 +1,17 @@
+<package>
+  <description brief="object_recognition_mock">
+
+     object_recognition_mock
+
+  </description>
+  <author>Sammy Pfeiffer</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/object_recognition_mock</url>
+  <depend package="rospy"/>
+  <depend package="sensor_msgs" />
+  <depend package="geometry_msgs" />
+  <depend package="pal_smach_utils"/>
+  <!--  <depend package="pr_msgs" />-->
+
+</package>

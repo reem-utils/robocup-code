@@ -1,0 +1,336 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>learn_face &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for learn_face</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">smach</span>
+<span class="kn">import</span> <span class="nn">rospy</span>
+<span class="kn">import</span> <span class="nn">platform</span>
+<span class="kn">from</span> <span class="nn">actionlib_msgs.msg</span> <span class="kn">import</span> <span class="n">GoalStatus</span>
+<span class="kn">from</span> <span class="nn">smach_ros</span> <span class="kn">import</span> <span class="n">SimpleActionState</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">from</span> <span class="nn">pal_interaction_msgs.msg</span> <span class="kn">import</span> <span class="n">asrresult</span>
+
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.topic_reader</span> <span class="kn">import</span> <span class="n">TopicReaderState</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.colors</span> <span class="kn">import</span> <span class="n">Colors</span>
+<span class="kn">from</span> <span class="nn">face_recognition.msg</span> <span class="kn">import</span> <span class="n">FaceRecognitionAction</span><span class="p">,</span> <span class="n">FaceRecognitionGoal</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.global_common</span> <span class="kn">import</span> <span class="n">succeeded</span><span class="p">,</span> <span class="n">preempted</span><span class="p">,</span> <span class="n">aborted</span>  <span class="c"># , unknown_face, previously_recognized, existing_name</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.speech.grammar_state</span> <span class="kn">import</span> <span class="n">GrammarState</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.speech.sound_action</span> <span class="kn">import</span> <span class="n">SpeakActionFromPoolStateMachine</span><span class="p">,</span> <span class="n">SpeakActionState</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.cocktail_party_variables</span> <span class="kn">import</span> <span class="n">cocktail_party_variables</span>
+<span class="c">#from recognize_face import RecognizeFaceStateMachine</span>
+
+<span class="n">COUNT_NUMBER</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">COUNT_WARNING</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">COMPUTER_NAME</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">node</span><span class="p">()</span>
+<span class="n">warning</span> <span class="o">=</span> <span class="s">&quot;warning&quot;</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">Colors</span><span class="p">()</span>
+<span class="n">PERSON_NAMES</span> <span class="o">=</span> <span class="n">cocktail_party_variables</span><span class="o">.</span><span class="n">PERSONS_NAME</span>
+<span class="c">#PATH_IAM = &quot;/mnt_flash/etc/interaction/sphinx/model/gram/en_US/robocup/iam.gram&quot;</span>
+
+<span class="k">class</span> <span class="nc">CountCheck</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="n">aborted</span><span class="p">,</span> <span class="n">warning</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userdata</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s"> ===== Count check </span><span class="si">%d</span><span class="s">/</span><span class="si">%d</span><span class="s"> =====&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="n">COUNT_NUMBER</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">&lt;</span> <span class="n">COUNT_NUMBER</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">==</span> <span class="n">COUNT_WARNING</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">warning</span>
+            <span class="k">return</span> <span class="n">succeeded</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">aborted</span>
+
+
+<span class="k">class</span> <span class="nc">CheckRepeatedNames</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;names_already_asigned&quot;</span><span class="p">,</span> <span class="s">&quot;current_name&quot;</span><span class="p">],</span> <span class="n">output_keys</span><span class="o">=</span><span class="p">[],</span> <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="n">aborted</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userdata</span><span class="p">):</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">===== Checking if name </span><span class="si">%s</span><span class="s"> already exists in </span><span class="si">%s</span><span class="s"> =====&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">userdata</span><span class="o">.</span><span class="n">current_name</span><span class="p">,</span> <span class="n">userdata</span><span class="o">.</span><span class="n">names_already_asigned</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">userdata</span><span class="o">.</span><span class="n">current_name</span> <span class="ow">in</span> <span class="n">userdata</span><span class="o">.</span><span class="n">names_already_asigned</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">aborted</span>
+        <span class="k">return</span> <span class="n">succeeded</span>
+
+
+<span class="k">class</span> <span class="nc">AsignANewName</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;names_already_asigned&quot;</span><span class="p">],</span> <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;out_person_name&quot;</span><span class="p">],</span> <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="n">aborted</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">Colors</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userdata</span><span class="p">):</span>
+        <span class="n">userdata</span><span class="o">.</span><span class="n">out_person_name</span> <span class="o">=</span> <span class="n">PERSON_NAMES</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">PERSON_NAMES</span><span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">PERSON_NAMES</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))]</span>  <span class="c">#XXX A random name from the first half list. Assuming the first half as male&#39;s name</span>
+            <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">BACKGROUND_GREEN</span> <span class="o">+</span> <span class="s">&quot;Trying identify &#39;</span><span class="si">%s</span><span class="s">&#39; in </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">userdata</span><span class="o">.</span><span class="n">names_already_asigned</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">NATIVE_COLOR</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">userdata</span><span class="o">.</span><span class="n">names_already_asigned</span><span class="p">:</span>
+                <span class="n">userdata</span><span class="o">.</span><span class="n">out_person_name</span> <span class="o">=</span> <span class="n">name</span>
+                <span class="k">return</span> <span class="n">succeeded</span>
+
+
+<div class="viewcode-block" id="LearnFaceStateMachine"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#learn_face.LearnFaceStateMachine">[docs]</a><span class="k">class</span> <span class="nc">LearnFaceStateMachine</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;LearnFaceStateMachine.</span>
+
+<span class="sd">    Use this State Machine to learn a face.</span>
+
+<span class="sd">    Steps of this State Machine:</span>
+<span class="sd">        The robot will: ask for name; enable the grammar defined on cocktail_party.yaml file as &#39;people_grammar_name&#39;; listen the name;</span>
+<span class="sd">        ask the person to look at his face and learn the face.</span>
+<span class="sd">    Important:</span>
+<span class="sd">        If the robot can&#39;t understand what the person is saying or the name was already asigned to another person, then a new person name</span>
+<span class="sd">        will be asigned. The name is a random name loaded from the iam.gram file located on the Cocktail Party package. The names should be the</span>
+<span class="sd">        same of the grammar robocup/iam.gram located on the robot.</span>
+
+<span class="sd">    Output Keys:</span>
+<span class="sd">        @type out_person_name: out_person_name</span>
+<span class="sd">        @return out_person_name:  If a face is learned, out_person_name=&quot;Person name&quot;, otherwise out_person_name=None</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor for LearnFaceStateMachine.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">input_keys</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;out_person_name&quot;</span><span class="p">],</span>
+            <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="n">aborted</span><span class="p">,</span> <span class="n">preempted</span><span class="p">])</span>  <span class="c"># , previously_recognized])  # ,existing_name])</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="n">cocktail_party_variables</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">userdata</span><span class="o">.</span><span class="n">names_already_asigned</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">userdata</span><span class="o">.</span><span class="n">current_name</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">count_check</span> <span class="o">=</span> <span class="n">CountCheck</span><span class="p">()</span>
+
+            <span class="c"># smach.StateMachine.add(&quot;TRY_RECOGNIZE&quot;,</span>
+            <span class="c">#     RecognizeFaceStateMachine(announce_unknown_face=False),</span>
+            <span class="c">#     transitions={succeeded: previously_recognized, unknown_face: &quot;ASK_FOR_NAME&quot;}</span>
+            <span class="c">#     )</span>
+
+            <span class="n">ask_for_name_phrases</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Hi! What is your name?&quot;</span><span class="p">,</span> <span class="s">&quot;What is your name?&quot;</span><span class="p">,</span> <span class="s">&quot;What&#39;s your name, sweety?&quot;</span><span class="p">,</span> <span class="s">&quot;Tell me your name, handsome!&quot;</span><span class="p">,</span> <span class="s">&quot;Please, tell me your name!&quot;</span><span class="p">]</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                    <span class="s">&#39;ASK_FOR_NAME&#39;</span><span class="p">,</span>
+                    <span class="n">SpeakActionFromPoolStateMachine</span><span class="p">(</span><span class="n">ask_for_name_phrases</span><span class="p">),</span>
+                    <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;ENABLE_NAME_GRAMMAR&#39;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;ENABLE_NAME_GRAMMAR&quot;</span><span class="p">,</span>  <span class="n">preempted</span><span class="p">:</span> <span class="n">preempted</span><span class="p">})</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&#39;ENABLE_NAME_GRAMMAR&#39;</span><span class="p">,</span>
+                <span class="n">GrammarState</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">PEOPLE_GRAMMAR_NAME</span><span class="p">,</span> <span class="n">enabled</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;LISTEN_TO_NAME&#39;</span><span class="p">})</span>
+
+            <span class="k">def</span> <span class="nf">listen_name_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+                <span class="n">tags</span> <span class="o">=</span> <span class="p">[</span><span class="n">tag</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">message</span><span class="o">.</span><span class="n">tags</span> <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="s">&#39;name&#39;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">tags</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">tags</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+                    <span class="n">userdata</span><span class="o">.</span><span class="n">out_person_name</span> <span class="o">=</span> <span class="n">name</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">userdata</span><span class="o">.</span><span class="n">current_name</span> <span class="o">=</span> <span class="n">name</span>
+                    <span class="k">return</span> <span class="n">succeeded</span>
+                <span class="k">return</span> <span class="n">aborted</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&#39;LISTEN_TO_NAME&#39;</span><span class="p">,</span>
+                <span class="n">TopicReaderState</span><span class="p">(</span>
+                    <span class="n">topic_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">T_USERSAID</span><span class="p">,</span>
+                    <span class="n">msg_type</span><span class="o">=</span><span class="n">asrresult</span><span class="p">,</span>
+                    <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                    <span class="n">callback</span><span class="o">=</span><span class="n">listen_name_cb</span><span class="p">,</span>
+                    <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;out_person_name&#39;</span><span class="p">],</span>
+                    <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="n">aborted</span><span class="p">,</span> <span class="n">preempted</span><span class="p">]),</span>  <span class="c"># existing_name]),</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">aborted</span><span class="p">:</span> <span class="s">&#39;LISTEN_COUNT_CHECK&#39;</span><span class="p">,</span> <span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;CHECK_REPEATED_NAME&#39;</span><span class="p">})</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&quot;LISTEN_COUNT_CHECK&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">count_check</span><span class="p">,</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;LISTEN_TO_NAME&quot;</span><span class="p">,</span> <span class="n">warning</span><span class="p">:</span> <span class="s">&quot;ASK_SPEAK_HIGHER&quot;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;ASIGN_A_NEW_NAME_2&quot;</span><span class="p">}</span>
+                <span class="p">)</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&quot;ASK_SPEAK_HIGHER&quot;</span><span class="p">,</span>
+                <span class="n">SpeakActionState</span><span class="p">(</span><span class="s">&quot;I&#39;m sorry! Can you repeat your name higher please?&quot;</span><span class="p">),</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;LISTEN_TO_NAME&quot;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;LISTEN_TO_NAME&quot;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;LISTEN_TO_NAME&quot;</span><span class="p">}</span>
+                <span class="p">)</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&quot;CHECK_REPEATED_NAME&quot;</span><span class="p">,</span>
+                <span class="n">CheckRepeatedNames</span><span class="p">(),</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;DISABLE_NAME_GRAMMAR&quot;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;ASIGN_A_NEW_NAME&quot;</span><span class="p">}</span>
+                <span class="p">)</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&quot;ASIGN_A_NEW_NAME&quot;</span><span class="p">,</span>
+                <span class="n">AsignANewName</span><span class="p">(),</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;ASIGN_A_NEW_NAME_WARNING&quot;</span><span class="p">,</span> <span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;ASIGN_A_NEW_NAME_WARNING&quot;</span><span class="p">}</span>
+                <span class="p">)</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&quot;ASIGN_A_NEW_NAME_2&quot;</span><span class="p">,</span>
+                <span class="n">AsignANewName</span><span class="p">(),</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;ASIGN_A_NEW_NAME_WARNING_2&quot;</span><span class="p">,</span> <span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;ASIGN_A_NEW_NAME_WARNING_2&quot;</span><span class="p">}</span>
+                <span class="p">)</span>
+
+            <span class="k">def</span> <span class="nf">asign_a_new_name_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s">&quot;I&#39;m sorry. I understood </span><span class="si">%s</span><span class="s"> and this name was already asigned. I&#39;ll call you </span><span class="si">%s</span><span class="s">!&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">userdata</span><span class="o">.</span><span class="n">current_name</span><span class="p">,</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_person_name</span><span class="p">)</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&#39;ASIGN_A_NEW_NAME_WARNING&#39;</span><span class="p">,</span>
+                <span class="n">SpeakActionState</span><span class="p">(</span><span class="n">text_cb</span><span class="o">=</span><span class="n">asign_a_new_name_cb</span><span class="p">,</span> <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;in_person_name&#39;</span><span class="p">,</span> <span class="s">&quot;current_name&quot;</span><span class="p">]),</span>
+                <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;in_person_name&quot;</span><span class="p">:</span> <span class="s">&quot;out_person_name&quot;</span><span class="p">},</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;DISABLE_NAME_GRAMMAR&#39;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&#39;DISABLE_NAME_GRAMMAR&#39;</span><span class="p">,</span> <span class="n">preempted</span><span class="p">:</span> <span class="s">&quot;DISABLE_NAME_GRAMMAR&quot;</span><span class="p">})</span>
+
+            <span class="k">def</span> <span class="nf">asign_a_new_name_2_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s">&quot;I&#39;m sorry. I can&#39;t understand you. I&#39;ll call you </span><span class="si">%s</span><span class="s">!&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">userdata</span><span class="o">.</span><span class="n">in_person_name</span><span class="p">)</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&#39;ASIGN_A_NEW_NAME_WARNING_2&#39;</span><span class="p">,</span>
+                <span class="n">SpeakActionState</span><span class="p">(</span><span class="n">text_cb</span><span class="o">=</span><span class="n">asign_a_new_name_2_cb</span><span class="p">,</span> <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;in_person_name&#39;</span><span class="p">]),</span>
+                <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;in_person_name&quot;</span><span class="p">:</span> <span class="s">&quot;out_person_name&quot;</span><span class="p">},</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;DISABLE_NAME_GRAMMAR&#39;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&#39;DISABLE_NAME_GRAMMAR&#39;</span><span class="p">,</span> <span class="n">preempted</span><span class="p">:</span> <span class="s">&quot;DISABLE_NAME_GRAMMAR&quot;</span><span class="p">})</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&#39;DISABLE_NAME_GRAMMAR&#39;</span><span class="p">,</span>
+                <span class="n">GrammarState</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">PEOPLE_GRAMMAR_NAME</span><span class="p">,</span> <span class="n">enabled</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;ANNOUNCE_LEARN_FACE_NAME&#39;</span><span class="p">})</span>
+
+            <span class="k">def</span> <span class="nf">announce_learn_face_name_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">userdata</span><span class="o">.</span><span class="n">names_already_asigned</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">userdata</span><span class="o">.</span><span class="n">names_already_asigned</span><span class="p">),</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_person_name</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">count_check</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">return</span> <span class="s">&quot;Okay </span><span class="si">%s</span><span class="s">, look at my lovely face!&quot;</span> <span class="o">%</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_person_name</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&#39;ANNOUNCE_LEARN_FACE_NAME&#39;</span><span class="p">,</span>
+                <span class="n">SpeakActionState</span><span class="p">(</span><span class="n">text_cb</span><span class="o">=</span><span class="n">announce_learn_face_name_cb</span><span class="p">,</span> <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;in_person_name&#39;</span><span class="p">]),</span>
+                <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;in_person_name&quot;</span><span class="p">:</span> <span class="s">&quot;out_person_name&quot;</span><span class="p">},</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;LEARN_FACE&#39;</span><span class="p">})</span>
+
+            <span class="k">def</span> <span class="nf">learn_face_goal_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">,</span> <span class="n">old_goal</span><span class="p">):</span>
+                <span class="n">faceGoal</span> <span class="o">=</span> <span class="n">FaceRecognitionGoal</span><span class="p">()</span>
+                <span class="n">faceGoal</span><span class="o">.</span><span class="n">order_id</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c"># (re)train</span>
+                <span class="n">faceGoal</span><span class="o">.</span><span class="n">order_argument</span> <span class="o">=</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_person_name</span>
+                <span class="k">return</span> <span class="n">faceGoal</span>
+
+            <span class="nd">@smach.cb_interface</span><span class="p">(</span><span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="n">aborted</span><span class="p">],</span> <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;out_person_name&#39;</span><span class="p">])</span>
+            <span class="k">def</span> <span class="nf">learn_face_result_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="n">GoalStatus</span><span class="o">.</span><span class="n">SUCCEEDED</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">names</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">succeeded</span>
+                <span class="n">userdata</span><span class="o">.</span><span class="n">out_person_name</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="k">return</span> <span class="n">aborted</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&#39;LEARN_FACE&#39;</span><span class="p">,</span>
+                <span class="n">SimpleActionState</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">A_FACE_RECOGNITION</span><span class="p">,</span>
+                    <span class="n">FaceRecognitionAction</span><span class="p">,</span>
+                    <span class="n">goal_cb</span><span class="o">=</span><span class="n">learn_face_goal_cb</span><span class="p">,</span>
+                    <span class="n">result_cb</span><span class="o">=</span><span class="n">learn_face_result_cb</span><span class="p">,</span>
+                    <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;in_person_name&quot;</span><span class="p">]),</span>
+                    <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;in_person_name&quot;</span><span class="p">:</span> <span class="s">&quot;out_person_name&quot;</span><span class="p">},</span>
+                    <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&quot;POST_LEARN_FACE&quot;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="n">aborted</span><span class="p">,</span> <span class="n">preempted</span><span class="p">:</span> <span class="n">preempted</span><span class="p">})</span>
+
+            <span class="n">post_learn_face_phrases</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;You&#39;re my new best friend </span><span class="si">%s</span><span class="s">!&quot;</span><span class="p">,</span> <span class="s">&quot;Ok. Nice to meet you </span><span class="si">%s</span><span class="s">.&quot;</span><span class="p">,</span> <span class="s">&quot;I&#39;m happy because now we are friends </span><span class="si">%s</span><span class="s">!&quot;</span><span class="p">]</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="s">&#39;POST_LEARN_FACE&#39;</span><span class="p">,</span>
+                <span class="n">SpeakActionFromPoolStateMachine</span><span class="p">(</span><span class="n">post_learn_face_phrases</span><span class="p">,</span> <span class="n">arg_key</span><span class="o">=</span><span class="s">&quot;out_person_name&quot;</span><span class="p">),</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="n">succeeded</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&quot;POST_LEARN_FACE&quot;</span><span class="p">,</span> <span class="n">preempted</span><span class="p">:</span> <span class="n">preempted</span><span class="p">}</span>
+                <span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_documentation/pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

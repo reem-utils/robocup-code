@@ -1,0 +1,22 @@
+<package>
+  <description brief="iri_sift">
+
+     iri_sift
+
+  </description>
+  <author>dmartinez</author>
+  <license>LGPL</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/iri_sift</url>
+  <depend package="roscpp"/>
+  <depend package="iri_base_algorithm"/>
+  <depend package="iri_publish_params"/>
+  <depend package="sensor_msgs"/>
+  <depend package="iri_perception_msgs"/>
+  
+  <depend package="cv_bridge" />
+  <depend package="opencv2" />
+
+</package>
+
+

@@ -1,0 +1,38 @@
+<robot name="stool">
+  <link name="stool">
+
+    <inertial>
+      <mass value="1.0" />
+      <!-- center of mass (com) is defined w.r.t. link local coordinate system -->
+      <origin xyz="0 0 0" />
+      <inertia  ixx="0.0" ixy="0.0"  ixz="0.0"  iyy="0.0"  iyz="0.0"  izz="0.0" />
+    </inertial>
+    
+    <visual>
+      <!-- visual origin is defined w.r.t. link local coordinate system -->
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robocup_worlds/Media/models/stool.stl" scale="1 1 1"/>
+      </geometry>
+    </visual>
+
+    <collision>
+      <!-- collision origin is defined w.r.t. link local coordinate system -->
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robocup_worlds/Media/models/stool.stl" scale="1 1 1"/>
+      </geometry>
+    </collision>
+
+  </link>
+
+  <gazebo reference="stool">
+    <material>Gazebo/Blue</material>
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+
+  <gazebo>
+    <static>true</static>
+  </gazebo>
+
+</robot>

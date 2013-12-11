@@ -1,0 +1,17 @@
+<package>
+  <description brief="nod_head_with_bpm_test">
+
+     nod_head_with_bpm_test
+
+  </description>
+  <author>RDaneelOlivaw</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/nod_head_with_bpm_test</url>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="pal_smach_utils"/>
+
+</package>
+
+

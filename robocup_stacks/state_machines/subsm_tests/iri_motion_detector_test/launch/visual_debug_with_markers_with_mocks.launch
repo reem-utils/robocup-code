@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<launch>
+    	
+    <include file="$(find iri_motion_detector_mock)/launch/iri_motion_detector_mock.launch" />
+
+    <!-- SMACH -->
+    <node pkg="iri_motion_detector_test" 
+          name="iri_motion_detector_marker_debug" 
+          type="iri_motion_detector_marker_debug"
+          output="screen">
+	<remap from="/iri_motion_detector/getMotionPosition" to="/iri_motion_detector" />
+    </node>
+
+</launch>

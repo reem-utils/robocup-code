@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<launch>
+    	
+    <!-- Don't forget, you need execute iri_motion_detector 
+    <include file="$(find iri_motion_detector)/launch/iri_motion_detector.launch" />
+    <include file="$(find iri_motion_detector_mock)/launch/iri_motion_detector_mock.launch" />
+    -->
+
+    <!-- SMACH -->
+    <node pkg="iri_motion_detector_test" 
+          name="iri_motion_detector_marker_debug" 
+          type="iri_motion_detector_marker_debug"
+          output="screen">
+    </node>
+
+</launch>

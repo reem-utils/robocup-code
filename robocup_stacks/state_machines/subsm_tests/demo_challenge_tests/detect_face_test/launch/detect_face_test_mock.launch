@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<launch>
+
+    <!-- fake action server nodes -->
+    <!--<include file="$(find tts_mock)/launch/tts_mock.launch" />-->
+    <include file="$(find face_recognition_mock)/launch/face_recognition_mock.launch" />
+    <!-- follow_operator_test SMACH -->
+    <node pkg="detect_face_test"
+        type="detect_face_test.py"
+        name="sm_detect_face_test"
+        output="screen">
+    </node>
+
+</launch>

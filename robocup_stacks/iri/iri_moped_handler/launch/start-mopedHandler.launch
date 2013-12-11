@@ -1,0 +1,16 @@
+<launch>
+	<!-- Launch moped action client -->
+	<node pkg="iri_moped_handler" type="iri_moped_handler" name="iri_moped_handler" output="screen">
+
+		<!-- Topic remapping -->
+		<remap from="/moped/cancel" to="/iri_moped_actionserver/moped/cancel"/>
+		<remap from="/moped/feedback" to="/iri_moped_actionserver/moped/feedback"/>
+		<remap from="/moped/goal" to="/iri_moped_actionserver/moped/goal"/>
+		<remap from="/moped/result" to="/iri_moped_actionserver/moped/result"/>
+		<remap from="/moped/status" to="/iri_moped_actionserver/moped/status"/>
+		<remap from="/camera/rgb/image_mono" to="/head_mount_xtion/rgb/image_mono"/>
+		<remap from="/camera/depth_registered/points" to="/head_mount_xtion/depth_registered/points"/>
+
+	</node>
+</launch>
+

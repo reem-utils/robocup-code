@@ -1,0 +1,31 @@
+<package>
+  <description brief="follow_rythm_test">
+
+     follow_rythm_test
+
+  </description>
+  <author>RDaneelOlivaw</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/follow_rythm_test</url>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <depend package="actionlib"/>
+  <depend package="actionlib_msgs" />
+  <depend package="control_msgs" />
+  <depend package="std_srvs" />
+  <depend package="pal_smach_utils"/>
+  <depend package="pal_control_msgs"/>
+  <depend package="dancing_reem"/>
+  <!--<depend package="alive_engine"/>-->
+  <depend package="std_srvs" /> 
+  <depend package="pal_control_msgs"/>
+  <depend package="geometry_msgs"/>
+  <depend package="pr2_controllers_msgs"/>
+  <depend package="pal_control_msgs"/>
+  <depend package="upperbody_mock"/>
+
+</package>
+
+

@@ -1,0 +1,14 @@
+<package>
+  <description brief="ruben_motion_detector_with_camera">
+
+     ruben_motion_detector_with_camera
+
+  </description>
+  <author>Ruben Alves</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/ruben_motion_detector_with_camera</url>
+
+</package>
+
+

@@ -1,0 +1,18 @@
+<launch>
+  
+  <!-- Fake Servers -->
+  <!--
+  <include file="$(find coord_translator)/launch/coord_translator.launch" />
+  <include file="$(find move_base_mock)/launch/move_base_mock.launch" />
+  <include file="$(find tts_mock)/launch/tts_mock.launch" />
+
+  -->
+   <!-- EmergencySituation SMACH -->
+  <node pkg ="emergency_situation"
+        type="test_save_people.py"
+        name="test_save_people"
+        output="screen">
+  </node>
+
+</launch>
+

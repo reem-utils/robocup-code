@@ -1,0 +1,10 @@
+# Name of the location
+string objname
+
+---
+# coordinates
+bool exists # true if the name of the location exists in the map
+string category
+geometry_msgs/Point32 base_coordinates  # in /map ref frame
+geometry_msgs/Pose    arm_coordinates	# in /base_link ref frame
+int32 databaseID

@@ -1,0 +1,6 @@
+\subsubsection usage Usage
+\verbatim
+<node name="AsHriAlgorithm" pkg="as_hri" type="AsHriAlgorithm">
+</node>
+\endverbatim
+

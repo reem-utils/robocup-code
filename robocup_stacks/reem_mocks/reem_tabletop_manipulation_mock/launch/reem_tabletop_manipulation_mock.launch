@@ -1,0 +1,9 @@
+<launch>
+
+  <node pkg ="reem_tabletop_manipulation_mock"
+        type="reem_tabletop_manipulation_mock.py"
+        name="reem_tabletop_manipulation_mock"
+        output="screen">
+  </node>
+
+</launch>

@@ -1,0 +1,12 @@
+<launch>
+    <arg name="descriptors_file" />
+
+     <node pkg="iri_publish_params"
+            type="iri_publish_params"
+            name="iri_publish_params"
+          output="screen">
+     <param name="input_file" type="string" value="$(arg descriptors_file)"/>
+     <param name="filter_method"     type="int" value="0"/>
+     <param name="selected_centroid" type="int" value="0"/>
+   </node>
+</launch>

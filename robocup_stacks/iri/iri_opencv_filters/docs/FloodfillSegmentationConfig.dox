@@ -1,0 +1,9 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~floodfill_threshold" : \b [int] Floodfill gradient threshold min: 0, default: 6, max: 255
+- \b "~floodfill_min_area" : \b [int] Floodfill minimun area to remove min: 1, default: 100, max: 500000
+- \b "~floodfill_seed_num" : \b [int] Floodfill number of random seeds min: 1, default: 5, max: 50
+- \b "~colorspace_lab" : \b [bool] Use colorspace l*a*b min: False, default: True, max: True
+

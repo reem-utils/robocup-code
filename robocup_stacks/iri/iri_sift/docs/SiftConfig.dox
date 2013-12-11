@@ -1,0 +1,6 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~descriptors_file" : \b [str] File with trained vocabulary min: , default: vocabulary.yaml, max: 
+

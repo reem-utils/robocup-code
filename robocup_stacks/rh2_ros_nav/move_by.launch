@@ -1,0 +1,15 @@
+<launch>
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen" ns="move_by">
+     <remap from="odom" to="/base_odometry/odom" />
+     <remap from="cmd_vel" to="/cmd_vel" />    
+     <rosparam file="$(find rh2_ros_nav)/config/costmap_common_params.yaml" command="load" ns="global_costmap" /> 
+     <rosparam file="$(find rh2_ros_nav)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+     <rosparam file="$(find rh2_ros_nav)/config/local_costmap_params.yaml" command="load" />
+     <rosparam file="$(find rh2_ros_nav)/config/global_costmap_params.yaml" command="load" />  
+     <rosparam file="$(find rh2_ros_nav)/config/acceleration_limits.yaml" command="load" ns="PalLocalPlanner"/>
+<!--     <rosparam file="$(find rh2_ros_nav)/config/pal_local_planner_params.yaml" command="load" /> --> 
+     <rosparam file="$(find rh2_ros_nav)/config/footprint.yaml" command="load" />
+<!--     <rosparam file="$(find rh2_ros_nav)/config/move_base_params.yaml" command="load" /> -->
+     <rosparam file="$(find rh2_ros_nav)/config/recovery_behaviors.yaml" command="load" />
+  </node>
+</launch>

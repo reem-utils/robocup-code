@@ -1,0 +1,69 @@
+<motion id = "come_here"  model = "body" type = "motion_action" >
+<motion_action>
+  <motion_aggregation id = "" >
+    <motion_basic id = "NO_ID"  type = "joint"  completion_required = "1" >
+      <dofs>1 1  1 1   1 1 1 1 1 1 1   1 1 1 1 1 1 1</dofs>
+      <end_effector id = "" >
+        <op_frame link = "__BLANK__" >
+           <matrixHom>
+             <point_3D x = "0"  y = "0"  z = "0" ></point_3D>
+             <matrixRot rodrigues_x = "0"  rodrigues_y = "0"  rodrigues_z = "0" ></matrixRot>
+           </matrixHom>        
+        </op_frame>
+      </end_effector>
+      <goal derived = "goal_interpol" >
+        <goal_interpol>
+
+          <point delta_time = "3.0" >
+            <value> 0 0   0 0   1.28392261272 0.1 -0.697265212565 0 0.291463327131 0 0    1.21813629192 0.0213628934561 -0.230282249134 0.526567231664 0.146232016813 0.0221133713428 0.115262675829 </value>
+          </point>
+
+          <point delta_time = "3.0" >
+            <value> -0.2 0   0 0    0 0.1 0 0 0 0 0    2.16369052847 0 0 0 0 0.0197180106223 -0.411605116597 </value>
+          </point>
+
+	  <!-- init 2 -->
+          <point delta_time = "4.0" >
+            <value> -0.2 0   0 0    0 0.1 0 0 0 0 0   1.6 0.0293019439835 0 0.0 1.39439510239 0.417626844128 -0.34371114374  </value>
+          </point>
+	  
+          <point delta_time = "4.0" >
+            <value> 0.5 0   0 0    0 0.1 0 0 0 0 0   1.6 0.0293019439835 0 0.0 1.39439510239 0.417626844128 -0.34371114374  </value>
+          </point>
+	  
+          <point delta_time = "2.0" >
+            <value> 0.5 0   0 0    0 0.1 0 0 0 0 0   1.53295471218 0.0293019439835 0 0.255781356663 1.39439510239 0.417626844128 -0.34371114374  </value>
+          </point>
+	  
+          <point delta_time = "2.0" >
+            <value> 0.5 0   0 0    0 0.1 0 0 0 0 0   1.05353309018 0.0284973088619 0 1.07538542988 1.39439510239 1.09332699512 -0.34371114374  </value>
+          </point>
+
+          <point delta_time = "2.0" >
+            <value> 0.5 0   0 0    0 0.1 0 0 0 0 0   0.868407960396 0.0284973088619 0 1.52225424848 1.39439510239 1.53357642028 -0.34371114374 </value>
+          </point>
+
+          <point delta_time = "2.0" >
+            <value> 0.5 0   0 0    0 0.1 0 0 0 0 0   0.7068407960396 0.0284973088619 0 1.72225424848 1.39439510239 1.53357642028 -0.34371114374 </value>
+          </point>
+	  
+          <point delta_time = "2.0" >
+            <value> 0.3 0   0 0    0 0.1 0 0 0 0 0   0.7068407960396 0.0284973088619 -0.5 1.62225424848 1.39439510239 1.53357642028 0.34371114374 </value>
+          </point>
+	  
+	  <!--
+          <point delta_time = "1.0" >
+            <value> 0 0   0 0    0 0.1 0 0 0 0 0   0.7268407960396 0.0284973088619 0 1.92225424848 1.39439510239 1.53357642028 -0.34371114374 </value>
+          </point>-->
+
+	  <!-- movement2 
+          <point delta_time = "2.0" >
+            <value> 0.484352515388 0   0 0    0 0 0 0 0 0 0   1.88790066293 -0.0883070531448 -1.9053540402 0.762233129703 1.71044958669 0.79244841558 -0.411605116597 </value>
+          </point> -->
+        </goal_interpol>
+      </goal>
+      <controller kp = "4.0" ></controller>
+    </motion_basic>
+  </motion_aggregation>
+  </motion_action>
+</motion>

@@ -1,0 +1,16 @@
+<package>
+  <description brief="iri_motion_detector_mock">
+
+     iri_motion_detector_mock
+
+  </description>
+  <author>Ruben Alves</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/iri_motion_detector_mock</url>
+  <depend package="actionlib"/>
+  <depend package="iri_motion_detector"/>
+
+</package>
+
+

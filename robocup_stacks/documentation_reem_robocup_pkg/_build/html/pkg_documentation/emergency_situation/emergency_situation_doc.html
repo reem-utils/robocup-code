@@ -1,0 +1,201 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Emergency Situation Documentation &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="emergency-situation-documentation">
+<h1>Emergency Situation Documentation<a class="headerlink" href="#emergency-situation-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="emergency-situation">
+<h2>Emergency Situation<a class="headerlink" href="#emergency-situation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-pdf_creator">
+<span id="pdf-creator-py"></span><h3>pdf_creator.py<a class="headerlink" href="#module-pdf_creator" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="pdf_creator.pageinfo">
+<tt class="descclassname">pdf_creator.</tt><tt class="descname">pageinfo</tt><em class="property"> = ''</em><a class="headerlink" href="#pdf_creator.pageinfo" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>def myLaterPages(canvas, doc):</dt>
+<dd>canvas.saveState()
+canvas.setFont(&#8216;Times-Roman&#8217;, 9)
+# canvas.drawString(inch, 0.75 * inch,&#8221;Page %d %s&#8221; % (doc.page, pageinfo))
+canvas.restoreState()</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-locate_a_person">
+<span id="locate-a-person-py"></span><h3>locate_a_person.py<a class="headerlink" href="#module-locate_a_person" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="locate_a_person.FindAPersonStateMachine">
+<em class="property">class </em><tt class="descclassname">locate_a_person.</tt><tt class="descname">FindAPersonStateMachine</tt><a class="reference internal" href="../../_modules/locate_a_person.html#FindAPersonStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#locate_a_person.FindAPersonStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>It will move from room to room and look for any person. Finding person is from find_and_go_to_person.py (It will move to person)</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-image_creator">
+<span id="image-creator-py"></span><h3>image_creator.py<a class="headerlink" href="#module-image_creator" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-test_find_a_person">
+<span id="test-find-a-person-py"></span><h3>test_find_a_person.py<a class="headerlink" href="#module-test_find_a_person" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-test_save_people">
+<span id="test-save-people-py"></span><h3>test_save_people.py<a class="headerlink" href="#module-test_save_people" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-find_and_go_to_person">
+<span id="find-and-go-to-person-py"></span><h3>find_and_go_to_person.py<a class="headerlink" href="#module-find_and_go_to_person" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="find_and_go_to_person.FindAndGoToPersonStateMachine">
+<em class="property">class </em><tt class="descclassname">find_and_go_to_person.</tt><tt class="descname">FindAndGoToPersonStateMachine</tt><a class="reference internal" href="../../_modules/find_and_go_to_person.html#FindAndGoToPersonStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#find_and_go_to_person.FindAndGoToPersonStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>This will just move to the closest person which is outputted from FindPersonStateMachine of find_person_with_visit_checker.py</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-test_smoke_detector">
+<span id="test-smoke-detector-py"></span><h3>test_smoke_detector.py<a class="headerlink" href="#module-test_smoke_detector" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-test_call_fire_department">
+<span id="test-call-fire-department-py"></span><h3>test_call_fire_department.py<a class="headerlink" href="#module-test_call_fire_department" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-find_person_with_visit_checker">
+<span id="find-person-with-visit-checker-py"></span><h3>find_person_with_visit_checker.py<a class="headerlink" href="#module-find_person_with_visit_checker" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="find_person_with_visit_checker.FindPersonStateMachine">
+<em class="property">class </em><tt class="descclassname">find_person_with_visit_checker.</tt><tt class="descname">FindPersonStateMachine</tt><a class="reference internal" href="../../_modules/find_person_with_visit_checker.html#FindPersonStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#find_person_with_visit_checker.FindPersonStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Looks for a person, rotating in place if necessary, and return any
+information in <a href="#id1"><span class="problematic" id="id2">`</span></a>closest_person&#8217;.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-emergency_situation">
+<span id="emergency-situation-py"></span><h3>emergency_situation.py<a class="headerlink" href="#module-emergency_situation" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-mail_sender">
+<span id="mail-sender-py"></span><h3>mail_sender.py<a class="headerlink" href="#module-mail_sender" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-test_answer_person">
+<span id="test-answer-person-py"></span><h3>test_answer_person.py<a class="headerlink" href="#module-test_answer_person" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-call_fire_department">
+<span id="call-fire-department-py"></span><h3>call_fire_department.py<a class="headerlink" href="#module-call_fire_department" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-save_people">
+<span id="save-people-py"></span><h3>save_people.py<a class="headerlink" href="#module-save_people" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-test_go_to_person">
+<span id="test-go-to-person-py"></span><h3>test_go_to_person.py<a class="headerlink" href="#module-test_go_to_person" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-detect_fire">
+<span id="detect-fire-py"></span><h3>detect_fire.py<a class="headerlink" href="#module-detect_fire" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-go_to_exit_and_follow_checker">
+<span id="go-to-exit-and-follow-checker-py"></span><h3>go_to_exit_and_follow_checker.py<a class="headerlink" href="#module-go_to_exit_and_follow_checker" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-show_problem">
+<span id="show-problem-py"></span><h3>show_problem.py<a class="headerlink" href="#module-show_problem" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-test_go_to_exit_and_follow_checker">
+<span id="test-go-to-exit-and-follow-checker-py"></span><h3>test_go_to_exit_and_follow_checker.py<a class="headerlink" href="#module-test_go_to_exit_and_follow_checker" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-test_rear_camera_check">
+<span id="test-rear-camera-check-py"></span><h3>test_rear_camera_check.py<a class="headerlink" href="#module-test_rear_camera_check" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="../../_sources/pkg_documentation/emergency_situation/emergency_situation_doc.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

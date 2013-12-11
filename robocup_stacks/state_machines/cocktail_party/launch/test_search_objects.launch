@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Cocktail SMACH -->
+  <node pkg ="cocktail_party"
+        type="test_search_objects.py"
+        name="test_search_objects"
+        output="screen">
+  </node>
+
+</launch>

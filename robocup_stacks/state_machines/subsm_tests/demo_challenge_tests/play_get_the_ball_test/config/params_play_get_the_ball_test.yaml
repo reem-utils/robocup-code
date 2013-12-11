@@ -1,0 +1,3 @@
+#This is a config file to search for the reem_grab_ball in different places deppending on
+# if we have that package or we have to use the mock.
+name_of_pkg_play_ball_demo:"reem_grab_ball"

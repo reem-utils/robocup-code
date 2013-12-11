@@ -1,0 +1,21 @@
+<package>
+  <description brief="iri_motion_detector_test">
+
+     iri_motion_detector_test
+
+  </description>
+  <author>Ruben Alves</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/iri_motion_detector_test</url>
+  <depend package="iri_motion_detector"/>
+  <depend package="roslib"/>
+  <depend package="smach"/>
+  <depend package="rospy"/>
+  <depend package="visualization_msgs"/>
+  <depend package="smach_ros"/>
+  <depend package="pal_smach_utils"/>
+</package>
+
+
+

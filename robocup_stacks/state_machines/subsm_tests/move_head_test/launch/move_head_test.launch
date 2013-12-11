@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<launch>
+    <node pkg="move_head_test"
+        type="move_head_test.py"
+        name="move_head_test"
+        output="screen">
+    </node>
+</launch>
+

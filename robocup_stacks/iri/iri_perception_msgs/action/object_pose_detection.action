@@ -1,0 +1,9 @@
+#goal definition
+sensor_msgs/Image       image
+sensor_msgs/PointCloud2 pcl
+---
+#result definition
+geometry_msgs/PoseStamped pose
+---
+#feedback
+

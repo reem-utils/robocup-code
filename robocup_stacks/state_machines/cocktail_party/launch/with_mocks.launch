@@ -1,0 +1,43 @@
+<launch>
+
+  <!-- load the configuration file -->
+  <rosparam file="$(find cocktail_party)/config/cocktail_party.yaml" command="load" ns="cocktail_party" />
+
+  <!-- load the mock configuration file -->
+  <rosparam file="$(find cocktail_party)/config/simulation.yaml" command="load" ns="mock_config" />
+
+  <!-- fake action server nodes -->
+
+  <include file="$(find tts_mock)/launch/tts_mock.launch" />
+  <include file="$(find upperbody_mock)/launch/upperbody_mock.launch" />
+  <include file="$(find move_base_mock)/launch/move_base_mock.launch" />
+  <include file="$(find coord_translator)/launch/coord_translator.launch" />
+  <include file="$(find gesture_recognition_mock)/launch/gesture_recognition_mock.launch" />
+  <include file="$(find face_recognition_mock)/launch/face_recognition_mock.launch" />
+  <include file="$(find arm_navigation_mock)/launch/arm_navigation_mock.launch" />
+  <include file="$(find close_hand_mock)/launch/close_hand_mock.launch" />
+  <include file="$(find speech_recognition_mock)/launch/speech_recognition_mock.launch" />
+  <include file="$(find alive_engine)/launch/reem_alive_mock.launch" />
+
+  <include file="$(find scan_table_mock)/launch/scan_table_mock.launch" />
+  <include file="$(find robot_controllers_mock)/launch/robot_controllers_mock.launch" />
+  <include file="$(find reem_final_approach_mock)/launch/reem_final_approach_mock.launch" />
+  <include file="$(find grasp_collision_services_mock)/launch/grasp_collision_services_mock.launch" />
+  <include file="$(find reem_tabletop_manipulation_mock)/launch/reem_tabletop_manipulation_mock.launch" />
+
+ 
+  <!-- Static Transformation -->
+
+  <node pkg="tf" type="static_transform_publisher" name="static_tf_gesture_detection_frame_base_link" args="1 0 0 0 0 0 gesture_detection_frame base_link 100" />
+  <node pkg="tf" type="static_transform_publisher" name="static_transform_base_link_kinect_link" args="1 0 0 0 0 0 base_link kinect_link 100" />
+  <node pkg="tf" type="static_transform_publisher" name="static_tf_kinect_link_map" args="1 0 0 0 0 0 kinect_link map 100" />
+
+  
+  <!-- Cocktail SMACH -->
+  <node pkg ="cocktail_party"
+        type="cocktail_party_launch.py"
+        name="cocktail_party_launch"
+        output="screen">
+  </node>
+
+</launch>

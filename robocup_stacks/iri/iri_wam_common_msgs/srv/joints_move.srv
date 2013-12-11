@@ -1,0 +1,11 @@
+# Mandatory
+float64[] joints
+
+# Optional.
+#   If length != 7 they are ignored
+#   To be used, they have to be of length 7 (in theory it is one per joint)
+# WARNING: wam_server only uses the first value of the vector for velocity and acceleration
+float64[] velocities
+float64[] accelerations
+---
+int8 success

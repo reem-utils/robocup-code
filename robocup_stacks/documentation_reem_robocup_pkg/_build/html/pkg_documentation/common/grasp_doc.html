@@ -1,0 +1,461 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Grasp &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="grasp">
+<h1>Grasp<a class="headerlink" href="#grasp" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>Grasp<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Here we have the modules for skills that help us on grasping.</p>
+<div class="section" id="module-arm_and_hand_goals">
+<span id="arm-and-hand-goals-py"></span><h3>arm_and_hand_goals.py<a class="headerlink" href="#module-arm_and_hand_goals" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-arm_movement_grasp_sequence">
+<span id="arm-movement-grasp-sequence-py"></span><h3>arm_movement_grasp_sequence.py<a class="headerlink" href="#module-arm_movement_grasp_sequence" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="arm_movement_grasp_sequence.ArmMovementGraspSequenceStateMachine">
+<em class="property">class </em><tt class="descclassname">arm_movement_grasp_sequence.</tt><tt class="descname">ArmMovementGraspSequenceStateMachine</tt><a class="reference internal" href="../../_modules/arm_movement_grasp_sequence.html#ArmMovementGraspSequenceStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arm_movement_grasp_sequence.ArmMovementGraspSequenceStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an object and it&#8217;s location it opens the hand,
+moves the arm to the object to a pre-grasping position,
+then to a grasping position, closes the hand, and
+moves the arm back to a travel position.</p>
+<p>Required parameters:
+No parameters</p>
+<p>Optional parameters:
+No optional parameters.</p>
+<dl class="docutils">
+<dt>&#64;input_keys: &#8216;transformed_object_data&#8217;, &#8216;object_data&#8217;</dt>
+<dd>&#8216;transformed_object_data&#8217; must contain an ObjectPose message
+with the position and orientation transformed from
+the original frame_id to base_link
+&#8216;object_data&#8217; must contain the original ObjectPoseList message
+of the object recognition part</dd>
+</dl>
+<p>No output keys.
+No io_keys.</p>
+<p>If the input_keys aren&#8217;t fullfilled this state aborts.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-arm_movement_to_object">
+<span id="arm-movement-to-object-py"></span><h3>arm_movement_to_object.py<a class="headerlink" href="#module-arm_movement_to_object" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="arm_movement_to_object.ArmMovementToObjectStateMachine">
+<em class="property">class </em><tt class="descclassname">arm_movement_to_object.</tt><tt class="descname">ArmMovementToObjectStateMachine</tt><a class="reference internal" href="../../_modules/arm_movement_to_object.html#ArmMovementToObjectStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arm_movement_to_object.ArmMovementToObjectStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an object and it&#8217;s position moves the arm
+to it&#8217;s position first stopping on a pregrasp
+position.</p>
+<p>Required parameters:
+No parameters.</p>
+<p>Optional parameters:
+No optional parameters</p>
+<dl class="docutils">
+<dt>&#64;input_keys: &#8216;transformed_object_data&#8217;, &#8216;object_data&#8217;</dt>
+<dd>&#8216;transformed_object_data&#8217; must contain an ObjectPose message
+with the position and orientation transformed from
+the original frame_id to base_link
+&#8216;object_data&#8217; must contain the original ObjectPoseList message
+of the object recognition part</dd>
+</dl>
+<p>No output keys.
+No io_keys.</p>
+<p>The hand MUST BE OPEN as we suppose it to be open to graps.
+If the input_keys aren&#8217;t fullfilled this state aborts.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-arm_movement_to_travel">
+<span id="arm-movement-to-travel-py"></span><h3>arm_movement_to_travel.py<a class="headerlink" href="#module-arm_movement_to_travel" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="arm_movement_to_travel.ArmMovementToTravelStateMachine">
+<em class="property">class </em><tt class="descclassname">arm_movement_to_travel.</tt><tt class="descname">ArmMovementToTravelStateMachine</tt><a class="reference internal" href="../../_modules/arm_movement_to_travel.html#ArmMovementToTravelStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arm_movement_to_travel.ArmMovementToTravelStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moves the arm to travel position. (Supposedly with a
+grasped object).</p>
+<p>Required parameters:
+No parameters.</p>
+<p>Optional parameters:
+No optional parameters</p>
+<dl class="docutils">
+<dt>&#64;input_keys: &#8216;transformed_object_data&#8217;, &#8216;object_data&#8217;</dt>
+<dd>&#8216;transformed_object_data&#8217; must contain an ObjectPose message
+with the position and orientation transformed from
+the original frame_id to base_link
+&#8216;object_data&#8217; must contain the original ObjectPoseList message
+of the object recognition part</dd>
+</dl>
+<p>No output keys.
+No io_keys.</p>
+<p>The hand MUST BE OPEN as we suppose it to be open to graps.
+The input_keys should be fullfilled to pass the info over to
+next states. It&#8217;s not checked (as it should be checked in
+previous states).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-complete_grasp_pipeline">
+<span id="complete-grasp-pipeline-py"></span><h3>complete_grasp_pipeline.py<a class="headerlink" href="#module-complete_grasp_pipeline" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="complete_grasp_pipeline.CompleteGraspPipelineStateMachine">
+<em class="property">class </em><tt class="descclassname">complete_grasp_pipeline.</tt><tt class="descname">CompleteGraspPipelineStateMachine</tt><big>(</big><em>ask_for_help=False</em><big>)</big><a class="reference internal" href="../../_modules/complete_grasp_pipeline.html#CompleteGraspPipelineStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#complete_grasp_pipeline.CompleteGraspPipelineStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>This pipeline does:</dt>
+<dd><p class="first">given a a object to search in the userdata key: object_to_search_for
+Scan for the object, if it&#8217;s seen and you are not close enough to grasp
+it will get closer to it and then it will grasp it</p>
+<p class="last">The starting supposed position is in front of the object we want to grasp
+And the ending supposed position is just in front of the object
+with it grasped in the right hand with the &#8220;travelling position&#8221; of the arm
+If it doesn&#8217;t find the object, or can&#8217;t grasp it, it will abort, otherwise succeeded</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-deliver_object">
+<span id="deliver-object-py"></span><h3>deliver_object.py<a class="headerlink" href="#module-deliver_object" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-faulty_deliver_object">
+<span id="faulty-deliver-object-py"></span><h3>faulty_deliver_object.py<a class="headerlink" href="#module-faulty_deliver_object" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-fetch_object">
+<span id="fetch-object-py"></span><h3>fetch_object.py<a class="headerlink" href="#module-fetch_object" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-give_me_object">
+<span id="give-me-object-py"></span><h3>give_me_object.py<a class="headerlink" href="#module-give_me_object" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="give_me_object.GiveMeObjectStateMachine">
+<em class="property">class </em><tt class="descclassname">give_me_object.</tt><tt class="descname">GiveMeObjectStateMachine</tt><a class="reference internal" href="../../_modules/give_me_object.html#GiveMeObjectStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#give_me_object.GiveMeObjectStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>This SM is for asking for a human to give you
+The object that is in front and that you already saw before
+1) Looks for the object
+2) Says he needs help to grasp the object in a &#8220;human friendly&#8221; way
+3) Puts arm and hand in pose to wait for the object been given
+4) Says to please put the object in the hand and waits some secs
+5) Close hand, put arm down</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-grasp_dont_use">
+<span id="grasp-dont-use-py"></span><h3>grasp_dont_use.py<a class="headerlink" href="#module-grasp_dont_use" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="grasp-first-recognized-object-py">
+<h3>grasp_first_recognized_object.py<a class="headerlink" href="#grasp-first-recognized-object-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="head-goals-py">
+<h3>head_goals.py<a class="headerlink" href="#head-goals-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-initialise_and_close_grasp">
+<span id="initialise-and-close-grasp-py"></span><h3>initialise_and_close_grasp.py<a class="headerlink" href="#module-initialise_and_close_grasp" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="initialise_and_close_grasp.CloseGraspPipelineSM">
+<em class="property">class </em><tt class="descclassname">initialise_and_close_grasp.</tt><tt class="descname">CloseGraspPipelineSM</tt><a class="reference internal" href="../../_modules/initialise_and_close_grasp.html#CloseGraspPipelineSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#initialise_and_close_grasp.CloseGraspPipelineSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises all the protocols that CompleteGraspPipelineStateMachine need to work.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="initialise_and_close_grasp.InitGraspPipelineSM">
+<em class="property">class </em><tt class="descclassname">initialise_and_close_grasp.</tt><tt class="descname">InitGraspPipelineSM</tt><a class="reference internal" href="../../_modules/initialise_and_close_grasp.html#InitGraspPipelineSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#initialise_and_close_grasp.InitGraspPipelineSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises all the protocols that CompleteGraspPipelineStateMachine need to work.
+We close befor starting just in case someone didnt finish closing correctly.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-obj_rec_and_grasp_test">
+<span id="obj-rec-and-grasp-test-py"></span><h3>obj_rec_and_grasp_test.py<a class="headerlink" href="#module-obj_rec_and_grasp_test" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-play_get_the_ball">
+<span id="play-get-the-ball-py"></span><h3>play_get_the_ball.py<a class="headerlink" href="#module-play_get_the_ball" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="play_get_the_ball.PlayGetTheBall">
+<em class="property">class </em><tt class="descclassname">play_get_the_ball.</tt><tt class="descname">PlayGetTheBall</tt><big>(</big><em>time_playing=0.0</em><big>)</big><a class="reference internal" href="../../_modules/play_get_the_ball.html#PlayGetTheBall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#play_get_the_ball.PlayGetTheBall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reem plays to try and get the ball moved infront during the time given
+through time_playing. By default it doesnt play.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="play_get_the_ball.StartPlayGetTheBallState">
+<em class="property">class </em><tt class="descclassname">play_get_the_ball.</tt><tt class="descname">StartPlayGetTheBallState</tt><a class="reference internal" href="../../_modules/play_get_the_ball.html#StartPlayGetTheBallState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#play_get_the_ball.StartPlayGetTheBallState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to get an orange ball that you move infront of Reem.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="play_get_the_ball.StopPlayGetTheBallState">
+<em class="property">class </em><tt class="descclassname">play_get_the_ball.</tt><tt class="descname">StopPlayGetTheBallState</tt><a class="reference internal" href="../../_modules/play_get_the_ball.html#StopPlayGetTheBallState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#play_get_the_ball.StopPlayGetTheBallState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to get an orange ball that you move infront of Reem.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-release_object_sm">
+<span id="release-object-sm-py"></span><h3>release_object_sm.py<a class="headerlink" href="#module-release_object_sm" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="release_object_sm.OBJECT_DELIVERED_FRASE">
+<tt class="descclassname">release_object_sm.</tt><tt class="descname">OBJECT_DELIVERED_FRASE</tt><em class="property"> = &quot;I delivered this cute object. I'm so proud.&quot;</em><a class="headerlink" href="#release_object_sm.OBJECT_DELIVERED_FRASE" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>class ReleaseObjectSM(smach.StateMachine):</dt>
+<dd><dl class="first last docutils">
+<dt>def __init__(self):</dt>
+<dd><dl class="first last docutils">
+<dt>#WITH GRASP</dt>
+<dd><dl class="first docutils">
+<dt>smach.StateMachine.__init__(self,</dt>
+<dd><dl class="first docutils">
+<dt>[&#8216;object_delivered_succesfully&#8217;,</dt>
+<dd>&#8216;didnt_deliver_object&#8217;,
+preempted,
+aborted],</dd>
+</dl>
+<p class="last">input_keys=[&#8216;object_name&#8217;])</p>
+</dd>
+</dl>
+<p>with self:</p>
+<blockquote class="last">
+<div><dl class="docutils">
+<dt>smach.StateMachine.add(&#8216;GET_OBJECT_ARM_RELEASE_LOCATION&#8217;,</dt>
+<dd><p class="first">GetObjectReleaseLocationSM(),
+transitions={succeeded: &#8216;SM_RELEASE&#8217;,</p>
+<blockquote>
+<div>preempted: preempted,
+aborted: &#8216;didnt_deliver_object&#8217;},</div></blockquote>
+<dl class="last docutils">
+<dt>remapping={&#8216;object_name&#8217;: &#8216;object_name&#8217;,</dt>
+<dd>&#8216;object_location&#8217;: &#8216;object_location&#8217;,
+&#8216;object_release_location&#8217;: &#8216;object_release_location&#8217;})</dd>
+</dl>
+</dd>
+</dl>
+<p>#TODO, why do we need the object_location?</p>
+<dl class="docutils">
+<dt>smach.StateMachine.add(&#8216;SM_RELEASE&#8217;,</dt>
+<dd><p class="first">ReleaseObjectStateMachine(speak=False),
+transitions={succeeded: &#8216;OBJECT_DELIVERED&#8217;,</p>
+<blockquote>
+<div>preempted: preempted,
+aborted: &#8216;didnt_deliver_object&#8217;},</div></blockquote>
+<p class="last">remapping={&#8216;releasing_position&#8217;: &#8216;object_release_location&#8217;})</p>
+</dd>
+<dt>def say_text_cb(userdata):</dt>
+<dd>text_say = OBJECT_DELIVERED_FRASE
+return text_say</dd>
+<dt>smach.StateMachine.add(&#8216;OBJECT_DELIVERED&#8217;,</dt>
+<dd>SpeakActionState(text_cb=say_text_cb, input_keys=[&#8216;object_name&#8217;]),
+transitions={succeeded: &#8216;object_delivered_succesfully&#8217;})</dd>
+</dl>
+</div></blockquote>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-reset_collision_map">
+<span id="reset-collision-map-py"></span><h3>reset_collision_map.py<a class="headerlink" href="#module-reset_collision_map" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-search_object_and_grasp">
+<span id="search-object-and-grasp-py"></span><h3>search_object_and_grasp.py<a class="headerlink" href="#module-search_object_and_grasp" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-search_objects_behaviour">
+<span id="search-objects-behaviour-py"></span><h3>search_objects_behaviour.py<a class="headerlink" href="#module-search_objects_behaviour" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-search_object_with_confidence_moped">
+<span id="search-object-with-confidence-moped-py"></span><h3>search_object_with_confidence_moped.py<a class="headerlink" href="#module-search_object_with_confidence_moped" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-search_object_with_confidence">
+<span id="search-object-with-confidence-py"></span><h3>search_object_with_confidence.py<a class="headerlink" href="#module-search_object_with_confidence" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-sm_give">
+<span id="sm-give-py"></span><h3>sm_give.py<a class="headerlink" href="#module-sm_give" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-sm_grasp_from_tray">
+<span id="sm-grasp-from-tray-py"></span><h3>sm_grasp_from_tray.py<a class="headerlink" href="#module-sm_grasp_from_tray" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-sm_grasp">
+<span id="sm-grasp-py"></span><h3>sm_grasp.py<a class="headerlink" href="#module-sm_grasp" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-sm_put_on_tray">
+<span id="sm-put-on-tray-py"></span><h3>sm_put_on_tray.py<a class="headerlink" href="#module-sm_put_on_tray" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-sm_reem_deliver_sm">
+<span id="sm-reem-deliver-sm-py"></span><h3>sm_reem_deliver_sm.py<a class="headerlink" href="#module-sm_reem_deliver_sm" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="sm_reem_deliver_sm.SMReemDeliverStateMachine">
+<em class="property">class </em><tt class="descclassname">sm_reem_deliver_sm.</tt><tt class="descname">SMReemDeliverStateMachine</tt><a class="reference internal" href="../../_modules/sm_reem_deliver_sm.html#SMReemDeliverStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sm_reem_deliver_sm.SMReemDeliverStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an object and it&#8217;s location it opens the hand,
+moves the arm to the object to a pre-grasping position,
+then to a grasping position, closes the hand, and
+moves the arm back to a travel position.</p>
+<p>Required parameters:
+No parameters</p>
+<p>Optional parameters:
+No optional parameters.</p>
+<dl class="docutils">
+<dt>&#64;input_keys: &#8216;target_pose_stamped&#8217;, &#8216;object_data&#8217;</dt>
+<dd>&#8216;target_pose_stamped&#8217; is a pose_stamped with target object position
+with the position and orientation transformed from
+the original frame_id to base_link</dd>
+</dl>
+<p>No output keys.
+No io_keys.</p>
+<p>If the input_keys aren&#8217;t fullfilled this state aborts.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-sm_reem_grasp_cloth">
+<span id="sm-reem-grasp-cloth-py"></span><h3>sm_reem_grasp_cloth.py<a class="headerlink" href="#module-sm_reem_grasp_cloth" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="sm_reem_grasp_cloth.SMReemClothGraspStateMachine">
+<em class="property">class </em><tt class="descclassname">sm_reem_grasp_cloth.</tt><tt class="descname">SMReemClothGraspStateMachine</tt><a class="reference internal" href="../../_modules/sm_reem_grasp_cloth.html#SMReemClothGraspStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sm_reem_grasp_cloth.SMReemClothGraspStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an object and it&#8217;s location it opens the hand,
+moves the arm to the object to a pre-grasping position,
+then to a grasping position, closes the hand, and
+moves the arm back to a travel position.</p>
+<p>Required parameters:
+No parameters</p>
+<p>Optional parameters:
+No optional parameters.</p>
+<dl class="docutils">
+<dt>&#64;input_keys: &#8216;target_pose_stamped&#8217;, &#8216;object_data&#8217;</dt>
+<dd>&#8216;target_pose_stamped&#8217; is a pose_stamped with target object position
+with the position and orientation transformed from
+the original frame_id to base_link</dd>
+</dl>
+<p>No output keys.
+No io_keys.</p>
+<p>If the input_keys aren&#8217;t fullfilled this state aborts.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-sm_release">
+<span id="sm-release-py"></span><h3>sm_release.py<a class="headerlink" href="#module-sm_release" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-sm_scan_for_object_and_grasp">
+<span id="sm-scan-for-object-and-grasp-py"></span><h3>sm_scan_for_object_and_grasp.py<a class="headerlink" href="#module-sm_scan_for_object_and_grasp" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="sm-search-and-grasp-py">
+<h3>sm_search_and_grasp.py<a class="headerlink" href="#sm-search-and-grasp-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-st_reem_hand">
+<span id="st-reem-hand-py"></span><h3>st_reem_hand.py<a class="headerlink" href="#module-st_reem_hand" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="st_reem_hand.CloseReemHand">
+<em class="property">class </em><tt class="descclassname">st_reem_hand.</tt><tt class="descname">CloseReemHand</tt><big>(</big><em>follow_joint_trajectory_topic='/right_hand_controller/follow_joint_trajectory'</em><big>)</big><a class="reference internal" href="../../_modules/st_reem_hand.html#CloseReemHand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#st_reem_hand.CloseReemHand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Custom smach for closing REEM hand</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="st_reem_hand.OpenReemHand">
+<em class="property">class </em><tt class="descclassname">st_reem_hand.</tt><tt class="descname">OpenReemHand</tt><big>(</big><em>follow_joint_trajectory_topic='/right_hand_controller/follow_joint_trajectory'</em><big>)</big><a class="reference internal" href="../../_modules/st_reem_hand.html#OpenReemHand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#st_reem_hand.OpenReemHand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Custom smach for openning REEM hand</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="st_reem_hand.OpenReemHand2">
+<em class="property">class </em><tt class="descclassname">st_reem_hand.</tt><tt class="descname">OpenReemHand2</tt><big>(</big><em>follow_joint_trajectory_topic='/right_hand_controller/follow_joint_trajectory'</em><big>)</big><a class="reference internal" href="../../_modules/st_reem_hand.html#OpenReemHand2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#st_reem_hand.OpenReemHand2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Custom smach for openning REEM hand</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="../../_sources/pkg_documentation/common/grasp_doc.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

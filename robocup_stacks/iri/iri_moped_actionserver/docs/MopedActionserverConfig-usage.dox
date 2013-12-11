@@ -1,0 +1,6 @@
+\subsubsection usage Usage
+\verbatim
+<node name="MopedActionserverAlgorithm" pkg="iri_moped_actionserver" type="MopedActionserverAlgorithm">
+</node>
+\endverbatim
+

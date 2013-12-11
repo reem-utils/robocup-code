@@ -1,0 +1,16 @@
+<package>
+  <description brief="scan_table_mock">
+
+     scan_table_mock
+
+  </description>
+  <author>student</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/scan_table_mock</url>
+  <depend package="rospy"/>
+  <depend package="pr2_controllers_msgs"/>
+
+</package>
+
+

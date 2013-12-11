@@ -1,0 +1,15 @@
+/home/sampfeiffer/branches_svn/migration/ROBOCUP_STACKS_INTEGRATION/stacks/robocup_stacks/simulation/robocup_worlds/build/CMakeFiles/ROSBUILD_genmsg_cpp.dir
+/home/sampfeiffer/branches_svn/migration/ROBOCUP_STACKS_INTEGRATION/stacks/robocup_stacks/simulation/robocup_worlds/build/CMakeFiles/ROSBUILD_genmsg_lisp.dir
+/home/sampfeiffer/branches_svn/migration/ROBOCUP_STACKS_INTEGRATION/stacks/robocup_stacks/simulation/robocup_worlds/build/CMakeFiles/ROSBUILD_gensrv_cpp.dir
+/home/sampfeiffer/branches_svn/migration/ROBOCUP_STACKS_INTEGRATION/stacks/robocup_stacks/simulation/robocup_worlds/build/CMakeFiles/ROSBUILD_gensrv_lisp.dir
+/home/sampfeiffer/branches_svn/migration/ROBOCUP_STACKS_INTEGRATION/stacks/robocup_stacks/simulation/robocup_worlds/build/CMakeFiles/clean-test-results.dir
+/home/sampfeiffer/branches_svn/migration/ROBOCUP_STACKS_INTEGRATION/stacks/robocup_stacks/simulation/robocup_worlds/build/CMakeFiles/rosbuild_precompile.dir
+/home/sampfeiffer/branches_svn/migration/ROBOCUP_STACKS_INTEGRATION/stacks/robocup_stacks/simulation/robocup_worlds/build/CMakeFiles/rosbuild_premsgsrvgen.dir
+/home/sampfeiffer/branches_svn/migration/ROBOCUP_STACKS_INTEGRATION/stacks/robocup_stacks/simulation/robocup_worlds/build/CMakeFiles/rospack_genmsg.dir
+/home/sampfeiffer/branches_svn/migration/ROBOCUP_STACKS_INTEGRATION/stacks/robocup_stacks/simulation/robocup_worlds/build/CMakeFiles/rospack_genmsg_libexe.dir
+/home/sampfeiffer/branches_svn/migration/ROBOCUP_STACKS_INTEGRATION/stacks/robocup_stacks/simulation/robocup_worlds/build/CMakeFiles/rospack_gensrv.dir
+/home/sampfeiffer/branches_svn/migration/ROBOCUP_STACKS_INTEGRATION/stacks/robocup_stacks/simulation/robocup_worlds/build/CMakeFiles/test.dir
+/home/sampfeiffer/branches_svn/migration/ROBOCUP_STACKS_INTEGRATION/stacks/robocup_stacks/simulation/robocup_worlds/build/CMakeFiles/test-future.dir
+/home/sampfeiffer/branches_svn/migration/ROBOCUP_STACKS_INTEGRATION/stacks/robocup_stacks/simulation/robocup_worlds/build/CMakeFiles/test-results.dir
+/home/sampfeiffer/branches_svn/migration/ROBOCUP_STACKS_INTEGRATION/stacks/robocup_stacks/simulation/robocup_worlds/build/CMakeFiles/test-results-run.dir
+/home/sampfeiffer/branches_svn/migration/ROBOCUP_STACKS_INTEGRATION/stacks/robocup_stacks/simulation/robocup_worlds/build/CMakeFiles/tests.dir

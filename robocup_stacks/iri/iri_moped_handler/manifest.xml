@@ -1,0 +1,22 @@
+<package>
+  <description brief="iri_moped_handler">
+
+     iri_moped_handler
+
+  </description>
+  <author>frigual</author>
+  <license>LGPL</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/iri_moped_handler</url>
+  <depend package="roscpp"/>
+  <depend package="iri_base_algorithm"/>
+  <depend package="pr_msgs"/>
+  <depend package="actionlib"/>
+  <depend package="iri_moped_actionserver"/>
+  <depend package="sensor_msgs"/>
+  <depend package="message_filters"/>
+  <depend package="pcl"/>
+
+</package>
+
+

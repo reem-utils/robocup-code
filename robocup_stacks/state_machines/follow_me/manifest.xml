@@ -1,0 +1,35 @@
+<package>
+  <description brief="follow_me">
+
+     follow_me
+
+  </description>
+  <author>RDaneelOlivaw</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/follow_me</url>
+  <depend package="rospy"/>
+  
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <depend package="actionlib"/>
+  <depend package="actionlib_msgs"/>
+  <depend package="geometry_msgs"/>
+  <depend package="move_base_msgs"/>
+  <depend package="tf"/>
+  <depend package="pal_smach_utils"/>  
+  <!-- Stuff needed at runtime -->
+  <!-- ... put stuff here once we move on from mock implementations ... -->
+
+  <!-- Mock stuff -->
+  <depend package="door_detector_pal"/>
+  <depend package="face_recognition"/>
+  <!--<depend package="iri_perception_msgs"/>-->
+  <depend package="move_base"/>
+  <depend package="pal_interaction_msgs"/>
+  <depend package="text_to_speech"/>
+  <depend package="coord_translator"/>
+
+</package>
+
+

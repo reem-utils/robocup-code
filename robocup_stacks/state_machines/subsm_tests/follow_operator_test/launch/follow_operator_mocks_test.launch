@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<launch>
+
+<!-- load the Parameters configuration file 
+        <rosparam file="$(find follow_me)/config/params_follow_me.yaml"
+        command="load" ns="params_follow_me" /> -->
+<!-- fake action server nodes -->
+<include file="$(find person_detector_mock)/launch/person_detector_mock.launch" />
+<include file="$(find tts_mock)/launch/tts_mock.launch" />
+<include file="$(find speech_recognition_mock)/launch/speech_recognition_mock.launch" />
+
+
+  <!-- follow_operator_test SMACH -->
+  <node pkg ="follow_operator_test"
+        type="follow_operator_test.py"
+        name="follow_operator"
+        output="screen">
+  </node>
+
+</launch>
+

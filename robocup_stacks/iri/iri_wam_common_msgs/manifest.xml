@@ -1,0 +1,28 @@
+<package>
+  <description brief="iri_wam_common_msgs">
+
+     iri_wam_common_msgs
+
+  </description>
+  <author></author>
+  <license>LGPL</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/iri_wam_common_msgs</url>
+
+  <depend package="std_msgs"/>
+  <depend package="actionlib_msgs"/>
+  <depend package="diagnostic_msgs"/>
+  <depend package="geometry_msgs"/>
+  <depend package="nav_msgs"/>
+  <depend package="sensor_msgs"/>
+  <depend package="actionlib"/>
+  <depend package="actionlib_msgs"/>
+  <depend package="arm_navigation_msgs"/>
+  <depend package="object_manipulation_msgs"/>
+
+  <export>
+    <cpp cflags="-I${prefix}/msg/cpp"/>
+  </export>
+</package>
+
+

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<launch>
+
+
+  <!-- Execute Movement XML TEST SMACH -->
+  <!--include file="$(find upperbody_mock)/launch/upperbody_mock.launch" /-->
+
+  <node pkg ="execute_movement_xml_test"
+        type="execute_movement_xml_test.py"
+        name="execute_movement_xml_test"
+        output="screen">
+  </node>
+
+</launch>

@@ -1,0 +1,311 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>detect_tabletop &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for detect_tabletop</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+<span class="kn">import</span> <span class="nn">roslib</span>
+<span class="n">roslib</span><span class="o">.</span><span class="n">load_manifest</span><span class="p">(</span><span class="s">&#39;pal_smach_utils&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">smach</span>
+<span class="kn">import</span> <span class="nn">rospy</span>
+<span class="kn">from</span> <span class="nn">smach</span> <span class="kn">import</span> <span class="n">StateMachine</span><span class="p">,</span> <span class="n">CBState</span>
+<span class="kn">from</span> <span class="nn">smach_ros</span> <span class="kn">import</span> <span class="n">ServiceState</span><span class="p">,</span> <span class="n">SimpleActionState</span>
+
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.global_common</span> <span class="kn">import</span> <span class="n">succeeded</span><span class="p">,</span> <span class="n">preempted</span><span class="p">,</span> <span class="n">aborted</span>
+<span class="kn">import</span> <span class="nn">pal_smach_utils.object_finding_algorithms.ofb_utils</span> <span class="kn">as</span> <span class="nn">ofb_utils</span>
+<span class="c">#from pr2_controllers_msgs.msg import PointHeadGoal, PointHeadAction  # To use the /head_traj_controller/point_head_action</span>
+<span class="kn">from</span> <span class="nn">pr2_controllers_msgs.msg</span> <span class="kn">import</span> <span class="n">JointTrajectoryGoal</span><span class="p">,</span> <span class="n">JointTrajectoryAction</span>  <span class="c"># To use with the joint_trajectory action</span>
+<span class="kn">from</span> <span class="nn">trajectory_msgs.msg</span> <span class="kn">import</span> <span class="n">JointTrajectoryPoint</span>
+<span class="kn">from</span> <span class="nn">tabletop_object_detector.srv</span> <span class="kn">import</span> <span class="n">TabletopDetection</span><span class="p">,</span> <span class="n">TabletopDetectionRequest</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.object_finding_algorithms.take_snapshot</span> <span class="kn">import</span> <span class="n">TakeXtionSnapshot</span>
+
+<span class="n">HEAD_ACTION_NAME</span> <span class="o">=</span> <span class="s">&#39;/head_traj_controller/joint_trajectory_action&#39;</span>
+<span class="n">HEAD_ACTION_TYPE</span> <span class="o">=</span> <span class="n">JointTrajectoryAction</span>
+<span class="n">LOOK_TIME</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c"># Time in seconds for the transition to the new looking position</span>
+<span class="n">WAIT_BEFORE_SNAPSHOT</span> <span class="o">=</span> <span class="mf">2.0</span>  <span class="c"># Seconds to wait before taking a Snapshot</span>
+
+
+<div class="viewcode-block" id="DetectTabletop"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#detect_tabletop.DetectTabletop">[docs]</a><span class="k">class</span> <span class="nc">DetectTabletop</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="p">):</span>
+
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Performs three looks and makes snapshots of the pointcloud and then calls to the TabletopDetection service.</span>
+
+<span class="sd">    If the parameter recognize_objects is True, the output key tabletop_info is a list of messages of type</span>
+<span class="sd">        tabletop_object_detector/TabletopDetectionResult that contains the results of the detection.</span>
+<span class="sd">    If the parameter recognize_objects is False, the output key tabletop_info is a list of messages of type</span>
+<span class="sd">        tabletop_object_detector/Table that contains the results of the detected table.</span>
+<span class="sd">    It outcomes &#39;no_table&#39; if it didn&#39;t find a table, aborted if something else failed and succeeded if there was no problem.</span>
+
+<span class="sd">    If the outcome is &#39;no_table&#39; or aborted, the output key tabletop_info is an empty list.</span>
+
+<span class="sd">    Note: to have the position of the table, the values to be used are the &quot;x_min, y_min, x_max and y_max&quot; of the Table message.</span>
+<span class="sd">          The PoseStamped of the message is needed to have the z component and the Header message with the frame_id.</span>
+<span class="sd">          The other coordinates of the PoseStamped are not used (x and y are almost 0 in base_link frame).</span>
+
+<span class="sd">          Example of Pose at the center of the table: Pose(Point((x_min+x_max)/2, (y_min+y_max)/2, z), Quaternion())</span>
+<span class="sd">          Where z is the z component of the position in the PoseStamped. The frame_id is the same as the PoseStamped too.</span>
+<span class="sd">          Example of pose at a certain distance of the table: Pose(Point(x_min-DIST_TO_TABLE, (y_min+y_max)/2, z), Quaternion())</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distance_treshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">recognize_objects</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="n">preempted</span><span class="p">,</span> <span class="n">aborted</span><span class="p">,</span> <span class="s">&#39;no_table&#39;</span><span class="p">],</span>
+                                    <span class="n">input_keys</span><span class="o">=</span><span class="p">[],</span>
+                                    <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;tabletop_info&#39;</span><span class="p">])</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="nd">@smach.cb_interface</span><span class="p">(</span><span class="n">input_keys</span><span class="o">=</span><span class="p">[],</span> <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;out_tabletop_info&#39;</span><span class="p">,</span> <span class="s">&#39;out_n_looks&#39;</span><span class="p">],</span>
+                                <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">])</span>
+            <span class="k">def</span> <span class="nf">init_udata</span><span class="p">(</span><span class="n">userdata</span><span class="p">):</span>
+                <span class="n">userdata</span><span class="o">.</span><span class="n">out_n_looks</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c"># Number of looks done</span>
+                <span class="n">userdata</span><span class="o">.</span><span class="n">out_tabletop_info</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c"># To be filled in the GATHER_TTOP_DATA state</span>
+                <span class="k">return</span> <span class="n">succeeded</span>
+
+            <span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;INIT_USERDATA&#39;</span><span class="p">,</span> <span class="n">CBState</span><span class="p">(</span><span class="n">init_udata</span><span class="p">,</span> <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;out_tabletop_info&#39;</span><span class="p">,</span> <span class="s">&#39;out_n_looks&#39;</span><span class="p">],</span>
+                                                      <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">]),</span>
+                             <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;out_tabletop_info&#39;</span><span class="p">:</span> <span class="s">&#39;tabletop_info&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;out_n_looks&#39;</span><span class="p">:</span> <span class="s">&#39;n_looks&#39;</span><span class="p">},</span>
+                             <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;CONTROL_STATE&#39;</span><span class="p">})</span>
+
+            <span class="nd">@smach.cb_interface</span><span class="p">(</span><span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;in_n_looks&#39;</span><span class="p">,</span> <span class="s">&#39;in_tabletop_info&#39;</span><span class="p">],</span>
+                                <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;look_goal&#39;</span><span class="p">,</span> <span class="s">&#39;out_n_looks&#39;</span><span class="p">],</span> <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="s">&#39;next&#39;</span><span class="p">,</span> <span class="s">&#39;no_table&#39;</span><span class="p">])</span>
+            <span class="k">def</span> <span class="nf">control_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_n_looks</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c"># first look</span>
+                    <span class="n">userdata</span><span class="o">.</span><span class="n">look_goal</span> <span class="o">=</span> <span class="n">look_right</span><span class="p">()</span><span class="o">.</span><span class="n">trajectory</span>
+                <span class="k">elif</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_n_looks</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c"># Second look</span>
+                    <span class="n">userdata</span><span class="o">.</span><span class="n">look_goal</span> <span class="o">=</span> <span class="n">look_straight</span><span class="p">()</span><span class="o">.</span><span class="n">trajectory</span>
+                <span class="k">elif</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_n_looks</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c"># Third look</span>
+                    <span class="n">userdata</span><span class="o">.</span><span class="n">look_goal</span> <span class="o">=</span> <span class="n">look_left</span><span class="p">()</span><span class="o">.</span><span class="n">trajectory</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c"># Finished all the looks</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_tabletop_info</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="s">&#39;no_table&#39;</span>
+                    <span class="k">return</span> <span class="n">succeeded</span>
+                <span class="n">userdata</span><span class="o">.</span><span class="n">out_n_looks</span> <span class="o">=</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_n_looks</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">return</span> <span class="s">&#39;next&#39;</span>
+
+            <span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;CONTROL_STATE&#39;</span><span class="p">,</span> <span class="n">CBState</span><span class="p">(</span><span class="n">control_cb</span><span class="p">,</span>
+                                                      <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;n_looks&#39;</span><span class="p">],</span>
+                                                      <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;look_goal&#39;</span><span class="p">],</span>
+                                                      <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="s">&#39;next&#39;</span><span class="p">,</span> <span class="s">&#39;no_table&#39;</span><span class="p">]),</span>
+                             <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;next&#39;</span><span class="p">:</span> <span class="s">&#39;LOOK_STATE&#39;</span><span class="p">,</span>
+                                          <span class="n">succeeded</span><span class="p">:</span> <span class="n">succeeded</span><span class="p">,</span>
+                                          <span class="s">&#39;no_table&#39;</span><span class="p">:</span> <span class="s">&#39;no_table&#39;</span><span class="p">},</span>
+                             <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;in_n_looks&#39;</span><span class="p">:</span> <span class="s">&#39;n_looks&#39;</span><span class="p">,</span> <span class="s">&#39;out_n_looks&#39;</span><span class="p">:</span> <span class="s">&#39;n_looks&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;look_goal&#39;</span><span class="p">:</span> <span class="s">&#39;look_goal&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;in_tabletop_info&#39;</span><span class="p">:</span> <span class="s">&#39;tabletop_info&#39;</span><span class="p">})</span>
+
+            <span class="c"># Move the head before detecting table</span>
+            <span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;LOOK_STATE&#39;</span><span class="p">,</span>
+                             <span class="n">SimpleActionState</span><span class="p">(</span><span class="n">HEAD_ACTION_NAME</span><span class="p">,</span>
+                                               <span class="n">HEAD_ACTION_TYPE</span><span class="p">,</span>
+                                               <span class="n">goal_slots</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;trajectory&#39;</span><span class="p">]),</span>
+                             <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;TAKE_SNAPSHOT&#39;</span><span class="p">},</span>
+                             <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;trajectory&#39;</span><span class="p">:</span> <span class="s">&#39;look_goal&#39;</span><span class="p">})</span>
+
+            <span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;TAKE_SNAPSHOT&#39;</span><span class="p">,</span> <span class="n">TakeXtionSnapshot</span><span class="p">(</span><span class="n">WAIT_BEFORE_SNAPSHOT</span><span class="p">),</span>
+                             <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;TABLE_DETECTION&#39;</span><span class="p">})</span>
+
+            <span class="c"># TabletopDetection call</span>
+            <span class="n">detect_table</span> <span class="o">=</span> <span class="n">TabletopDetectionRequest</span><span class="p">()</span>
+            <span class="c"># Return the pointcloud (cluster) for each detected object</span>
+            <span class="c"># if this is false, you have no data to pass to tabletop_collision_map_processing node</span>
+            <span class="n">detect_table</span><span class="o">.</span><span class="n">return_clusters</span> <span class="o">=</span> <span class="n">recognize_objects</span>
+            <span class="c"># Return matching object models</span>
+            <span class="c"># Each cluster will have 1 or more models, even if the confidence rating is too low to display a marker in Rviz</span>
+            <span class="c"># If the household objects database is not connected, the model list will be empty</span>
+            <span class="n">detect_table</span><span class="o">.</span><span class="n">return_models</span> <span class="o">=</span> <span class="n">recognize_objects</span>
+            <span class="c"># Number of models to return for each object cluster</span>
+            <span class="c"># If there is more than 1 model with high confidence, they will all be displayed in Rviz</span>
+            <span class="n">detect_table</span><span class="o">.</span><span class="n">num_models</span> <span class="o">=</span> <span class="mi">1</span>
+
+            <span class="nd">@smach.cb_interface</span><span class="p">(</span><span class="n">input_keys</span><span class="o">=</span><span class="p">[],</span> <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;tabletop_response&#39;</span><span class="p">])</span>
+            <span class="k">def</span> <span class="nf">table_response_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">detection</span><span class="o">.</span><span class="n">result</span> <span class="o">==</span> <span class="n">response</span><span class="o">.</span><span class="n">detection</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">recognize_objects</span><span class="p">:</span>
+                        <span class="n">userdata</span><span class="o">.</span><span class="n">tabletop_response</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">detection</span>  <span class="c"># Return table and detected objects</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">userdata</span><span class="o">.</span><span class="n">tabletop_response</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">detection</span><span class="o">.</span><span class="n">table</span>  <span class="c"># Return only the table</span>
+                    <span class="k">return</span> <span class="n">succeeded</span>
+                <span class="n">userdata</span><span class="o">.</span><span class="n">tabletop_response</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">detection</span>
+                <span class="k">return</span> <span class="n">aborted</span>
+
+            <span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;TABLE_DETECTION&#39;</span><span class="p">,</span> <span class="n">ServiceState</span><span class="p">(</span><span class="s">&#39;/object_detection&#39;</span><span class="p">,</span> <span class="n">TabletopDetection</span><span class="p">,</span>
+                                                             <span class="n">request</span><span class="o">=</span><span class="n">detect_table</span><span class="p">,</span> <span class="n">response_cb</span><span class="o">=</span><span class="n">table_response_cb</span><span class="p">,</span>
+                                                             <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;tabletop_response&#39;</span><span class="p">]),</span>
+                             <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;tabletop_response&#39;</span><span class="p">:</span> <span class="s">&#39;tabletop_response&#39;</span><span class="p">},</span>
+                             <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;GATHER_TTOP_DATA&#39;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&#39;CHECK_FAILURE&#39;</span><span class="p">})</span>
+
+            <span class="c"># Check why it failed</span>
+            <span class="nd">@smach.cb_interface</span><span class="p">(</span><span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;tabletop_response&#39;</span><span class="p">],</span> <span class="n">output_keys</span><span class="o">=</span><span class="p">[],</span> <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="s">&#39;no_table&#39;</span><span class="p">])</span>
+            <span class="k">def</span> <span class="nf">check_if_no_table</span><span class="p">(</span><span class="n">userdata</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">userdata</span><span class="o">.</span><span class="n">tabletop_response</span><span class="o">.</span><span class="n">result</span> <span class="o">==</span> <span class="n">userdata</span><span class="o">.</span><span class="n">tabletop_response</span><span class="o">.</span><span class="n">NO_TABLE</span><span class="p">:</span>
+                   <span class="c">#or userdata.tabletop_response.result == userdata.tabletop_response.NO_CLOUD_RECEIVED:</span>
+                    <span class="k">return</span> <span class="s">&#39;no_table&#39;</span>
+                <span class="k">print</span> <span class="s">&#39;Tabletop detection aborted with status: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">userdata</span><span class="o">.</span><span class="n">tabletop_response</span><span class="o">.</span><span class="n">result</span>
+                <span class="k">return</span> <span class="n">aborted</span>
+
+            <span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;CHECK_FAILURE&#39;</span><span class="p">,</span> <span class="n">CBState</span><span class="p">(</span><span class="n">check_if_no_table</span><span class="p">,</span>
+                                                      <span class="n">input_keys</span><span class="o">=</span><span class="p">[],</span>
+                                                      <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;out_route&#39;</span><span class="p">],</span> <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">aborted</span><span class="p">,</span> <span class="s">&#39;no_table&#39;</span><span class="p">]),</span>
+                             <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;tabletop_response&#39;</span><span class="p">:</span> <span class="s">&#39;tabletop_response&#39;</span><span class="p">},</span>
+                             <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;no_table&#39;</span><span class="p">:</span> <span class="s">&#39;CONTROL_STATE&#39;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="n">aborted</span><span class="p">})</span>
+
+            <span class="nd">@smach.cb_interface</span><span class="p">(</span><span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;in_tabletop_info&#39;</span><span class="p">,</span> <span class="s">&#39;in_tabletop_response&#39;</span><span class="p">],</span> <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;out_tabletop_info&#39;</span><span class="p">],</span>
+                                <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">])</span>
+            <span class="k">def</span> <span class="nf">check_gather_data</span><span class="p">(</span><span class="n">userdata</span><span class="p">):</span>
+                <span class="n">table_data</span> <span class="o">=</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_tabletop_response</span>
+
+                <span class="n">table_orient</span> <span class="o">=</span> <span class="n">table_data</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span>
+                <span class="k">if</span> <span class="n">table_orient</span><span class="o">.</span><span class="n">w</span> <span class="o">&lt;</span> <span class="mf">0.95</span> <span class="ow">or</span> <span class="n">table_orient</span><span class="o">.</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mf">0.05</span> <span class="ow">or</span> <span class="n">table_orient</span><span class="o">.</span><span class="n">y</span> <span class="o">&gt;</span> <span class="mf">0.05</span> <span class="ow">or</span> <span class="n">table_orient</span><span class="o">.</span><span class="n">z</span> <span class="o">&gt;</span> <span class="mf">0.05</span><span class="p">:</span>
+                    <span class="c"># The surface is not horizontal, so we don&#39;t care about it.</span>
+                    <span class="k">print</span> <span class="s">&#39;It was not a table...&#39;</span>
+                    <span class="k">return</span> <span class="n">succeeded</span>
+
+                <span class="n">table_pose</span> <span class="o">=</span> <span class="p">((</span><span class="n">table_data</span><span class="o">.</span><span class="n">x_min</span><span class="o">+</span><span class="n">table_data</span><span class="o">.</span><span class="n">x_max</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">table_data</span><span class="o">.</span><span class="n">y_min</span><span class="o">+</span><span class="n">table_data</span><span class="o">.</span><span class="n">y_max</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">ti</span> <span class="ow">in</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_tabletop_info</span><span class="p">:</span>
+                    <span class="n">tp</span> <span class="o">=</span> <span class="p">((</span><span class="n">ti</span><span class="o">.</span><span class="n">x_min</span><span class="o">+</span><span class="n">ti</span><span class="o">.</span><span class="n">x_max</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">ti</span><span class="o">.</span><span class="n">y_min</span><span class="o">+</span><span class="n">ti</span><span class="o">.</span><span class="n">y_max</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">ofb_utils</span><span class="o">.</span><span class="n">euclidean_distance</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="n">table_pose</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">distance_treshold</span><span class="p">:</span>
+                        <span class="k">break</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c"># The loop ended without breaking</span>
+                    <span class="n">userdata</span><span class="o">.</span><span class="n">in_tabletop_info</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">userdata</span><span class="o">.</span><span class="n">in_tabletop_response</span><span class="p">)</span>
+                    <span class="n">userdata</span><span class="o">.</span><span class="n">out_tabletop_info</span> <span class="o">=</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_tabletop_info</span>
+                <span class="k">return</span> <span class="n">succeeded</span>
+            <span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;GATHER_TTOP_DATA&#39;</span><span class="p">,</span> <span class="n">CBState</span><span class="p">(</span><span class="n">check_gather_data</span><span class="p">,</span>
+                                                         <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;in_tabletop_info&#39;</span><span class="p">,</span> <span class="s">&#39;tabletop_response&#39;</span><span class="p">],</span>
+                                                         <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;out_tabletop_info&#39;</span><span class="p">],</span>
+                                                         <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">]),</span>
+                             <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;in_tabletop_response&#39;</span><span class="p">:</span> <span class="s">&#39;tabletop_response&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;in_tabletop_info&#39;</span><span class="p">:</span> <span class="s">&#39;tabletop_info&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;out_tabletop_info&#39;</span><span class="p">:</span> <span class="s">&#39;tabletop_info&#39;</span><span class="p">},</span>
+                             <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;CONTROL_STATE&#39;</span><span class="p">})</span>
+
+
+<span class="c"># Default head actions</span>
+<span class="c">#positions[0]: 1.0 == all left, 0.0 = middle, -1.0 = all right</span>
+<span class="c">#positions[1]: 1.0 == all down, 0.0 = middle, -1.0 = all up</span></div>
+<span class="k">def</span> <span class="nf">look_straight</span><span class="p">():</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">JointTrajectoryGoal</span><span class="p">()</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">joint_names</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;head_1_joint&#39;</span><span class="p">,</span> <span class="s">&#39;head_2_joint&#39;</span><span class="p">]</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">JointTrajectoryPoint</span><span class="p">()]</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">velocities</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">time_from_start</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Duration</span><span class="p">(</span><span class="n">LOOK_TIME</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="k">def</span> <span class="nf">look_right</span><span class="p">():</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">JointTrajectoryGoal</span><span class="p">()</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">joint_names</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;head_1_joint&#39;</span><span class="p">,</span> <span class="s">&#39;head_2_joint&#39;</span><span class="p">]</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">JointTrajectoryPoint</span><span class="p">()]</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">velocities</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">time_from_start</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Duration</span><span class="p">(</span><span class="n">LOOK_TIME</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="k">def</span> <span class="nf">look_left</span><span class="p">():</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">JointTrajectoryGoal</span><span class="p">()</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">joint_names</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;head_1_joint&#39;</span><span class="p">,</span> <span class="s">&#39;head_2_joint&#39;</span><span class="p">]</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">JointTrajectoryPoint</span><span class="p">()]</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">velocities</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">time_from_start</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Duration</span><span class="p">(</span><span class="n">LOOK_TIME</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_documentation/pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

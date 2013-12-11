@@ -1,0 +1,3 @@
+<launch>
+  <node name="object_recognition_mock" pkg="object_recognition_mock" type="object_recognition.py" />
+</launch>

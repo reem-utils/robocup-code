@@ -1,0 +1,106 @@
+52
+SOAR_ID 0
+SOAR_ID 1
+SOAR_ID 2
+SOAR_ID 3
+SOAR_ID 4
+ENUMERATION 5 1 state
+ENUMERATION 6 1 nil
+ENUMERATION 7 1 REEM01
+ENUMERATION 8 1 initialize-REEM01
+SOAR_ID 9
+SOAR_ID 10
+SOAR_ID 11
+STRING 12
+INTEGER_RANGE 13 -2147483648 2147483647
+INTEGER_RANGE 14 -2147483648 2147483647
+INTEGER_RANGE 15 -2147483648 2147483647
+STRING 16
+STRING 17
+SOAR_ID 18
+STRING 19
+STRING 20
+STRING 21
+STRING 22
+STRING 23
+ENUMERATION 24 2 ko ok
+ENUMERATION 25 2 ko ok
+ENUMERATION 26 2 ko ok
+STRING 27
+SOAR_ID 28
+SOAR_ID 29
+ENUMERATION 30 1 now
+ENUMERATION 31 2 ko ok
+ENUMERATION 32 2 ko ok
+SOAR_ID 33
+STRING 34
+STRING 35
+STRING 36
+STRING 37
+STRING 38
+STRING 39
+STRING 40
+ENUMERATION 41 2 ko ok
+ENUMERATION 42 2 ko ok
+STRING 43
+STRING 44
+STRING 45
+STRING 46
+SOAR_ID 47
+SOAR_ID 48
+STRING 49
+STRING 50
+STRING 51
+52
+0 Rlocation 16
+0 goal 9
+0 io 1
+0 item 10
+0 maxOrder 15
+0 name 7
+0 operator 4
+0 operator 29
+0 operator 33
+0 orderState 14
+0 person 11
+0 superstate 6
+0 top-state 0
+0 type 5
+1 input-link 2
+1 output-link 3
+2 item 45
+2 location 44
+2 performed 39
+2 person 46
+2 person-name 43
+2 person-near 42
+3 command 36
+3 destination 37
+3 go-to 47
+3 result 48
+4 name 8
+9 name 12
+9 order 13
+10 category 18
+10 grasped 31
+10 locationFrom 21
+10 locationTo 22
+10 name 17
+11 followed 24
+11 found 26
+11 item 28
+11 known 32
+11 learned 25
+11 location 27
+11 name 23
+11 near 38
+18 name 19
+18 preferredLocation 20
+29 name 30
+33 destination 35
+33 name 34
+33 person 40
+33 successful 41
+47 destination 50
+47 status 51
+48 success 49

@@ -1,0 +1,3 @@
+iri_perception_msgs/ImagePoint center
+iri_perception_msgs/ImageSize size
+float64 angle

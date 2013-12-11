@@ -1,0 +1,19 @@
+<package>
+  <description brief="upperbody_mock">
+
+     upperbody_mock
+
+  </description>
+  <author>Sammy Pfeiffer</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/upperbody_mock</url>
+  <depend package="rospy"/>
+  <depend package="actionlib"/>
+  <depend package="actionlib_msgs"/>
+  <depend package="pal_control_msgs"/>
+  <depend package="pr2_controllers_msgs"/>
+
+</package>
+
+

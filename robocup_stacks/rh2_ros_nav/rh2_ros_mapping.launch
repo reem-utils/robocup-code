@@ -1,0 +1,30 @@
+<launch>
+
+  <!-- Start the core NOT REQUIRED BECAUSE GAZEBO STARTS A CORE
+  <master auto="start"/> -->
+
+  <!-- Run the Gazebo simulation -->
+
+    <!-- start up willow garage world. Write the name of the png file that defines the world inside the simulated.world file -->
+    <include file="simulated_world.launch"/>
+
+    <!-- start REEM_H2 robot -->
+    <include file="$(find reem_gazebo)/launch/reem.launch"/>
+	
+
+  <!-- Run the mapper --> 
+  <node pkg="gmapping" name="slam_gmapping" type="slam_gmapping" output="screen"  >
+  <remap from="scan" to="/LAS_00" /> 
+  <param name="~linearUpdate" value="0.5" />
+  <param name="~angularUpdate" value="0.2" />
+  <param name="~particles" value="90" />
+  <param name="~xmin" value="-20" />
+  <param name="~ymin" value="-20" />
+  <param name="~xmax" value="20" />
+  <param name="~ymax" value="20" />
+  <param name="~odom" value="/erratic_odometry/odom" />
+  </node>
+
+
+</launch>
+

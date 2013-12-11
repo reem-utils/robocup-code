@@ -1,0 +1,14 @@
+<package>
+  <description brief="iri_wam_smach">
+      SMACH code related to WAM applications
+  </description>
+  <author>Jose Luis Rivero</author>
+  <license>LGPL</license>
+  <url>http://ros.org/wiki/iri_wam_smach</url>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <depend package="sensor_msgs"/>
+  <depend package="geometry_msgs"/>
+  <depend package="iri_wam_common_msgs"/>
+
+</package>

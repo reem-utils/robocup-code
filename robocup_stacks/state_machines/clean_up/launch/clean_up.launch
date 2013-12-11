@@ -1,0 +1,21 @@
+<launch>
+
+<!-- load the configuration file -->
+  <rosparam file="$(find clean_up)/config/clean_up.yaml"
+      command="load" ns="clean_up" />
+
+  <!-- fake action server nodes -->
+  <!-- <include file="$(find door_detector_pal)/launch/door_detector_pal.launch" />-->
+  <!-- <include file="$(find object_recognition_mock)/launch/object_recognition_mock.launch" /> -->
+  <!-- <include file="$(find speech_recognition_mock)/launch/speech_recognition_mock.launch" /> -->
+
+  <include file="$(find next_location_provider)/launch/next_location_provider_service.launch" />
+  
+  <!-- Clean up it SMACH -->
+  <node pkg ="clean_up"
+        type="clean_up_test.py"
+        name="clean_up_test"
+        output="screen">
+  </node>
+
+</launch>

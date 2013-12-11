@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+    <!--Fake mock launch-->
+
+    <!--Launch of Dancing Reem Smach -->
+    <node pkg="stochastic_movement_selection_test" 
+          type="stochastic_movement_selection_test.py"
+          name="stochastic_movement_selection_test"
+          output="screen" >
+    </node>
+
+</launch>

@@ -1,0 +1,227 @@
+
+material Custom/kitchen_top
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture kitchen_top.jpg
+			}
+		}
+	}
+}
+
+material Custom/kitchen_front
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture kitchen_front.jpg
+			}
+		}
+	}
+}
+
+material Custom/kitchen2_side
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture kitchen2_side.jpg
+			}
+		}
+	}
+}
+
+material Custom/kitchen2_front
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture kitchen2_front.jpg
+			}
+		}
+	}
+}
+
+
+material Custom/wall
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture wall.jpg
+			}
+		}
+	}
+}
+
+
+material Custom/sprite
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture sprite.jpg
+			}
+		}
+	}
+}
+
+
+material Custom/cocacola
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture cocacola.jpg
+			}
+		}
+	}
+}
+
+material Custom/damm
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture damm.jpg
+			}
+		}
+	}
+}
+
+material Custom/xibeca
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture xibeca.jpg
+			}
+		}
+	}
+}
+
+material Custom/pringles
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture pringles.jpg
+			}
+		}
+	}
+}
+
+material Custom/pringles2
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture pringles2.jpg
+			}
+		}
+	}
+}
+
+material Custom/goldengrahams
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture goldengrahams.jpg
+			}
+		}
+	}
+}
+
+material Custom/snuggie
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture snuggie2.jpg
+			}
+		}
+	}
+}
+
+material Custom/astro-robot
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture astro-robot.jpg
+			}
+		}
+	}
+}
+
+material Custom/emilio
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture emilio.jpg
+			}
+		}
+	}
+}
+
+material Custom/metal1
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture metal1.jpg
+			}
+		}
+	}
+}

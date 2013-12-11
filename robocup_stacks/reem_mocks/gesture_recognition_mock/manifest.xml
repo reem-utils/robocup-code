@@ -1,0 +1,15 @@
+<package>
+  <description brief="gesture_recognition_mock">
+
+     gesture_recognition_mock
+
+  </description>
+  <author>RDaneelOlivaw</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/gesture_recognition_mock</url>
+  <depend package="rospy"/>
+  <depend package="pal_vision_msgs"/>
+</package>
+
+

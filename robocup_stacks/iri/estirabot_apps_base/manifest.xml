@@ -1,0 +1,16 @@
+<package>
+  <description brief="estirabot_apps_base">
+      Package to host all base code used for building estirabot apps. Mostly
+      SMACH common code across estirabot demos and experiments.
+  </description>
+  <author>Jose Luis Rivero</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/estirabot_apps_base</url>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <depend package="iri_common_smach"/>
+  <depend package="iri_wam_smach"/>
+  <depend package="sensor_msgs"/>
+</package>

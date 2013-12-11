@@ -1,0 +1,5 @@
+float32 num_objects_A
+float32 uncertainty_A
+float32 num_objects_B
+float32 uncertainty_B
+float32 uncertainty_total

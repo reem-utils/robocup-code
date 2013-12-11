@@ -1,0 +1,10 @@
+<stack>
+  <description brief="simulation">simulation</description>
+  <author>Maintained by AESS Estudiants</author>
+  <license>BSD</license>  
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/simulation</url>
+  <depend stack="ros" />
+  <depend stack="simulator_gazebo" /> <!-- gazebo -->
+
+</stack>

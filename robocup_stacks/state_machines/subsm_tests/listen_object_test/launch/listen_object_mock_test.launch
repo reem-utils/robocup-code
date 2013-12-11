@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<launch>
+
+<!-- fake action server nodes -->
+<include file="$(find speech_recognition_mock)/launch/speech_recognition_mock.launch" />
+
+  <!-- follow_operator_test SMACH -->
+  <node pkg ="listen_object_test"
+        type="listen_object_test.py"
+        name="listen_object_test"
+        output="screen">
+  </node>
+
+</launch>
+

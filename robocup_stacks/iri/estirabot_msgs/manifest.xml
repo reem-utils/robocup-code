@@ -1,0 +1,16 @@
+<package>
+  <description brief="estirabot_msgs">
+    Custom message used by the EstiraBot robot
+  </description>
+  <author>Jose Luis Rivero</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/estirabot_msgs</url>
+  <depend package="geometry_msgs"/>
+  <depend package="sensor_msgs"/>
+  <depend package="object_manipulation_msgs"/>
+  <depend package="actionlib"/>
+  <depend package="actionlib_msgs"/>
+  <depend package="pcl"/>
+  <depend package="iri_perception_msgs"/>
+</package>

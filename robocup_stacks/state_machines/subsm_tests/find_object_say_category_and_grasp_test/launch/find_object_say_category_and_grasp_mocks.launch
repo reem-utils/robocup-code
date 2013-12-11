@@ -1,0 +1,20 @@
+<launch>
+
+    <include file="$(find coord_translator)/launch/coord_translator.launch" />
+    <include file="$(find tts_mock)/launch/tts_mock.launch" /> 
+    <include file="$(find object_recognition_mock)/launch/object_recognition_mock.launch" />
+    <include file="$(find arm_navigation_mock)/launch/arm_navigation_mock.launch" />
+    <include file="$(find close_hand_mock)/launch/close_hand_mock.launch" />
+    <include file="$(find move_base_mock)/launch/move_base_mock.launch"/>
+    <node pkg="tf" type="static_transform_publisher" name="stereo_link_to_map" 
+          args="1.0 1.0 1.0 1.0 1.0 1.0 /openni_depth_frame /map 40" />
+
+    <include file="$(find next_location_provider)/launch/next_location_provider_service.launch" />
+
+    <node pkg ="find_object_say_category_and_grasp_test"
+        type="find_obj_get_cat_grasp.py"
+        name="find_obj_get_cat_grasp"
+        output="screen">
+    </node>
+
+</launch>

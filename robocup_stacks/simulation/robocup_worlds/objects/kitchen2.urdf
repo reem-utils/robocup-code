@@ -1,0 +1,72 @@
+<robot name="kitchen2">
+
+  <link name="kitchen2_top">
+
+    <inertial>
+      <mass value="70.0" />
+      <origin xyz="0 0 0" />
+      <inertia  ixx="0.0" ixy="0.0"  ixz="0.0"  iyy="0.0"  iyz="0.0"  izz="0.0" />
+    </inertial>
+    
+    <visual>
+      <origin xyz="0.6 0 0.8" rpy="0 0 0" />
+      <geometry>
+	<box size="0.6 0.6 1.6" />
+      </geometry>
+    </visual>
+
+    <collision>
+      <origin xyz="0.6 0 0.8" rpy="0 0 0" />
+      <geometry>
+        <box size="0.6 0.6 1.6" />
+     </geometry>
+    </collision>
+
+  </link>
+  
+<gazebo reference="kitchen2_top">
+    <material>Custom/kitchen2_side</material>	
+    <static>true</static>
+    <turnGravityOff>true</turnGravityOff>
+ </gazebo>
+
+<joint name="kitchen2_joint" type="fixed">
+	<parent link="kitchen2_top"/>
+	<child link="kitchen2_side"/>
+</joint>
+
+  <link name="kitchen2_side">
+
+    <inertial>
+      <mass value="70.0" />
+      <origin xyz="0 0 0" />
+      <inertia  ixx="0.0" ixy="0.0"  ixz="0.0"  iyy="0.0"  iyz="0.0"  izz="0.0" />
+    </inertial>
+    
+    <visual>
+      <origin xyz="0.29 0.0 0.8" rpy="0 0 -1.5708" />
+      <geometry>
+        <box size="0.6 0.01 1.6" />
+      </geometry> 
+     </visual>
+
+    <collision>
+      <origin xyz="0.29 0.0 0.8" rpy="0 0 -1.5708" />
+      <geometry>
+        <box size="0.6 0.01 1.6" />
+      </geometry>
+    </collision>
+
+  </link>
+
+<gazebo reference="kitchen2_side">
+    <material>Custom/kitchen2_front</material>	
+    <static>true</static>
+    <turnGravityOff>true</turnGravityOff>
+</gazebo>
+
+  <gazebo>
+    <static>true</static>
+  </gazebo>
+
+</robot>

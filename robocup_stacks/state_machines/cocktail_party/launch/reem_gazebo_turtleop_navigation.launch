@@ -1,0 +1,22 @@
+<launch>
+<include file="$(find speech_recognition_mock)/launch/speech_recognition_mock.launch" />
+<include file="$(find turtlebot_teleop)/launch/keyboard_teleop.launch" />
+
+	<!-- Control with a keyboard -->
+	<include file="$(find turtlebot_teleop)/launch/keyboard_teleop.launch" />
+
+	<!-- fake action server nodes -->
+
+  
+	<!-- Static Transformation -->
+	<node pkg="tf" type="static_transform_publisher" name="static_transform" args="1 0 0 0 0 0 kinect_link map 100" />
+  
+	<!-- Cocktail SMACH 
+	<node pkg ="cocktail_party"
+        	type="cocktail_party.py"
+	        name="cocktail_party"
+        	output="screen">
+	</node>
+	-->
+
+</launch>

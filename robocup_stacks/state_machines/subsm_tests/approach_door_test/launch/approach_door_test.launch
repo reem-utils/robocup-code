@@ -1,0 +1,11 @@
+<launch>
+
+
+  <!-- approach_door_test SMACH -->
+  <node pkg ="approach_door_test"
+        type="approach_door_test_launcher.py"
+        name="approach_door_test"
+        output="screen">
+  </node>
+
+</launch>

@@ -1,0 +1,105 @@
+<!--
+  Application:
+    BoW object detector
+  Description:
+    Recognizes objects
+  Args:
+    Openni device ROS adress (kinect/asus/...)
+  Files:
+    -
+  Robot:
+    Estirabot
+  Author:
+    David Martínez (dmartinez@iri.upc.edu)
+  Date:
+    27 June 2012
+-->
+
+<launch>
+    <!-- Need to supply the openni device ROS adress ex: /kinect/camera -->
+    <arg name="input_topic" /> 
+
+     <!-- Run a passthrough filter to remove background -->
+    <node pkg="nodelet" type="nodelet" name="passthrough" args="load pcl/PassThrough pcl_manager" output="screen">
+        <remap from="~input" to="$(arg input_topic)" />
+        <remap from="~output" to="pcl_distance_filtered" />
+        <rosparam>
+            filter_field_name: z
+            filter_limit_min: 0.8
+            filter_limit_max: 1.335
+            filter_limit_negative: False
+            keep_organized: True
+        </rosparam>
+    </node>
+    <node pkg="nodelet" type="nodelet" name="pcl_manager" args="manager" output="screen" />
+
+    <!-- REMOVE BACKGROUND -->
+    
+    <node pkg="iri_opencv_filters" name="remove_background" type="remove_background_node">
+        <remap from="~/image_in" to="bow_object_detector/image_out"/>
+        <param name="~/threshold" value="60" />
+    </node>
+    
+    <node pkg="iri_opencv_filters" name="remove_small_regions_background" type="remove_small_regions_node">
+        <remap from="~/image_in" to="remove_background/image_out"/> 
+        <param name="~/min_area_threshold" value="40" />
+    </node>
+        
+
+    <!-- PLANE SEGMENTATION -->
+    <node pkg="iri_plane_segmentation_pcl_rgb" name="plane_segmentation" type="iri_plane_segmentation_pcl_rgb">
+        <remap from="~/pointcloud_in" to="pcl_distance_filtered"/>
+
+        <param name="~/pointcloud_downsample" value="true" />
+        <param name="~/pointcloud_downsample_size" value="0.005" />
+
+        <param name="~/choose_plane_by_distance" value="false" />
+
+        <param name="~/plane_distance_thresh" value="0.005" />
+        <param name="~/plane_min_height" value="-0.10" />
+        <param name="~/plane_max_height" value="0.5" />
+        <param name="~/plane_segm_iterations" value="10000" />
+
+        <param name="~/plane_clustering" value="false" />
+        <param name="~/plane_min_cluster_size" value="20" />
+        <param name="~/plane_min_cluster_distance" value="0.1" />
+    </node>
+
+    <node pkg="iri_opencv_filters" name="morphological_close" type="morphological_op_node">
+        <remap from="~/image_in" to="plane_segmentation/segmented_image"/> 
+        <param name="~/morph_element_size" value="17" />
+        <param name="~/morph_operation" value="close" />
+    </node>
+
+    <node pkg="iri_opencv_filters" name="remove_small_regions" type="remove_small_regions_node">
+        <remap from="~/image_in" to="morphological_close/image_out"/> 
+        <param name="~/min_area_threshold" value="30" />
+    </node>
+
+    <node pkg="iri_opencv_filters" name="fill_holes" type="fill_holes_node">
+        <remap from="~/image_in" to="remove_small_regions/image_out"/> 
+    </node>
+    
+    
+    <!-- BITWISE AND -->
+    <node pkg="iri_opencv_filters" name="bitwise_and" type="bitwise_and_node">
+        <remap from="~/image_in1" to="fill_holes/image_out"/>
+        <remap from="~/image_in2" to="remove_small_regions_background/image_out"/>
+    </node>
+    
+    <node pkg="iri_opencv_filters" name="fill_holes_add" type="fill_holes_node">
+        <remap from="~/image_in" to="bitwise_and/image_out"/> 
+    </node>
+    
+    <node pkg="iri_opencv_filters" name="remove_small_regions_add" type="remove_small_regions_node">
+        <remap from="~/image_in" to="fill_holes_add/image_out"/> 
+        <remap from="~/image_out" to="cloth_mask"/>
+        <param name="~/min_area_threshold" value="1000" />
+    </node>
+    
+</launch>
+
+<!-- launch-prefix="xterm -e gdb - -args" -->
+
+
+

@@ -1,0 +1,9 @@
+<stack>
+  <description brief="fake_servers">fake_servers</description>
+  <author>Maintained by </author>
+  <license>BSD</license>  
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/fake_servers</url>
+  <depend stack="ros" />
+
+</stack>

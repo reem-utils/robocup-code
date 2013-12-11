@@ -1,0 +1,18 @@
+<launch>
+
+
+  <!-- fake action server nodes -->
+
+<include file="$(find move_base_mock)/launch/move_base_mock.launch" />
+<include file="$(find tts_mock)/launch/tts_mock.launch" />
+<include file="$(find coord_translator)/launch/coord_translator.launch" />
+<include file="$(find pal_smoke_detection_mock)/launch/pal_smoke_detection_mock.launch" />
+  
+<!-- Emergency Situation SMACH -->
+  <node pkg ="emergency_situation"
+        type="test_smoke_detector.py"
+        name="emergency_situation"
+        output="screen">
+  </node>
+
+</launch>

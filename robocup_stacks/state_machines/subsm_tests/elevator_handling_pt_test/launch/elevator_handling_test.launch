@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<launch>
+	<!-- load the Parameters configuration file -->
+	<rosparam file="$(find follow_me)/config/params_follow_me.yaml"
+	command="load" ns="params_follow_me" />
+	
+	<!--<include file="$(find speech_recognition_mock)/launch/speech_recognition_mock.launch" />-->
+	
+	<!-- Follow Me SMACH -->
+  	<node pkg ="elevator_handling_pt_test"
+        type="elevator_handling_pt_test.py"
+        name="elevator_handling_pt_test"
+        output="screen">
+  	</node>
+
+
+</launch>

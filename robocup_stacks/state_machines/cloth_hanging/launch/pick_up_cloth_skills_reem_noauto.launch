@@ -1,0 +1,39 @@
+<!--
+  Application:
+    Reem cloth hanging application
+  Description:
+    State machine to grasp a piece of cloth and hang it in a coat rack
+  Args:
+    -
+  Files:
+    $(find cloth_hanging)/cool_pose.xml
+  Robot:
+    Reem
+  Author:
+    David Martínez (dmartinez@iri.upc.edu)
+  Date:
+    17 April 2013
+-->
+
+<launch>
+    <group ns="skills">
+        <group ns="bow_detector">
+            <!-- Bow detector -->
+            <include file="$(find iri_bow_object_detector)/launch/iri_bow_object_detector_reem.launch">
+                <arg name="openni_poincloud_topic"
+                    value="/camera/depth_registered/points" />
+                <arg name="robot_wam" value="false" />
+            </include>
+            <node pkg="iri_transform_pose" name="iri_transform_pose" type="iri_transform_pose">
+            </node>
+        </group>
+    </group>
+    
+
+    <!-- Cloth hang SMACH -->
+    <!--<node pkg ="cloth_hanging"
+            type="cloth_hanging_full.py"
+            name="cloth_hanging_smach"
+            output="screen">
+    </node>-->
+</launch>

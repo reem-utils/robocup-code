@@ -1,0 +1,2429 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Pal Smach Utils Documentation &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="pal-smach-utils-documentation">
+<h1>Pal Smach Utils Documentation<a class="headerlink" href="#pal-smach-utils-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="pal-smach-utils">
+<h2>Pal Smach Utils<a class="headerlink" href="#pal-smach-utils" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-handshaking_start">
+<span id="handshaking-start-py"></span><h3>handshaking_start.py<a class="headerlink" href="#module-handshaking_start" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-handshaking_stop">
+<span id="handshaking-stop-py"></span><h3>handshaking_stop.py<a class="headerlink" href="#module-handshaking_stop" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-test_main">
+<span id="test-main-py"></span><h3>test_main.py<a class="headerlink" href="#module-test_main" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-close_hand">
+<span id="close-hand-py"></span><h3>close_hand.py<a class="headerlink" href="#module-close_hand" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-open_hand">
+<span id="open-hand-py"></span><h3>open_hand.py<a class="headerlink" href="#module-open_hand" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="navigation-reconfigure-server-py">
+<h3>navigation_reconfigure_server.py<a class="headerlink" href="#navigation-reconfigure-server-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-smach_behaviour_states">
+<span id="smach-behaviour-states-py"></span><h3>smach_behaviour_states.py<a class="headerlink" href="#module-smach_behaviour_states" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-smach_utils">
+<span id="smach-utils-py"></span><h3>smach_utils.py<a class="headerlink" href="#module-smach_utils" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="smach_utils.DummyState">
+<em class="property">class </em><tt class="descclassname">smach_utils.</tt><tt class="descname">DummyState</tt><a class="reference internal" href="../../_modules/smach_utils.html#DummyState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#smach_utils.DummyState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dummy state that will always return &#8216;done&#8217;</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="smach_utils.PublisherState">
+<em class="property">class </em><tt class="descclassname">smach_utils.</tt><tt class="descname">PublisherState</tt><big>(</big><em>cb, topic_name, msg_type, outcomes=['done', 'failed', 'preempted'], input_keys=[], output_keys=[], io_keys=[]</em><big>)</big><a class="reference internal" href="../../_modules/smach_utils.html#PublisherState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#smach_utils.PublisherState" title="Permalink to this definition">¶</a></dt>
+<dd><p>State that publishes a message each time it is executed. 
+cb : function that should return the message to publish.
+topic_name : topic on which the messages should be published.
+msg_type : type of the messages to publish</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="smach_utils.SelectPersonState">
+<em class="property">class </em><tt class="descclassname">smach_utils.</tt><tt class="descname">SelectPersonState</tt><big>(</big><em>timeout</em>, <em>input_keys=</em><span class="optional">[</span><span class="optional">]</span>, <em>output_keys=</em><span class="optional">[</span><span class="optional">]</span>, <em>io_keys=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../../_modules/smach_utils.html#SelectPersonState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#smach_utils.SelectPersonState" title="Permalink to this definition">¶</a></dt>
+<dd><p>State that selects a person. Needs to be passed at least the following
+output keys : &#8216;position&#8217; and &#8216;id&#8217;. This state will select the closest
+person.
+Parameter timeout : Persons whose DetectedPerson message has been published
+more than timeout seconds ago will not be considered. If successful,
+returns &#8216;done&#8217; and puts position and objectId of the selected person in
+userdata. If not, returns &#8216;failed&#8217;.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="smach_utils.ThrottleState">
+<em class="property">class </em><tt class="descclassname">smach_utils.</tt><tt class="descname">ThrottleState</tt><big>(</big><em>period_ms</em>, <em>first_call_success=True</em><big>)</big><a class="reference internal" href="../../_modules/smach_utils.html#ThrottleState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#smach_utils.ThrottleState" title="Permalink to this definition">¶</a></dt>
+<dd><p>State that given a period of time in milliseconds, will return &#8216;done&#8217; if more than the specified
+period has elapsed since the last time it returned done.
+(Returns &#8216;done&#8217; every period milliseconds, otherwise returns &#8216;false&#8217;)
+first_call_success will determine if the first time this state is reached it must returned &#8216;done&#8217; or it must wait until period ms have elapsed</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="smach_utils.TimeoutMonitor">
+<em class="property">class </em><tt class="descclassname">smach_utils.</tt><tt class="descname">TimeoutMonitor</tt><big>(</big><em>cb, topic_name, msg_type, global_timeout=None, outcomes=['failed', 'preempted'], last_msg_timeout=None, input_keys=[], output_keys=[], io_keys=[], provide_self_instance=False, sleep_duration=0.05</em><big>)</big><a class="reference internal" href="../../_modules/smach_utils.html#TimeoutMonitor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#smach_utils.TimeoutMonitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>This state will monitor a topic with timeouts check and possibility to
+pass userdata. Parameter topic_name and msg_type define the topic to
+subscribe to.
+Parameter cb : function to call when a message has been received. If it returns None the state will not end and will</p>
+<blockquote>
+<div>wait for the next message or for a timeout, it can also return one of the outcomes of the state to exit the state immediately</div></blockquote>
+<dl class="docutils">
+<dt>Parameter global_timeout <span class="classifier-delimiter">:</span> <span class="classifier">if this parameter is different than None, if the execution of the</span></dt>
+<dd>state lasts longer that global_timeout duration, the execution stops and the state returns &#8216;failed&#8217;.</dd>
+</dl>
+<p>Parameter last_msg_timeout : if this parameter is different than None, if no message has been received during timeout duration, the execution stops and the state returns &#8216;failed&#8217;. The type of messages monitored must have a &#8216;header&#8217; field TODO.
+Parameter provide_self_instance: If true, the callback needs to have 3 arguments, and the first one will be the self instance
+Parameter sleep_duration time to sleep in the execute method to avoid saturating the robot 
+If the function passed in the &#8216;cb&#8217; parameter returns before the
+timeouts expire, the state will return the outcome of this function.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-smach_navigation_states">
+<span id="smach-navigation-states-py"></span><h3>smach_navigation_states.py<a class="headerlink" href="#module-smach_navigation_states" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-smach_vision_states">
+<span id="smach-vision-states-py"></span><h3>smach_vision_states.py<a class="headerlink" href="#module-smach_vision_states" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-__init__">
+<span id="init-py"></span><h3>__init__.py<a class="headerlink" href="#module-__init__" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="smach-manipulation-states-py">
+<h3>smach_manipulation_states.py<a class="headerlink" href="#smach-manipulation-states-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-approach_person">
+<span id="approach-person-py"></span><h3>approach_person.py<a class="headerlink" href="#module-approach_person" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="approach_person.approach_person_cb">
+<tt class="descclassname">approach_person.</tt><tt class="descname">approach_person_cb</tt><big>(</big><em>userdata</em><big>)</big><a class="reference internal" href="../../_modules/approach_person.html#approach_person_cb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#approach_person.approach_person_cb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback for the state MOVE_TO_POSITION.
+This state creates a PoseStamped message based on the Pose message passed
+in userdata, and published.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="approach_person.create_approach_person_state">
+<tt class="descclassname">approach_person.</tt><tt class="descname">create_approach_person_state</tt><big>(</big><em>dummy_implementation=False</em><big>)</big><a class="reference internal" href="../../_modules/approach_person.html#create_approach_person_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#approach_person.create_approach_person_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an APPROACH_STATE container. Calculates the goal position given the
+position of the target person, sends the goal to navigation services and
+waits until the robot has reached the goal.
+dummy_implementation : if True, the states that require
+navigation services to run will not be added to the state machine.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="approach_person.goal_reached_cb">
+<tt class="descclassname">approach_person.</tt><tt class="descname">goal_reached_cb</tt><big>(</big><em>userdata</em>, <em>received_msg</em><big>)</big><a class="reference internal" href="../../_modules/approach_person.html#goal_reached_cb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#approach_person.goal_reached_cb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback for the state CHECK_GOAL_REACHED
+Check if the position reached by the robot is close enough to the goal
+to consider it has been reached.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="approach_person.robot_is_moving_cb">
+<tt class="descclassname">approach_person.</tt><tt class="descname">robot_is_moving_cb</tt><big>(</big><em>userdata</em>, <em>received_msg</em><big>)</big><a class="reference internal" href="../../_modules/approach_person.html#robot_is_moving_cb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#approach_person.robot_is_moving_cb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback for the state ROBOT_IS_MOVING
+Wait until the robot has stopped navigating
+i.e. poses fields of RosPathPlanner/path messages are empty</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="approach_person.start_navigating_cb">
+<tt class="descclassname">approach_person.</tt><tt class="descname">start_navigating_cb</tt><big>(</big><em>userdata</em>, <em>received_msg</em><big>)</big><a class="reference internal" href="../../_modules/approach_person.html#start_navigating_cb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#approach_person.start_navigating_cb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback for the state START_NAVIGATING
+Waits until a message published on RosPathPlanner/Path contains a non-empty
+poses field.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="look-at-point-py">
+<h3>look_at_point.py<a class="headerlink" href="#look-at-point-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="enter-door-py">
+<h3>enter_door.py<a class="headerlink" href="#enter-door-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id1">
+<h3>__init__.py<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-__init__"></span></div>
+<div class="section" id="module-open_door">
+<span id="open-door-py"></span><h3>open_door.py<a class="headerlink" href="#module-open_door" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="open_door.OpenDoorStateMachine">
+<em class="property">class </em><tt class="descclassname">open_door.</tt><tt class="descname">OpenDoorStateMachine</tt><a class="reference internal" href="../../_modules/open_door.html#OpenDoorStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#open_door.OpenDoorStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens the door.</p>
+<p>Required parameters:
+No parameters.</p>
+<p>Optional parameters:
+No optional parameters.</p>
+<p>No input keys.
+No output keys.
+No io_keys.</p>
+<p>The robot should be positioned in front of the door, then it opens it.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-approach_door">
+<span id="approach-door-py"></span><h3>approach_door.py<a class="headerlink" href="#module-approach_door" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="approach_door.ApproachDoorStateMachine">
+<em class="property">class </em><tt class="descclassname">approach_door.</tt><tt class="descname">ApproachDoorStateMachine</tt><a class="reference internal" href="../../_modules/approach_door.html#ApproachDoorStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#approach_door.ApproachDoorStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the robot in front of the door handle.</p>
+<p>Required parameters:
+No parameters.</p>
+<p>Optional parameters:
+No optional parameters.</p>
+<p>No input keys.
+No output keys.
+No io_keys.</p>
+<p>Robot should be positioned in front of the door handle after this state.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-search_objects_behaviour">
+<span id="search-objects-behaviour-py"></span><h3>search_objects_behaviour.py<a class="headerlink" href="#module-search_objects_behaviour" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-arm_movement_to_travel">
+<span id="arm-movement-to-travel-py"></span><h3>arm_movement_to_travel.py<a class="headerlink" href="#module-arm_movement_to_travel" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="arm_movement_to_travel.ArmMovementToTravelStateMachine">
+<em class="property">class </em><tt class="descclassname">arm_movement_to_travel.</tt><tt class="descname">ArmMovementToTravelStateMachine</tt><a class="reference internal" href="../../_modules/arm_movement_to_travel.html#ArmMovementToTravelStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arm_movement_to_travel.ArmMovementToTravelStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moves the arm to travel position. (Supposedly with a
+grasped object).</p>
+<p>Required parameters:
+No parameters.</p>
+<p>Optional parameters:
+No optional parameters</p>
+<dl class="docutils">
+<dt>&#64;input_keys: &#8216;transformed_object_data&#8217;, &#8216;object_data&#8217;</dt>
+<dd>&#8216;transformed_object_data&#8217; must contain an ObjectPose message
+with the position and orientation transformed from
+the original frame_id to base_link
+&#8216;object_data&#8217; must contain the original ObjectPoseList message
+of the object recognition part</dd>
+</dl>
+<p>No output keys.
+No io_keys.</p>
+<p>The hand MUST BE OPEN as we suppose it to be open to graps.
+The input_keys should be fullfilled to pass the info over to
+next states. It&#8217;s not checked (as it should be checked in
+previous states).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-search_object_with_confidence_moped">
+<span id="search-object-with-confidence-moped-py"></span><h3>search_object_with_confidence_moped.py<a class="headerlink" href="#module-search_object_with_confidence_moped" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-fetch_object">
+<span id="fetch-object-py"></span><h3>fetch_object.py<a class="headerlink" href="#module-fetch_object" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-faulty_deliver_object">
+<span id="faulty-deliver-object-py"></span><h3>faulty_deliver_object.py<a class="headerlink" href="#module-faulty_deliver_object" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-initialise_and_close_grasp">
+<span id="initialise-and-close-grasp-py"></span><h3>initialise_and_close_grasp.py<a class="headerlink" href="#module-initialise_and_close_grasp" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="initialise_and_close_grasp.CloseGraspPipelineSM">
+<em class="property">class </em><tt class="descclassname">initialise_and_close_grasp.</tt><tt class="descname">CloseGraspPipelineSM</tt><a class="reference internal" href="../../_modules/initialise_and_close_grasp.html#CloseGraspPipelineSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#initialise_and_close_grasp.CloseGraspPipelineSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises all the protocols that CompleteGraspPipelineStateMachine need to work.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="initialise_and_close_grasp.InitGraspPipelineSM">
+<em class="property">class </em><tt class="descclassname">initialise_and_close_grasp.</tt><tt class="descname">InitGraspPipelineSM</tt><a class="reference internal" href="../../_modules/initialise_and_close_grasp.html#InitGraspPipelineSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#initialise_and_close_grasp.InitGraspPipelineSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises all the protocols that CompleteGraspPipelineStateMachine need to work.
+We close befor starting just in case someone didnt finish closing correctly.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-complete_grasp_pipeline">
+<span id="complete-grasp-pipeline-py"></span><h3>complete_grasp_pipeline.py<a class="headerlink" href="#module-complete_grasp_pipeline" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="complete_grasp_pipeline.CompleteGraspPipelineStateMachine">
+<em class="property">class </em><tt class="descclassname">complete_grasp_pipeline.</tt><tt class="descname">CompleteGraspPipelineStateMachine</tt><big>(</big><em>ask_for_help=False</em><big>)</big><a class="reference internal" href="../../_modules/complete_grasp_pipeline.html#CompleteGraspPipelineStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#complete_grasp_pipeline.CompleteGraspPipelineStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>This pipeline does:</dt>
+<dd><p class="first">given a a object to search in the userdata key: object_to_search_for
+Scan for the object, if it&#8217;s seen and you are not close enough to grasp
+it will get closer to it and then it will grasp it</p>
+<p class="last">The starting supposed position is in front of the object we want to grasp
+And the ending supposed position is just in front of the object
+with it grasped in the right hand with the &#8220;travelling position&#8221; of the arm
+If it doesn&#8217;t find the object, or can&#8217;t grasp it, it will abort, otherwise succeeded</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-head_goals">
+<span id="head-goals-py"></span><h3>head_goals.py<a class="headerlink" href="#module-head_goals" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="sm-search-and-grasp-py">
+<h3>sm_search_and_grasp.py<a class="headerlink" href="#sm-search-and-grasp-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-arm_movement_to_object">
+<span id="arm-movement-to-object-py"></span><h3>arm_movement_to_object.py<a class="headerlink" href="#module-arm_movement_to_object" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="arm_movement_to_object.ArmMovementToObjectStateMachine">
+<em class="property">class </em><tt class="descclassname">arm_movement_to_object.</tt><tt class="descname">ArmMovementToObjectStateMachine</tt><a class="reference internal" href="../../_modules/arm_movement_to_object.html#ArmMovementToObjectStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arm_movement_to_object.ArmMovementToObjectStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an object and it&#8217;s position moves the arm
+to it&#8217;s position first stopping on a pregrasp
+position.</p>
+<p>Required parameters:
+No parameters.</p>
+<p>Optional parameters:
+No optional parameters</p>
+<dl class="docutils">
+<dt>&#64;input_keys: &#8216;transformed_object_data&#8217;, &#8216;object_data&#8217;</dt>
+<dd>&#8216;transformed_object_data&#8217; must contain an ObjectPose message
+with the position and orientation transformed from
+the original frame_id to base_link
+&#8216;object_data&#8217; must contain the original ObjectPoseList message
+of the object recognition part</dd>
+</dl>
+<p>No output keys.
+No io_keys.</p>
+<p>The hand MUST BE OPEN as we suppose it to be open to graps.
+If the input_keys aren&#8217;t fullfilled this state aborts.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-sm_put_on_tray">
+<span id="sm-put-on-tray-py"></span><h3>sm_put_on_tray.py<a class="headerlink" href="#module-sm_put_on_tray" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-search_object_with_confidence">
+<span id="search-object-with-confidence-py"></span><h3>search_object_with_confidence.py<a class="headerlink" href="#module-search_object_with_confidence" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-give_me_object">
+<span id="give-me-object-py"></span><h3>give_me_object.py<a class="headerlink" href="#module-give_me_object" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="give_me_object.GiveMeObjectStateMachine">
+<em class="property">class </em><tt class="descclassname">give_me_object.</tt><tt class="descname">GiveMeObjectStateMachine</tt><a class="reference internal" href="../../_modules/give_me_object.html#GiveMeObjectStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#give_me_object.GiveMeObjectStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>This SM is for asking for a human to give you
+The object that is in front and that you already saw before
+1) Looks for the object
+2) Says he needs help to grasp the object in a &#8220;human friendly&#8221; way
+3) Puts arm and hand in pose to wait for the object been given
+4) Says to please put the object in the hand and waits some secs
+5) Close hand, put arm down</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-sm_reem_grasp_cloth">
+<span id="sm-reem-grasp-cloth-py"></span><h3>sm_reem_grasp_cloth.py<a class="headerlink" href="#module-sm_reem_grasp_cloth" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="sm_reem_grasp_cloth.SMReemClothGraspStateMachine">
+<em class="property">class </em><tt class="descclassname">sm_reem_grasp_cloth.</tt><tt class="descname">SMReemClothGraspStateMachine</tt><a class="reference internal" href="../../_modules/sm_reem_grasp_cloth.html#SMReemClothGraspStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sm_reem_grasp_cloth.SMReemClothGraspStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an object and it&#8217;s location it opens the hand,
+moves the arm to the object to a pre-grasping position,
+then to a grasping position, closes the hand, and
+moves the arm back to a travel position.</p>
+<p>Required parameters:
+No parameters</p>
+<p>Optional parameters:
+No optional parameters.</p>
+<dl class="docutils">
+<dt>&#64;input_keys: &#8216;target_pose_stamped&#8217;, &#8216;object_data&#8217;</dt>
+<dd>&#8216;target_pose_stamped&#8217; is a pose_stamped with target object position
+with the position and orientation transformed from
+the original frame_id to base_link</dd>
+</dl>
+<p>No output keys.
+No io_keys.</p>
+<p>If the input_keys aren&#8217;t fullfilled this state aborts.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-sm_scan_for_object_and_grasp">
+<span id="sm-scan-for-object-and-grasp-py"></span><h3>sm_scan_for_object_and_grasp.py<a class="headerlink" href="#module-sm_scan_for_object_and_grasp" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-arm_and_hand_goals">
+<span id="arm-and-hand-goals-py"></span><h3>arm_and_hand_goals.py<a class="headerlink" href="#module-arm_and_hand_goals" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-grasp_dont_use">
+<span id="grasp-dont-use-py"></span><h3>grasp_dont_use.py<a class="headerlink" href="#module-grasp_dont_use" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-sm_grasp_from_tray">
+<span id="sm-grasp-from-tray-py"></span><h3>sm_grasp_from_tray.py<a class="headerlink" href="#module-sm_grasp_from_tray" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-sm_grasp">
+<span id="sm-grasp-py"></span><h3>sm_grasp.py<a class="headerlink" href="#module-sm_grasp" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-deliver_object">
+<span id="deliver-object-py"></span><h3>deliver_object.py<a class="headerlink" href="#module-deliver_object" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id2">
+<h3>__init__.py<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-__init__"></span></div>
+<div class="section" id="module-st_reem_hand">
+<span id="st-reem-hand-py"></span><h3>st_reem_hand.py<a class="headerlink" href="#module-st_reem_hand" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="st_reem_hand.CloseReemHand">
+<em class="property">class </em><tt class="descclassname">st_reem_hand.</tt><tt class="descname">CloseReemHand</tt><big>(</big><em>follow_joint_trajectory_topic='/right_hand_controller/follow_joint_trajectory'</em><big>)</big><a class="reference internal" href="../../_modules/st_reem_hand.html#CloseReemHand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#st_reem_hand.CloseReemHand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Custom smach for closing REEM hand</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="st_reem_hand.OpenReemHand">
+<em class="property">class </em><tt class="descclassname">st_reem_hand.</tt><tt class="descname">OpenReemHand</tt><big>(</big><em>follow_joint_trajectory_topic='/right_hand_controller/follow_joint_trajectory'</em><big>)</big><a class="reference internal" href="../../_modules/st_reem_hand.html#OpenReemHand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#st_reem_hand.OpenReemHand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Custom smach for openning REEM hand</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="st_reem_hand.OpenReemHand2">
+<em class="property">class </em><tt class="descclassname">st_reem_hand.</tt><tt class="descname">OpenReemHand2</tt><big>(</big><em>follow_joint_trajectory_topic='/right_hand_controller/follow_joint_trajectory'</em><big>)</big><a class="reference internal" href="../../_modules/st_reem_hand.html#OpenReemHand2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#st_reem_hand.OpenReemHand2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Custom smach for openning REEM hand</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-arm_movement_grasp_sequence">
+<span id="arm-movement-grasp-sequence-py"></span><h3>arm_movement_grasp_sequence.py<a class="headerlink" href="#module-arm_movement_grasp_sequence" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="arm_movement_grasp_sequence.ArmMovementGraspSequenceStateMachine">
+<em class="property">class </em><tt class="descclassname">arm_movement_grasp_sequence.</tt><tt class="descname">ArmMovementGraspSequenceStateMachine</tt><a class="reference internal" href="../../_modules/arm_movement_grasp_sequence.html#ArmMovementGraspSequenceStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arm_movement_grasp_sequence.ArmMovementGraspSequenceStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an object and it&#8217;s location it opens the hand,
+moves the arm to the object to a pre-grasping position,
+then to a grasping position, closes the hand, and
+moves the arm back to a travel position.</p>
+<p>Required parameters:
+No parameters</p>
+<p>Optional parameters:
+No optional parameters.</p>
+<dl class="docutils">
+<dt>&#64;input_keys: &#8216;transformed_object_data&#8217;, &#8216;object_data&#8217;</dt>
+<dd>&#8216;transformed_object_data&#8217; must contain an ObjectPose message
+with the position and orientation transformed from
+the original frame_id to base_link
+&#8216;object_data&#8217; must contain the original ObjectPoseList message
+of the object recognition part</dd>
+</dl>
+<p>No output keys.
+No io_keys.</p>
+<p>If the input_keys aren&#8217;t fullfilled this state aborts.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-release_object_sm">
+<span id="release-object-sm-py"></span><h3>release_object_sm.py<a class="headerlink" href="#module-release_object_sm" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="release_object_sm.OBJECT_DELIVERED_FRASE">
+<tt class="descclassname">release_object_sm.</tt><tt class="descname">OBJECT_DELIVERED_FRASE</tt><em class="property"> = &quot;I delivered this cute object. I'm so proud.&quot;</em><a class="headerlink" href="#release_object_sm.OBJECT_DELIVERED_FRASE" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>class ReleaseObjectSM(smach.StateMachine):</dt>
+<dd><dl class="first last docutils">
+<dt>def __init__(self):</dt>
+<dd><dl class="first last docutils">
+<dt>#WITH GRASP</dt>
+<dd><dl class="first docutils">
+<dt>smach.StateMachine.__init__(self,</dt>
+<dd><dl class="first docutils">
+<dt>[&#8216;object_delivered_succesfully&#8217;,</dt>
+<dd>&#8216;didnt_deliver_object&#8217;,
+preempted,
+aborted],</dd>
+</dl>
+<p class="last">input_keys=[&#8216;object_name&#8217;])</p>
+</dd>
+</dl>
+<p>with self:</p>
+<blockquote class="last">
+<div><dl class="docutils">
+<dt>smach.StateMachine.add(&#8216;GET_OBJECT_ARM_RELEASE_LOCATION&#8217;,</dt>
+<dd><p class="first">GetObjectReleaseLocationSM(),
+transitions={succeeded: &#8216;SM_RELEASE&#8217;,</p>
+<blockquote>
+<div>preempted: preempted,
+aborted: &#8216;didnt_deliver_object&#8217;},</div></blockquote>
+<dl class="last docutils">
+<dt>remapping={&#8216;object_name&#8217;: &#8216;object_name&#8217;,</dt>
+<dd>&#8216;object_location&#8217;: &#8216;object_location&#8217;,
+&#8216;object_release_location&#8217;: &#8216;object_release_location&#8217;})</dd>
+</dl>
+</dd>
+</dl>
+<p>#TODO, why do we need the object_location?</p>
+<dl class="docutils">
+<dt>smach.StateMachine.add(&#8216;SM_RELEASE&#8217;,</dt>
+<dd><p class="first">ReleaseObjectStateMachine(speak=False),
+transitions={succeeded: &#8216;OBJECT_DELIVERED&#8217;,</p>
+<blockquote>
+<div>preempted: preempted,
+aborted: &#8216;didnt_deliver_object&#8217;},</div></blockquote>
+<p class="last">remapping={&#8216;releasing_position&#8217;: &#8216;object_release_location&#8217;})</p>
+</dd>
+<dt>def say_text_cb(userdata):</dt>
+<dd>text_say = OBJECT_DELIVERED_FRASE
+return text_say</dd>
+<dt>smach.StateMachine.add(&#8216;OBJECT_DELIVERED&#8217;,</dt>
+<dd>SpeakActionState(text_cb=say_text_cb, input_keys=[&#8216;object_name&#8217;]),
+transitions={succeeded: &#8216;object_delivered_succesfully&#8217;})</dd>
+</dl>
+</div></blockquote>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-play_get_the_ball">
+<span id="play-get-the-ball-py"></span><h3>play_get_the_ball.py<a class="headerlink" href="#module-play_get_the_ball" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="play_get_the_ball.PlayGetTheBall">
+<em class="property">class </em><tt class="descclassname">play_get_the_ball.</tt><tt class="descname">PlayGetTheBall</tt><big>(</big><em>time_playing=0.0</em><big>)</big><a class="reference internal" href="../../_modules/play_get_the_ball.html#PlayGetTheBall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#play_get_the_ball.PlayGetTheBall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reem plays to try and get the ball moved infront during the time given
+through time_playing. By default it doesnt play.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="play_get_the_ball.StartPlayGetTheBallState">
+<em class="property">class </em><tt class="descclassname">play_get_the_ball.</tt><tt class="descname">StartPlayGetTheBallState</tt><a class="reference internal" href="../../_modules/play_get_the_ball.html#StartPlayGetTheBallState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#play_get_the_ball.StartPlayGetTheBallState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to get an orange ball that you move infront of Reem.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="play_get_the_ball.StopPlayGetTheBallState">
+<em class="property">class </em><tt class="descclassname">play_get_the_ball.</tt><tt class="descname">StopPlayGetTheBallState</tt><a class="reference internal" href="../../_modules/play_get_the_ball.html#StopPlayGetTheBallState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#play_get_the_ball.StopPlayGetTheBallState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to get an orange ball that you move infront of Reem.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-sm_give">
+<span id="sm-give-py"></span><h3>sm_give.py<a class="headerlink" href="#module-sm_give" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-grasp_first_recognized_object">
+<span id="grasp-first-recognized-object-py"></span><h3>grasp_first_recognized_object.py<a class="headerlink" href="#module-grasp_first_recognized_object" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-reset_collision_map">
+<span id="reset-collision-map-py"></span><h3>reset_collision_map.py<a class="headerlink" href="#module-reset_collision_map" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-sm_reem_deliver_sm">
+<span id="sm-reem-deliver-sm-py"></span><h3>sm_reem_deliver_sm.py<a class="headerlink" href="#module-sm_reem_deliver_sm" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="sm_reem_deliver_sm.SMReemDeliverStateMachine">
+<em class="property">class </em><tt class="descclassname">sm_reem_deliver_sm.</tt><tt class="descname">SMReemDeliverStateMachine</tt><a class="reference internal" href="../../_modules/sm_reem_deliver_sm.html#SMReemDeliverStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sm_reem_deliver_sm.SMReemDeliverStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an object and it&#8217;s location it opens the hand,
+moves the arm to the object to a pre-grasping position,
+then to a grasping position, closes the hand, and
+moves the arm back to a travel position.</p>
+<p>Required parameters:
+No parameters</p>
+<p>Optional parameters:
+No optional parameters.</p>
+<dl class="docutils">
+<dt>&#64;input_keys: &#8216;target_pose_stamped&#8217;, &#8216;object_data&#8217;</dt>
+<dd>&#8216;target_pose_stamped&#8217; is a pose_stamped with target object position
+with the position and orientation transformed from
+the original frame_id to base_link</dd>
+</dl>
+<p>No output keys.
+No io_keys.</p>
+<p>If the input_keys aren&#8217;t fullfilled this state aborts.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-sm_release">
+<span id="sm-release-py"></span><h3>sm_release.py<a class="headerlink" href="#module-sm_release" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-obj_rec_and_grasp_test">
+<span id="obj-rec-and-grasp-test-py"></span><h3>obj_rec_and_grasp_test.py<a class="headerlink" href="#module-obj_rec_and_grasp_test" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-search_object_and_grasp">
+<span id="search-object-and-grasp-py"></span><h3>search_object_and_grasp.py<a class="headerlink" href="#module-search_object_and_grasp" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id3">
+<h3>search_objects_behaviour.py<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-search_objects_behaviour"></span></div>
+<div class="section" id="sm-search-obj-py">
+<h3>sm_search_obj.py<a class="headerlink" href="#sm-search-obj-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-sm_search_obj_orig">
+<span id="sm-search-obj-orig-py"></span><h3>sm_search_obj_orig.py<a class="headerlink" href="#module-sm_search_obj_orig" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id4">
+<h3>__init__.py<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-__init__"></span></div>
+<div class="section" id="module-tsp">
+<span id="tsp-py"></span><h3>tsp.py<a class="headerlink" href="#module-tsp" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-take_snapshot">
+<span id="take-snapshot-py"></span><h3>take_snapshot.py<a class="headerlink" href="#module-take_snapshot" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-detect_tables_of_zone_sm">
+<span id="detect-tables-of-zone-sm-py"></span><h3>detect_tables_of_zone_sm.py<a class="headerlink" href="#module-detect_tables_of_zone_sm" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="detect_tables_of_zone_sm.DetectTablesOfZoneSM">
+<em class="property">class </em><tt class="descclassname">detect_tables_of_zone_sm.</tt><tt class="descname">DetectTablesOfZoneSM</tt><big>(</big><em>distance_treshold=0.5</em>, <em>dist_to_table=0.3</em>, <em>rads_per_turn=1.5707963267948966</em>, <em>times_to_turn=3</em>, <em>publish_markers=True</em><big>)</big><a class="reference internal" href="../../_modules/detect_tables_of_zone_sm.html#DetectTablesOfZoneSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#detect_tables_of_zone_sm.DetectTablesOfZoneSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detects the tables of a zone, rotating on the actual robot pose.
+It outputs in out_table_pose_list a list of tuples (x, y) with the poses of the tables,
+Also outputs out_table_orientation_list that is a list with the quaternion representing the orientation
+in DEST_FRAME frame_id for every element of the list of poses.
+You can create a single list of tuples ((x, y), q) by zipping the two lists (like this zip(table_pose_list, orientation_list))
+Creator arguments:</p>
+<blockquote>
+<div>rads_per_turn: Radiants to turn every time.
+times_to_turn: It will end when it has turned that number of times
+distance_treshold: Distance treshold to decide if two tables are the same.
+dist_to_table: Distance to approach to the table. The resulting poses will be at this distance from the table.</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ofb_first_approach">
+<span id="ofb-first-approach-py"></span><h3>ofb_first_approach.py<a class="headerlink" href="#module-ofb_first_approach" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="ofb_first_approach.OFBFirstApproach">
+<em class="property">class </em><tt class="descclassname">ofb_first_approach.</tt><tt class="descname">OFBFirstApproach</tt><big>(</big><em>target_object_key=None</em>, <em>target_frame='/map'</em><big>)</big><a class="reference internal" href="../../_modules/ofb_first_approach.html#OFBFirstApproach"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ofb_first_approach.OFBFirstApproach" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object finding state machine.
+Parameters:</p>
+<blockquote>
+<div><ul class="simple">
+<li>target_object_key: string indicating the name of the input_key that has the name of the object you want to find</li>
+<li>target_frame: the frame in what you want the output object&#8217;s location.</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Keys:</dt>
+<dd><ul class="first last simple">
+<li>in_room_name: Name of the room where the robot is and has to search objects.</li>
+<li>out_object_found: Information about the found object</li>
+<li>out_location_inside_room_name: name of the location where the object was found. I.E. the table.</li>
+</ul>
+</dd>
+<dt>Notes:</dt>
+<dd><ul class="first simple">
+<li>If there are objects remaining in a location, it will go to that location again, rather than searching for objects</li>
+</ul>
+<p class="last">in another room.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-object_check_states">
+<span id="object-check-states-py"></span><h3>object_check_states.py<a class="headerlink" href="#module-object_check_states" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="object_check_states.CheckObjectAndRemoveFromList">
+<em class="property">class </em><tt class="descclassname">object_check_states.</tt><tt class="descname">CheckObjectAndRemoveFromList</tt><big>(</big><em>target_frame</em>, <em>leave_unknowns=False</em><big>)</big><a class="reference internal" href="../../_modules/object_check_states.html#CheckObjectAndRemoveFromList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#object_check_states.CheckObjectAndRemoveFromList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if there is any object in the entering userdata. It removes the found object from the list and outputs the list.
+The target_frame parameter is the desired frame_id of the poses of the result.
+The leave_unknowns parameter specifies whether the objects tagged as unknown (not trained) should be used and left in the list
+or not.
+Outcomes:</p>
+<blockquote>
+<div><ul class="simple">
+<li>succeeded: A object was found and is returned. Also it was removed from the list.</li>
+<li>aborted: No object was found, or all the objects were unknown and leave_unknowns was set to False.</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Userdata:</dt>
+<dd><ul class="first last">
+<li><p class="first">in_objects_data: ObjectPoseList of objects found.</p>
+</li>
+<li><p class="first">in_target_object: String containing the name of the object wanted to be found. It&#8217;s the empty string ( &#8216;&#8217; ) if it&#8217;s looking for any object.</p>
+</li>
+<li><dl class="first docutils">
+<dt>out_object_found: The found object. It&#8217;s the first on the list if in_target_object is the empty string ( &#8216;&#8217; ), or the target_object if found.</dt>
+<dd><p class="first last">If no object is found, this output key has the value None (not a string).</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">out_objects_data: The list of objects exceptuating the object found. It&#8217;s the same list if no object is found.</p>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="object_check_states.CheckObjectAndRemoveFromList.fill_print_object_information_and_remove_from_list">
+<tt class="descname">fill_print_object_information_and_remove_from_list</tt><big>(</big><em>userdata</em>, <em>object_index</em><big>)</big><a class="reference internal" href="../../_modules/object_check_states.html#CheckObjectAndRemoveFromList.fill_print_object_information_and_remove_from_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#object_check_states.CheckObjectAndRemoveFromList.fill_print_object_information_and_remove_from_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fills in the selected output object and removes it of the list</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="object_check_states.CheckRemaining">
+<em class="property">class </em><tt class="descclassname">object_check_states.</tt><tt class="descname">CheckRemaining</tt><a class="reference internal" href="../../_modules/object_check_states.html#CheckRemaining"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#object_check_states.CheckRemaining" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if there are objects in a ObjectPoseList.
+Userdata:</p>
+<blockquote>
+<div><ul class="simple">
+<li>in_obj_list: ObjectPoseList of objects. Can be None if there aren&#8217;t objects yet.</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Outcomes:</dt>
+<dd><ul class="first last simple">
+<li>remaining: Means that there are objects remaining.</li>
+<li>empty: Means that the list is empty or that the ObjectPoseList equals None.</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="detect-furniture-of-zone-sm-py">
+<h3>detect_furniture_of_zone_sm.py<a class="headerlink" href="#detect-furniture-of-zone-sm-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-tsp_smach_state">
+<span id="tsp-smach-state-py"></span><h3>tsp_smach_state.py<a class="headerlink" href="#module-tsp_smach_state" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="tsp_smach_state.TSPState">
+<em class="property">class </em><tt class="descclassname">tsp_smach_state.</tt><tt class="descname">TSPState</tt><big>(</big><em>HC=False</em>, <em>add_start_pose=True</em>, <em>indices=False</em><big>)</big><a class="reference internal" href="../../_modules/tsp_smach_state.html#TSPState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tsp_smach_state.TSPState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Smach node to solve the TSP problem.
+The HC parameter in the constructor specifies if it&#8217;ll be solved with a Hill Climbing (True)
+or with a Simulated Annealing(False)
+The add_start_pose parameter in the constructor specifies whether the actual position of the robot should be
+adedd as the start position of the route or not. If True, the resulting route doesn&#8217;t contain the initial as a route.</p>
+<dl class="docutils">
+<dt>Userdata keys:</dt>
+<dd><ul class="first last simple">
+<li>in_nodes is expected to be a list of pairs representing the points to visit.</li>
+<li>out_route is a list of pairs in order of visiting, optimizing the distance of the total route.</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ofb_utils">
+<span id="ofb-utils-py"></span><h3>ofb_utils.py<a class="headerlink" href="#module-ofb_utils" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="detect-furniture-py">
+<h3>detect_furniture.py<a class="headerlink" href="#detect-furniture-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-detect_tabletop_head_scan">
+<span id="detect-tabletop-head-scan-py"></span><h3>detect_tabletop_head_scan.py<a class="headerlink" href="#module-detect_tabletop_head_scan" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="detect_tabletop_head_scan.DetectTabletop">
+<em class="property">class </em><tt class="descclassname">detect_tabletop_head_scan.</tt><tt class="descname">DetectTabletop</tt><big>(</big><em>recognize_objects=False</em><big>)</big><a class="reference internal" href="../../_modules/detect_tabletop_head_scan.html#DetectTabletop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#detect_tabletop_head_scan.DetectTabletop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a head scan action that makes snapshots of the pointcloud and the calls to the TabletopDetection service.</p>
+<dl class="docutils">
+<dt>If the parameter recognize_objects is True, the output key tabletop_info is a list with one message of type</dt>
+<dd>tabletop_object_detector/TabletopDetectionResult that contains the results of the detection.</dd>
+<dt>If the parameter recognize_objects is False, the output key tabletop_info is a list with one message of type</dt>
+<dd>tabletop_object_detector/Table that contains the results of the detected table.</dd>
+</dl>
+<p>It outcomes &#8216;no_table&#8217; if it didn&#8217;t find a table, aborted if something else failed and succeeded if there was no problem.</p>
+<p>If the outcome is &#8216;no_table&#8217; or aborted, the output key tabletop_info is a list with one message of type TabletopDetectionResult.</p>
+<dl class="docutils">
+<dt>Note: to have the position of the table, the values to be used are the &#8220;x_min, y_min, x_max and y_max&#8221; of the Table message.</dt>
+<dd><p class="first">The PoseStamped of the message is needed to have the z component and the Header message with the frame_id.
+The other coordinates of the PoseStamped are not used (x and y are almost 0 in base_link frame).</p>
+<p class="last">Example of Pose at the center of the table: Pose(Point((x_min+x_max)/2, (y_min+y_max)/2, z), Quaternion())
+Where z is the z component of the position in the PoseStamped. The frame_id is the same as the PoseStamped too.
+Example of pose at a certain distance of the table: Pose(Point(x_min-DIST_TO_TABLE, (y_min+y_max)/2, z), Quaternion())</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-object_finding_behaviours">
+<span id="object-finding-behaviours-py"></span><h3>object_finding_behaviours.py<a class="headerlink" href="#module-object_finding_behaviours" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id5">
+<h3>__init__.py<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-__init__"></span></div>
+<div class="section" id="module-ofb_second_approach">
+<span id="ofb-second-approach-py"></span><h3>ofb_second_approach.py<a class="headerlink" href="#module-ofb_second_approach" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="ofb_second_approach.OFBSecondApproach">
+<em class="property">class </em><tt class="descclassname">ofb_second_approach.</tt><tt class="descname">OFBSecondApproach</tt><big>(</big><em>target_object_key=None</em>, <em>target_frame='/map'</em><big>)</big><a class="reference internal" href="../../_modules/ofb_second_approach.html#OFBSecondApproach"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ofb_second_approach.OFBSecondApproach" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object finding state machine.
+Parameters:</p>
+<blockquote>
+<div><ul class="simple">
+<li>target_object_key: string indicating the name of the input_key that has the name of the object you want to find</li>
+<li>target_frame: the frame in what you want the output object&#8217;s location.</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Keys:</dt>
+<dd><ul class="first last simple">
+<li>in_room_name: Name of the room where the robot is and has to search objects.</li>
+<li>out_object_found: Information about the found object</li>
+<li>out_location_inside_room_name: name of the location where the object was found. I.E. the table.</li>
+</ul>
+</dd>
+<dt>Notes:</dt>
+<dd><ul class="first simple">
+<li>If there are objects remaining in a location, it will go to that location again, rather than searching for objects</li>
+</ul>
+<p class="last">in another room.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-visib_prm">
+<span id="visib-prm-py"></span><h3>visib_prm.py<a class="headerlink" href="#module-visib_prm" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-calc_sensing_locations_sm">
+<span id="calc-sensing-locations-sm-py"></span><h3>calc_sensing_locations_sm.py<a class="headerlink" href="#module-calc_sensing_locations_sm" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="calc_sensing_locations_sm.CalculateSensingLocations">
+<em class="property">class </em><tt class="descclassname">calc_sensing_locations_sm.</tt><tt class="descname">CalculateSensingLocations</tt><big>(</big><em>publish_markers=True</em><big>)</big><a class="reference internal" href="../../_modules/calc_sensing_locations_sm.html#CalculateSensingLocations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calc_sensing_locations_sm.CalculateSensingLocations" title="Permalink to this definition">¶</a></dt>
+<dd><p>SMACH StateMachine to calculate sensing locations using the Visib-PRM algorithm.
+The in_room_name is the name of the room to get the corner data.
+The out_guards is a list of pairs (x,y) that represent the sensing locations.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-tell_move_and_recognize_sm">
+<span id="tell-move-and-recognize-sm-py"></span><h3>tell_move_and_recognize_sm.py<a class="headerlink" href="#module-tell_move_and_recognize_sm" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="tell_move_and_recognize_sm.GoAndRecognizeSM">
+<em class="property">class </em><tt class="descclassname">tell_move_and_recognize_sm.</tt><tt class="descname">GoAndRecognizeSM</tt><a class="reference internal" href="../../_modules/tell_move_and_recognize_sm.html#GoAndRecognizeSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tell_move_and_recognize_sm.GoAndRecognizeSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>State machine that goes to a location and recognizes objects.
+Userdata:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">in_location_pose_in_map: Location pose in /map coordinate frame where the robot has to go.</p>
+</li>
+<li><dl class="first docutils">
+<dt>in_target_object: Name of a target object to search for.</dt>
+<dd><p class="first last">If a specific object is not being searched (ie it doesn&#8217;t mind what object is found),
+the key MUST be filled with an empty string ( &#8216;&#8217; ).</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">out_objects_data: ObjectPoseList of recognized data.</p>
+</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Outcomes:</dt>
+<dd>Appart from the common ones:
+- move_failed: Is outcomed when the MOVE_TO_SEARCHING_LOCATION fails.</dd>
+<dt>Notes:</dt>
+<dd><ul class="first last simple">
+<li>The out_objects_data&#8217;s value is None if the move fails.</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="tell_move_and_recognize_sm.TellGoRecognizeSM">
+<em class="property">class </em><tt class="descclassname">tell_move_and_recognize_sm.</tt><tt class="descname">TellGoRecognizeSM</tt><big>(</big><em>msg_pool</em>, <em>arg_key='tell_argument'</em><big>)</big><a class="reference internal" href="../../_modules/tell_move_and_recognize_sm.html#TellGoRecognizeSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tell_move_and_recognize_sm.TellGoRecognizeSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Says a message extracted from the msg_pool argument while goes to a location and looks for objects.
+Constructor parameters:</p>
+<blockquote>
+<div><p>arg_key is the name of the userdata key containing the argument to pass to the SpeakActionFromPoolStateMachine.
+You need to add a remap with the same value as the arg_key and put there the argument for the speech action.
+arg_key has to be None if the speak state don&#8217;t need a parameter.
+In the other case, the easiest way of using this state is ignoring the arg_key parameter and remapping the userdata</p>
+<blockquote>
+<div>variable containing the argument for the speak action to the input_key &#8216;tell_argument&#8217; of this state.</div></blockquote>
+</div></blockquote>
+<dl class="docutils">
+<dt>Userdata:</dt>
+<dd><ul class="first last">
+<li><p class="first">in_location_pose_in_map: Location pose in /map coordinate frame where the robot has to go.</p>
+</li>
+<li><dl class="first docutils">
+<dt>in_target_object: Name of a target object to search for.</dt>
+<dd><p class="first last">If a specific object is not being searched (ie it doesn&#8217;t mind what object is found),
+the key MUST be filled with an empty string ( &#8216;&#8217; ).</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">out_objects_data: ObjectPoseList of recognized data.</p>
+</li>
+<li><dl class="first docutils">
+<dt>tell_argument: Argument for the speak state. For example, it may be used to tell the name of the location.</dt>
+<dd><p class="first last">For more information, look the SpeakActionFromPoolStateMachine explanation.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outcomes:</dt>
+<dd>Appart from the common ones:
+- move_failed: Is outcomed when the move action fails.</dd>
+<dt>Notes:</dt>
+<dd><ul class="first last simple">
+<li>The out_objects_data&#8217;s value is None if the move fails.</li>
+</ul>
+</dd>
+<dt>Example of use:</dt>
+<dd><dl class="first last docutils">
+<dt>StateMachine.add(&#8216;TELL_GO_RECOGNIZE&#8217;, TellGoRecognizeSM(msg_pool=going_to_pool, arg_key=&#8217;location_name),</dt>
+<dd><dl class="first docutils">
+<dt>remapping={&#8216;location_name&#8217;: &#8216;location_room_name&#8217;,</dt>
+<dd>&#8216;out_objects_data&#8217;: &#8216;objects_data&#8217;,
+&#8216;in_target_object&#8217;: target_object_key,
+&#8216;in_location_pose_in_map&#8217;: &#8216;location_pose_in_map&#8217;},</dd>
+</dl>
+<p class="last">transitions={succeeded: succeeded, aborted: aborted, &#8216;move_failed&#8217;: &#8216;TELL_CANT_REACH&#8217;}</p>
+</dd>
+<dt>(or simply ignoring the arg_key and doing the remapping like this:</dt>
+<dd>remapping={&#8216;tell_argument&#8217;: &#8216;location_room_name&#8217;, ...})</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-detect_tabletop">
+<span id="detect-tabletop-py"></span><h3>detect_tabletop.py<a class="headerlink" href="#module-detect_tabletop" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="detect_tabletop.DetectTabletop">
+<em class="property">class </em><tt class="descclassname">detect_tabletop.</tt><tt class="descname">DetectTabletop</tt><big>(</big><em>distance_treshold=0.5</em>, <em>recognize_objects=False</em><big>)</big><a class="reference internal" href="../../_modules/detect_tabletop.html#DetectTabletop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#detect_tabletop.DetectTabletop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs three looks and makes snapshots of the pointcloud and then calls to the TabletopDetection service.</p>
+<dl class="docutils">
+<dt>If the parameter recognize_objects is True, the output key tabletop_info is a list of messages of type</dt>
+<dd>tabletop_object_detector/TabletopDetectionResult that contains the results of the detection.</dd>
+<dt>If the parameter recognize_objects is False, the output key tabletop_info is a list of messages of type</dt>
+<dd>tabletop_object_detector/Table that contains the results of the detected table.</dd>
+</dl>
+<p>It outcomes &#8216;no_table&#8217; if it didn&#8217;t find a table, aborted if something else failed and succeeded if there was no problem.</p>
+<p>If the outcome is &#8216;no_table&#8217; or aborted, the output key tabletop_info is an empty list.</p>
+<dl class="docutils">
+<dt>Note: to have the position of the table, the values to be used are the &#8220;x_min, y_min, x_max and y_max&#8221; of the Table message.</dt>
+<dd><p class="first">The PoseStamped of the message is needed to have the z component and the Header message with the frame_id.
+The other coordinates of the PoseStamped are not used (x and y are almost 0 in base_link frame).</p>
+<p class="last">Example of Pose at the center of the table: Pose(Point((x_min+x_max)/2, (y_min+y_max)/2, z), Quaternion())
+Where z is the z component of the position in the PoseStamped. The frame_id is the same as the PoseStamped too.
+Example of pose at a certain distance of the table: Pose(Point(x_min-DIST_TO_TABLE, (y_min+y_max)/2, z), Quaternion())</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="ofb-third-approach-py">
+<h3>ofb_third_approach.py<a class="headerlink" href="#ofb-third-approach-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-take_drink_order">
+<span id="take-drink-order-py"></span><h3>take_drink_order.py<a class="headerlink" href="#module-take_drink_order" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="take_drink_order.TakeDrinkOrderStateMachine">
+<em class="property">class </em><tt class="descclassname">take_drink_order.</tt><tt class="descname">TakeDrinkOrderStateMachine</tt><a class="reference internal" href="../../_modules/take_drink_order.html#TakeDrinkOrderStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#take_drink_order.TakeDrinkOrderStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>TakeDrinkOrderStateMachine.</p>
+<p>Use this StateMachine to take drink orders.
+Steps of this State Machine:</p>
+<blockquote>
+<div>Enable the grammar defined on cocktail_party.yaml file as drinks_grammar_name; ask what the person want to drink; get the drink name;
+If the drink was already requested or the robot can&#8217;t understand what the person is saying, then a new drink will be asigned to the
+person. The asigned drink is a random drink of &#8216;allowed_drinks&#8217; variable defined on cocktail_party.yaml file.</div></blockquote>
+<dl class="docutils">
+<dt>Important:</dt>
+<dd>The same drink names should be on &#8216;allowed_drinks&#8217; variable and in the grammar defined on &#8216;drinks_grammar_name&#8217; variable.
+Both variables &#8216;allowed_drinks and drinks_grammar_name&#8217; are defined on cocktail_party.yaml file.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-speak_and_motion_action">
+<span id="speak-and-motion-action-py"></span><h3>speak_and_motion_action.py<a class="headerlink" href="#module-speak_and_motion_action" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="speak_and_motion_action.SpeakAndMotionActionConcurrentSM">
+<em class="property">class </em><tt class="descclassname">speak_and_motion_action.</tt><tt class="descname">SpeakAndMotionActionConcurrentSM</tt><big>(</big><em>filename</em>, <em>text</em>, <em>checksafety=True</em>, <em>plan=True</em>, <em>wait_before_speaking=0</em><big>)</big><a class="reference internal" href="../../_modules/speak_and_motion_action.html#SpeakAndMotionActionConcurrentSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#speak_and_motion_action.SpeakAndMotionActionConcurrentSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>StateMachine that does a motion action and says something.</p>
+<dl class="docutils">
+<dt>Parameters of the constructor:</dt>
+<dd><ul class="first last simple">
+<li>filename: must be the full filename of the xml containing the movements.</li>
+<li>text: The text that the robot has to say while doing the motion action.</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-get_category_and_announce">
+<span id="get-category-and-announce-py"></span><h3>get_category_and_announce.py<a class="headerlink" href="#module-get_category_and_announce" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="get_category_and_announce.AnnounceCategoryFromPool">
+<em class="property">class </em><tt class="descclassname">get_category_and_announce.</tt><tt class="descname">AnnounceCategoryFromPool</tt><big>(</big><em>category_pool</em>, <em>input_nobj</em><big>)</big><a class="reference internal" href="../../_modules/get_category_and_announce.html#AnnounceCategoryFromPool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#get_category_and_announce.AnnounceCategoryFromPool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used when Get_category_and_announce_object receives a list with a pool of messages to say.
+input_nobj argument indicates if the userdata pose_object is a simple ObjectPose or an ObjectPoseList.
+category_pool argument in the constructor is the text to be said to announce the category of the object.</p>
+<blockquote>
+<div>All the strings in the list must have two %s to be replaced for the object&#8217;s name and the category, in that order.</div></blockquote>
+</dd></dl>
+
+<dl class="class">
+<dt id="get_category_and_announce.Get_category_and_announce_object">
+<em class="property">class </em><tt class="descclassname">get_category_and_announce.</tt><tt class="descname">Get_category_and_announce_object</tt><big>(</big><em>input_nobj=0</em>, <em>categoryphrase=&quot;Hey look</em>, <em>I found an object called %s of category %s I'm going to pick it up.&quot;</em><big>)</big><a class="reference internal" href="../../_modules/get_category_and_announce.html#Get_category_and_announce_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#get_category_and_announce.Get_category_and_announce_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>input_nobj argument indicates if the userdata pose_object is a simple ObjectPose or an ObjectPoseList.
+categoryphrase argument in the constructor is the text to be said to announce the category of the object.</p>
+<blockquote>
+<div>If it&#8217;s a string, a SpeakActionState is used. If it&#8217;s a list of strings, a SpeakActionFromPoolStateMachine is used.
+All the strings (either the single string or all the strings inside the list) must have two %s to be replaced for the
+object&#8217;s name and the category, in that order.</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-listen_object_name">
+<span id="listen-object-name-py"></span><h3>listen_object_name.py<a class="headerlink" href="#module-listen_object_name" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-sound_action">
+<span id="sound-action-py"></span><h3>sound_action.py<a class="headerlink" href="#module-sound_action" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="sound_action.SpeakActionFromPoolStateMachine">
+<em class="property">class </em><tt class="descclassname">sound_action.</tt><tt class="descname">SpeakActionFromPoolStateMachine</tt><big>(</big><em>message_pool</em>, <em>arg_key=None</em><big>)</big><a class="reference internal" href="../../_modules/sound_action.html#SpeakActionFromPoolStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_action.SpeakActionFromPoolStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>SpeakActionFromPoolStateMachine.</p>
+<p>Use this State Machine to the robot speak a random string from a list.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="sm-listen-orders-py">
+<h3>sm_listen_orders.py<a class="headerlink" href="#sm-listen-orders-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-grammar_state">
+<span id="grammar-state-py"></span><h3>grammar_state.py<a class="headerlink" href="#module-grammar_state" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="grammar_state.GrammarState">
+<em class="property">class </em><tt class="descclassname">grammar_state.</tt><tt class="descname">GrammarState</tt><big>(</big><em>grammar</em>, <em>enabled</em><big>)</big><a class="reference internal" href="../../_modules/grammar_state.html#GrammarState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grammar_state.GrammarState" title="Permalink to this definition">¶</a></dt>
+<dd><p>GrammarState.</p>
+<p>Use this State to enable and disable grammar.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-sm_gpsr_ask_order_type">
+<span id="sm-gpsr-ask-order-type-py"></span><h3>sm_gpsr_ask_order_type.py<a class="headerlink" href="#module-sm_gpsr_ask_order_type" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="sm_gpsr_ask_order_type.SentenceConfirmationSM">
+<em class="property">class </em><tt class="descclassname">sm_gpsr_ask_order_type.</tt><tt class="descname">SentenceConfirmationSM</tt><big>(</big><em>grammar_to_reset_when_finished=''</em><big>)</big><a class="reference internal" href="../../_modules/sm_gpsr_ask_order_type.html#SentenceConfirmationSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sm_gpsr_ask_order_type.SentenceConfirmationSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>This will ask you what type of sentence is going to say</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-listen_poi_name">
+<span id="listen-poi-name-py"></span><h3>listen_poi_name.py<a class="headerlink" href="#module-listen_poi_name" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="listen_poi_name.ListenPoiName">
+<em class="property">class </em><tt class="descclassname">listen_poi_name.</tt><tt class="descname">ListenPoiName</tt><a class="reference internal" href="../../_modules/listen_poi_name.html#ListenPoiName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#listen_poi_name.ListenPoiName" title="Permalink to this definition">¶</a></dt>
+<dd><p>State that reads at the topic of the speech recognizer for the last word that has been said,
+It expects that either a poi name, or the word stop has been said
+If a poi has been said, the state will return succeeded and the poi name in the userdata.poi_name
+If the word stop has been said, it will return preempted
+If none of those were said, it will return aborted
+what_you_heard_out : will have value only when you say a poi or stop and wait.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="id6">
+<h3>__init__.py<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-__init__"></span></div>
+<div class="section" id="module-sm_listen_go_to_room">
+<span id="sm-listen-go-to-room-py"></span><h3>sm_listen_go_to_room.py<a class="headerlink" href="#module-sm_listen_go_to_room" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="sm_listen_go_to_room.ListenGoToRoomStateMachine">
+<em class="property">class </em><tt class="descclassname">sm_listen_go_to_room.</tt><tt class="descname">ListenGoToRoomStateMachine</tt><big>(</big><em>question='Where should I go?'</em>, <em>grammar_name='robocup/room'</em><big>)</big><a class="reference internal" href="../../_modules/sm_listen_go_to_room.html#ListenGoToRoomStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sm_listen_go_to_room.ListenGoToRoomStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>The question argument indicates the text that should be said to the referee.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-did_you_say_yes_or_no_sm">
+<span id="did-you-say-yes-or-no-sm-py"></span><h3>did_you_say_yes_or_no_sm.py<a class="headerlink" href="#module-did_you_say_yes_or_no_sm" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="did_you_say_yes_or_no_sm.HearingConfirmationSM">
+<em class="property">class </em><tt class="descclassname">did_you_say_yes_or_no_sm.</tt><tt class="descname">HearingConfirmationSM</tt><big>(</big><em>grammar_to_reset_when_finished=''</em><big>)</big><a class="reference internal" href="../../_modules/did_you_say_yes_or_no_sm.html#HearingConfirmationSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#did_you_say_yes_or_no_sm.HearingConfirmationSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>This will ask you if you said what&#8217;s in in_message_heard and
+hear yes or no. Afterward it will return the result yes or no.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-listen_general_command">
+<span id="listen-general-command-py"></span><h3>listen_general_command.py<a class="headerlink" href="#module-listen_general_command" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="listen_general_command.PrintUserData">
+<em class="property">class </em><tt class="descclassname">listen_general_command.</tt><tt class="descname">PrintUserData</tt><big>(</big><em>intro_text='&#64;&#64;&#64;&#64; This is the Message '</em><big>)</big><a class="reference internal" href="../../_modules/listen_general_command.html#PrintUserData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#listen_general_command.PrintUserData" title="Permalink to this definition">¶</a></dt>
+<dd><p>This State Prints whatever you want.
+input_keys =    &#8216;userSaidData&#8217; , is the data that you want to print
+intro text =    is what you want as intro before the data.</p>
+<blockquote>
+<div>Default message is &#8216;&#64;&#64;&#64;&#64; This is the Message &#8216;</div></blockquote>
+<dl class="docutils">
+<dt>use &#8211;&gt; smach.StateMachine.add( &#8216;PRINT_MESSAGE&#8217;,</dt>
+<dd><p class="first">PrintUserData(&#8216;what you want as intro&#8217;),
+transitions = { succeeded:succeeded,</p>
+<blockquote>
+<div>preempted:preempted},</div></blockquote>
+<p class="last">remapping = {&#8216;userSaidData&#8217;:&#8217;nave_state_read&#8217;}</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-listen_delivery_order">
+<span id="listen-delivery-order-py"></span><h3>listen_delivery_order.py<a class="headerlink" href="#module-listen_delivery_order" title="Permalink to this headline">¶</a></h3>
+<p>LISTEN_DELIVERY_ORDER.PY</p>
+<dl class="class">
+<dt id="listen_delivery_order.ListenDeliveryOrder">
+<em class="property">class </em><tt class="descclassname">listen_delivery_order.</tt><tt class="descname">ListenDeliveryOrder</tt><a class="reference internal" href="../../_modules/listen_delivery_order.html#ListenDeliveryOrder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#listen_delivery_order.ListenDeliveryOrder" title="Permalink to this definition">¶</a></dt>
+<dd><p>The delivery order will have to be in the current format from usersaid topic.
+Eg:  [&#8216;action&#8217;: &#8216;deliver&#8217;,</p>
+<blockquote>
+<div>&#8216;objectA&#8217;: &#8216;object_name&#8217;, &#8216;objectB&#8217;: &#8216;object_name&#8217;, &#8216;objectC&#8217;: &#8216;object_name&#8217;,
+&#8216;location1&#8217;: &#8216;location_name&#8217;, &#8216;location2&#8217;: &#8216;location_name&#8217;]</div></blockquote>
+<p>Frase to analise : Carry the apple and the coke to table_1 and move the pringles to table_2
+To find them afterwards they must be memorised all these names in the coord_translator/config/mmap.yaml</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-sm_hear_voice_commands_and_pois">
+<span id="sm-hear-voice-commands-and-pois-py"></span><h3>sm_hear_voice_commands_and_pois.py<a class="headerlink" href="#module-sm_hear_voice_commands_and_pois" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="sm_hear_voice_commands_and_pois.MakeValidAngle">
+<tt class="descclassname">sm_hear_voice_commands_and_pois.</tt><tt class="descname">MakeValidAngle</tt><big>(</big><em>init_angle</em><big>)</big><a class="reference internal" href="../../_modules/sm_hear_voice_commands_and_pois.html#MakeValidAngle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sm_hear_voice_commands_and_pois.MakeValidAngle" title="Permalink to this definition">¶</a></dt>
+<dd><p>It Avoids negative angles or bigger than 2pi</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sm_hear_voice_commands_and_pois.PerpendicularToTable">
+<tt class="descclassname">sm_hear_voice_commands_and_pois.</tt><tt class="descname">PerpendicularToTable</tt><big>(</big><em>start_orientation</em>, <em>side_name</em><big>)</big><a class="reference internal" href="../../_modules/sm_hear_voice_commands_and_pois.html#PerpendicularToTable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sm_hear_voice_commands_and_pois.PerpendicularToTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bare in mind that we suppose we leave the table always on the
+right hand side.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sm_hear_voice_commands_and_pois.SM_MemorisePois">
+<em class="property">class </em><tt class="descclassname">sm_hear_voice_commands_and_pois.</tt><tt class="descname">SM_MemorisePois</tt><a class="reference internal" href="../../_modules/sm_hear_voice_commands_and_pois.html#SM_MemorisePois"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sm_hear_voice_commands_and_pois.SM_MemorisePois" title="Permalink to this definition">¶</a></dt>
+<dd><p>This state Machine get Pois commands and memorises the POI&#8217;s in the map that Reem is generating
+Used by : SM_Follow_Operator</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-debug">
+<span id="debug-py"></span><h3>debug.py<a class="headerlink" href="#module-debug" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-colors">
+<span id="colors-py"></span><h3>colors.py<a class="headerlink" href="#module-colors" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="colors.Colors">
+<em class="property">class </em><tt class="descclassname">colors.</tt><tt class="descname">Colors</tt><big>(</big><em>debug_colors=False</em><big>)</big><a class="reference internal" href="../../_modules/colors.html#Colors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#colors.Colors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Colors class.</p>
+<p>Use this class to print some text with colors on the screen (terminal).
+Useful to debug and print important informations.</p>
+<dl class="docutils">
+<dt>Example of use:</dt>
+<dd>c = Colors()
+rospy.loginfo(c.GREEN + &#8220;This is a green text!&#8221; + c.NATIVE_COLOR)</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-child_state_machine">
+<span id="child-state-machine-py"></span><h3>child_state_machine.py<a class="headerlink" href="#module-child_state_machine" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="child_state_machine.ChildStateMachine">
+<em class="property">class </em><tt class="descclassname">child_state_machine.</tt><tt class="descname">ChildStateMachine</tt><big>(</big><em>outcomes</em>, <em>input_keys=</em><span class="optional">[</span><span class="optional">]</span>, <em>output_keys=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../../_modules/child_state_machine.html#ChildStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#child_state_machine.ChildStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>ChildStateMachine.</p>
+<p>This StateMachine is a child of smach.StateMachine
+The differences between this StateMachine and smach.StateMachine are:</p>
+<blockquote>
+<div>If a state aborts, will be printed a message with the filename and line where the state was added to the StateMachine.</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-time_controlling_states">
+<span id="time-controlling-states-py"></span><h3>time_controlling_states.py<a class="headerlink" href="#module-time_controlling_states" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="time_controlling_states.GetCurrentROSTimeState">
+<em class="property">class </em><tt class="descclassname">time_controlling_states.</tt><tt class="descname">GetCurrentROSTimeState</tt><a class="reference internal" href="../../_modules/time_controlling_states.html#GetCurrentROSTimeState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#time_controlling_states.GetCurrentROSTimeState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gives the current ROS time and sets the time elapsed to zero.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="time_controlling_states.TellIfSongHasFinished">
+<em class="property">class </em><tt class="descclassname">time_controlling_states.</tt><tt class="descname">TellIfSongHasFinished</tt><a class="reference internal" href="../../_modules/time_controlling_states.html#TellIfSongHasFinished"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#time_controlling_states.TellIfSongHasFinished" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gives the current ROS time and sets the time elapsed to zero.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-time_out">
+<span id="time-out-py"></span><h3>time_out.py<a class="headerlink" href="#module-time_out" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-read_and_process_object_delivery_list">
+<span id="read-and-process-object-delivery-list-py"></span><h3>read_and_process_object_delivery_list.py<a class="headerlink" href="#module-read_and_process_object_delivery_list" title="Permalink to this headline">¶</a></h3>
+<p>READ_AND_PROCESS_OBJECT_DELIVERY_LIST.PY</p>
+<dl class="class">
+<dt id="read_and_process_object_delivery_list.ExtractObjectAndLocationFromList">
+<em class="property">class </em><tt class="descclassname">read_and_process_object_delivery_list.</tt><tt class="descname">ExtractObjectAndLocationFromList</tt><a class="reference internal" href="../../_modules/read_and_process_object_delivery_list.html#ExtractObjectAndLocationFromList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#read_and_process_object_delivery_list.ExtractObjectAndLocationFromList" title="Permalink to this definition">¶</a></dt>
+<dd><p>The marker is initialised outside.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="read_and_process_object_delivery_list.ReadAndPorcessObjectDeliveryList">
+<em class="property">class </em><tt class="descclassname">read_and_process_object_delivery_list.</tt><tt class="descname">ReadAndPorcessObjectDeliveryList</tt><a class="reference internal" href="../../_modules/read_and_process_object_delivery_list.html#ReadAndPorcessObjectDeliveryList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#read_and_process_object_delivery_list.ReadAndPorcessObjectDeliveryList" title="Permalink to this definition">¶</a></dt>
+<dd><p>This SM That takes in a list of vectors, where for each object there is
+a location where to take that object.
+It basicaly take object 1 to location A, 2 to B and so on.
+Finishes when it has delivered all the objects in the list that are also in
+its POI memory banks. If a non memorised previously object is in the list
+it will just let you know that she doesnt have it memorised.</p>
+<dl class="docutils">
+<dt>&#64;Input_keys: in_list&#8211;&gt;  List of vector elements of two positions.</dt>
+<dd>Firstone is the object, secondone is the
+delivery location for that object.</dd>
+<dt>&#64;Output_keys <span class="classifier-delimiter">:</span> <span class="classifier">out_list&#8211;&gt; The object that is the next in the list that isnt alredy</span></dt>
+<dd><blockquote class="first">
+<div>marked as done.</div></blockquote>
+<dl class="last docutils">
+<dt>delivery_location_out&#8211;&gt; The delivery location that is the next in the list that </dt>
+<dd>isnt already marked as done</dd>
+</dl>
+</dd>
+</dl>
+<p>&#64;In_Out_key: list_marker&#8211;&gt; Counter that uses to know which is the next object-delivery.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-global_common">
+<span id="global-common-py"></span><h3>global_common.py<a class="headerlink" href="#module-global_common" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="global_common.check_topic">
+<tt class="descclassname">global_common.</tt><tt class="descname">check_topic</tt><big>(</big><em>userdata</em>, <em>topic_name</em><big>)</big><a class="reference internal" href="../../_modules/global_common.html#check_topic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#global_common.check_topic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if is some node publishing on a topic</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="global_common.get_orientation_from_param">
+<tt class="descclassname">global_common.</tt><tt class="descname">get_orientation_from_param</tt><big>(</big><em>param</em>, <em>default_value=None</em><big>)</big><a class="reference internal" href="../../_modules/global_common.html#get_orientation_from_param"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#global_common.get_orientation_from_param" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the orientation contained on a parameter of the Param_server that contains the three coordinates (x,y,z,w) separately as a Quaternion
+:parameter param the name of the parameter that contains the info
+:return the Quaternion with the orientation data</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="global_common.get_position_from_param">
+<tt class="descclassname">global_common.</tt><tt class="descname">get_position_from_param</tt><big>(</big><em>param</em>, <em>default_value=None</em><big>)</big><a class="reference internal" href="../../_modules/global_common.html#get_position_from_param"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#global_common.get_position_from_param" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the position contained on a parameter of the Param_server that contains the three coordinates (x,y,z) separately as a Point
+:parameter param the name of the parameter that contains the info
+:return the Point with the pos data</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="global_common.normalize_object_name">
+<tt class="descclassname">global_common.</tt><tt class="descname">normalize_object_name</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="../../_modules/global_common.html#normalize_object_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#global_common.normalize_object_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a string that mixes capitals and non-capitals, and a hiphen, returns the first part of the string in non-capitals</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="global_common.print_grasp_errors">
+<tt class="descclassname">global_common.</tt><tt class="descname">print_grasp_errors</tt><big>(</big><em>userdata=None</em><big>)</big><a class="reference internal" href="../../_modules/global_common.html#print_grasp_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#global_common.print_grasp_errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function print the grasp errors that were set on param $GRASP_ERROR_PARAM_NAME</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="global_common.reset_grasp_errors">
+<tt class="descclassname">global_common.</tt><tt class="descname">reset_grasp_errors</tt><big>(</big><em>userdata=None</em><big>)</big><a class="reference internal" href="../../_modules/global_common.html#reset_grasp_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#global_common.reset_grasp_errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function clear the grasp errors that were set on param $GRASP_ERROR_PARAM_NAME</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="global_common.set_grasp_error">
+<tt class="descclassname">global_common.</tt><tt class="descname">set_grasp_error</tt><big>(</big><em>error</em>, <em>status=4</em>, <em>limit=2</em><big>)</big><a class="reference internal" href="../../_modules/global_common.html#set_grasp_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#global_common.set_grasp_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use this method to set the error that occurs when the robot is grasping.
+Will be added to the error the filename and current line where this method was called.
+A rosparam called $GRASP_ERROR_PARAM_NAME will be set with the error.
+Don&#8217;t forget to clear the $GRASP_ERROR_PARAM_NAME at the beginning of your State Machine
+Example:</p>
+<blockquote>
+<div>rospy.set_param(GRASP_ERROR_PARAM_NAME, &#8220;&#8221;)</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="global_common.transform_pose">
+<tt class="descclassname">global_common.</tt><tt class="descname">transform_pose</tt><big>(</big><em>pose</em>, <em>src_frame</em>, <em>dst_frame</em>, <em>timeout=10</em><big>)</big><a class="reference internal" href="../../_modules/global_common.html#transform_pose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#global_common.transform_pose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the given pose from src_frame to dst_frame.
+:param src_frame
+:param dst_frame
+:param timeout the amount of time allowed (in secs) for a transformation (default 3)</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-timeout_container">
+<span id="timeout-container-py"></span><h3>timeout_container.py<a class="headerlink" href="#module-timeout_container" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="timeout_container.TimeoutContainer">
+<em class="property">class </em><tt class="descclassname">timeout_container.</tt><tt class="descname">TimeoutContainer</tt><big>(</big><em>timeout</em>, <em>state</em><big>)</big><a class="reference internal" href="../../_modules/timeout_container.html#TimeoutContainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timeout_container.TimeoutContainer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-robot_controllers_activation">
+<span id="robot-controllers-activation-py"></span><h3>robot_controllers_activation.py<a class="headerlink" href="#module-robot_controllers_activation" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="robot_controllers_activation.StartRobotControllers">
+<em class="property">class </em><tt class="descclassname">robot_controllers_activation.</tt><tt class="descname">StartRobotControllers</tt><big>(</big><em>head=True</em>, <em>left=True</em>, <em>right=True</em><big>)</big><a class="reference internal" href="../../_modules/robot_controllers_activation.html#StartRobotControllers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robot_controllers_activation.StartRobotControllers" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class that starts the robot arm controllers.
+Required when grasping movements are going to be performed
+Never activate this when the robot is performing XML based movements</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="robot_controllers_activation.StopRobotControllers">
+<em class="property">class </em><tt class="descclassname">robot_controllers_activation.</tt><tt class="descname">StopRobotControllers</tt><big>(</big><em>head=True</em>, <em>left=True</em>, <em>right=True</em><big>)</big><a class="reference internal" href="../../_modules/robot_controllers_activation.html#StopRobotControllers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robot_controllers_activation.StopRobotControllers" title="Permalink to this definition">¶</a></dt>
+<dd><p>A state that stops the robot arm controllers
+Required when the controllers are activated and an XML based movement is going to be performed</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pose_at_distance">
+<span id="pose-at-distance-py"></span><h3>pose_at_distance.py<a class="headerlink" href="#module-pose_at_distance" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="pose_at_distance.pose_at_distance">
+<tt class="descclassname">pose_at_distance.</tt><tt class="descname">pose_at_distance</tt><big>(</big><em>pose</em>, <em>distance</em><big>)</big><a class="reference internal" href="../../_modules/pose_at_distance.html#pose_at_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pose_at_distance.pose_at_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a pose that has the same orientation as the original
+but the position is at a distance from the original.
+Very usefull when you want to mantain a distance from an object.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-find_and_go_to_person">
+<span id="find-and-go-to-person-py"></span><h3>find_and_go_to_person.py<a class="headerlink" href="#module-find_and_go_to_person" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="find_and_go_to_person.FindAndGoToPersonStateMachine">
+<em class="property">class </em><tt class="descclassname">find_and_go_to_person.</tt><tt class="descname">FindAndGoToPersonStateMachine</tt><a class="reference internal" href="../../_modules/find_and_go_to_person.html#FindAndGoToPersonStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#find_and_go_to_person.FindAndGoToPersonStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>This will just move to the closest person which is outputted from FindPersonStateMachine of find_person_with_visit_checker.py</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-song_duration_sm">
+<span id="song-duration-sm-py"></span><h3>song_duration_sm.py<a class="headerlink" href="#module-song_duration_sm" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="song_duration_sm.SongDurationState">
+<em class="property">class </em><tt class="descclassname">song_duration_sm.</tt><tt class="descname">SongDurationState</tt><a class="reference internal" href="../../_modules/song_duration_sm.html#SongDurationState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#song_duration_sm.SongDurationState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a song path that can be an mp3 file or a wav,
+it gives you the duration of that file in milliseconds</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="song_duration_sm.SoundFileDuration">
+<tt class="descclassname">song_duration_sm.</tt><tt class="descname">SoundFileDuration</tt><big>(</big><em>file_absolute_path</em><big>)</big><a class="reference internal" href="../../_modules/song_duration_sm.html#SoundFileDuration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#song_duration_sm.SoundFileDuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the duration of a sound file in milliseconds.
+The input file can be .wav or .mp3. If its an .mp3 file
+it will be converted in order to make the analysis.
+If you put the TIME_YOU_WANT_FOR_SONG to a value different 
+from zero, it will instead put that duration.
+It comes in handy when you want a song to last a determinate
+amount of time.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-emergency_stop_deactivate">
+<span id="emergency-stop-deactivate-py"></span><h3>emergency_stop_deactivate.py<a class="headerlink" href="#module-emergency_stop_deactivate" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="emergency_stop_deactivate.DeactEmergencyStop">
+<em class="property">class </em><tt class="descclassname">emergency_stop_deactivate.</tt><tt class="descname">DeactEmergencyStop</tt><big>(</big><em>time=20</em><big>)</big><a class="reference internal" href="../../_modules/emergency_stop_deactivate.html#DeactEmergencyStop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emergency_stop_deactivate.DeactEmergencyStop" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class that deactivates the emergency stop service for a given number of seconds
+Param &#64;time indicates the amount of time that the service is deactivated
+Deactivation is shown in the robot with LEDs in red</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-drop_faces">
+<span id="drop-faces-py"></span><h3>drop_faces.py<a class="headerlink" href="#module-drop_faces" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="drop_faces.DropAllFacesStateMachine">
+<em class="property">class </em><tt class="descclassname">drop_faces.</tt><tt class="descname">DropAllFacesStateMachine</tt><big>(</big><em>input_keys=</em><span class="optional">[</span><span class="optional">]</span>, <em>output_keys=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../../_modules/drop_faces.html#DropAllFacesStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#drop_faces.DropAllFacesStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>DropAllFacesStateMachine.</p>
+<p>Use this State Machine to drop all faces on the robot.
+This state machine drop all faces on the robot&#8217;s &#8216;database&#8217; and restart the PersonServer.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-find_person">
+<span id="find-person-py"></span><h3>find_person.py<a class="headerlink" href="#module-find_person" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="find_person.FindPersonStateMachine">
+<em class="property">class </em><tt class="descclassname">find_person.</tt><tt class="descname">FindPersonStateMachine</tt><a class="reference internal" href="../../_modules/find_person.html#FindPersonStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#find_person.FindPersonStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Looks for a person, rotating in place if necessary, and return any
+information in <a href="#id7"><span class="problematic" id="id8">`</span></a>closest_person&#8217;.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-point_at">
+<span id="point-at-py"></span><h3>point_at.py<a class="headerlink" href="#module-point_at" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="point_at.SMPointInFront">
+<em class="property">class </em><tt class="descclassname">point_at.</tt><tt class="descname">SMPointInFront</tt><a class="reference internal" href="../../_modules/point_at.html#SMPointInFront"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#point_at.SMPointInFront" title="Permalink to this definition">¶</a></dt>
+<dd><p>Point in fornt</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-recognize_objects">
+<span id="recognize-objects-py"></span><h3>recognize_objects.py<a class="headerlink" href="#module-recognize_objects" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="recognize_objects.EmptyMessageState">
+<em class="property">class </em><tt class="descclassname">recognize_objects.</tt><tt class="descname">EmptyMessageState</tt><a class="reference internal" href="../../_modules/recognize_objects.html#EmptyMessageState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recognize_objects.EmptyMessageState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simply forces the state machine to output a None message when no known objects are found.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="recognize_objects.RecognizeObjectsStateMachine">
+<em class="property">class </em><tt class="descclassname">recognize_objects.</tt><tt class="descname">RecognizeObjectsStateMachine</tt><big>(</big><em>timeout=10</em><big>)</big><a class="reference internal" href="../../_modules/recognize_objects.html#RecognizeObjectsStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recognize_objects.RecognizeObjectsStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all detected objects via the &#8216;object_detected_list output&#8217; key.
+timeout indicates the timeout of the TopicReaderState that waits till it reads an object.
+The output_key is None when no object is recognized.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-detect_face">
+<span id="detect-face-py"></span><h3>detect_face.py<a class="headerlink" href="#module-detect_face" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="detect_face.DetectFaces">
+<em class="property">class </em><tt class="descclassname">detect_face.</tt><tt class="descname">DetectFaces</tt><a class="reference internal" href="../../_modules/detect_face.html#DetectFaces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#detect_face.DetectFaces" title="Permalink to this definition">¶</a></dt>
+<dd><p>The output is of type pal_vision_msgs/FaceDetection[] inside face_detections_out.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="detect_face.DistanceFromFace">
+<tt class="descclassname">detect_face.</tt><tt class="descname">DistanceFromFace</tt><big>(</big><em>face_point</em><big>)</big><a class="reference internal" href="../../_modules/detect_face.html#DistanceFromFace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#detect_face.DistanceFromFace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the distance projected in the ground from a face.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="detect_face.ProcessFaces">
+<em class="property">class </em><tt class="descclassname">detect_face.</tt><tt class="descname">ProcessFaces</tt><big>(</big><em>hog_descriptor=</em><span class="optional">[</span><span class="optional">]</span>, <em>prop_big_small=''</em>, <em>prop_far_near=''</em>, <em>prop_centered_right_left=''</em><big>)</big><a class="reference internal" href="../../_modules/detect_face.html#ProcessFaces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#detect_face.ProcessFaces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters all the faces detected based on the properties given.</p>
+<p>#. First it will see if a Hog identifier is given. If so, it will look for a face that matches.
+If no face is found it will return aborted.
+#. If no hog is given, it will use the properties given to filter the faces detected.</p>
+<p>&#64;input_keys: The input is of type pal_vision_msgs/FaceDetection[] inside faces_data_in.
+&#64;output_keys: The output is of type pal_vision_msgs/FaceDetection inside face_data_out.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="detect_face.SayIfHogsAreSimilar">
+<tt class="descclassname">detect_face.</tt><tt class="descname">SayIfHogsAreSimilar</tt><big>(</big><em>hog1</em>, <em>hog2</em><big>)</big><a class="reference internal" href="../../_modules/detect_face.html#SayIfHogsAreSimilar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#detect_face.SayIfHogsAreSimilar" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function isnt finished yet. TODO
+For the moment it looks how alike are the two lists
+and makes a percentage based on the maximum length of both lists.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-play_sound_sm">
+<span id="play-sound-sm-py"></span><h3>play_sound_sm.py<a class="headerlink" href="#module-play_sound_sm" title="Permalink to this headline">¶</a></h3>
+<p>This module alows us to play and stop any kind of sound in ogg or wav format,
+and it also gives as an auxiliary Text to Speach module.</p>
+<p>In order to use it you have to:
+1)Install the audio-commons of ROS.
+<a class="reference external" href="http://www.ros.org/wiki/audio_common/Tutorials/">http://www.ros.org/wiki/audio_common/Tutorials/</a></p>
+<p>2)Launch soundplay_node.launch, add the following line to your launch.
+&lt;include file=&#8221;$(find sound_play)/soundplay_node.launch&#8221; /&gt;</p>
+<ol class="arabic" start="3">
+<li><dl class="first docutils">
+<dt>To add more voices, just do the following:</dt>
+<dd><ol class="first last arabic simple">
+<li>$sudo apt-get install festival festlex-cmu festlex-poslex festlex-oald libestools1.2 unzip</li>
+<li>$apt-cache search festvox-* (to see which voices are available for download)</li>
+<li>$sudo apt-get install name_of_voice ( Eg:festvox-don )</li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p class="first">Then you just have to give it as input in the SpeakText(VOICE_NAME)</p>
+</li>
+</ol>
+<p>5) These are some that you could have:
+el_diphone
+suo_fi_lj_diphone
+hy_fi_mv_diphone
+rab_diphone
+don_diphone
+ked_diphone
+kal_diphone
+czech_ph
+czech_krb
+pc_diphone
+lp_diphone</p>
+<dl class="class">
+<dt id="play_sound_sm.PlaySoundAtRateGiven">
+<em class="property">class </em><tt class="descclassname">play_sound_sm.</tt><tt class="descname">PlaySoundAtRateGiven</tt><a class="reference internal" href="../../_modules/play_sound_sm.html#PlaySoundAtRateGiven"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#play_sound_sm.PlaySoundAtRateGiven" title="Permalink to this definition">¶</a></dt>
+<dd><p>This state playes a sound at a given rate in beats per minute
+bpm: is the rate at which you want the given sound to be played
+sound_path: this is the absolute sound path of the .wav or .ogg that</p>
+<blockquote>
+<div>you want to play. In case you give an mp3 file this will be converted
+to .wav.</div></blockquote>
+</dd></dl>
+
+<dl class="class">
+<dt id="play_sound_sm.PlaySoundOnceState">
+<em class="property">class </em><tt class="descclassname">play_sound_sm.</tt><tt class="descname">PlaySoundOnceState</tt><big>(</big><em>to_execute_sound_file_path='/tmp/tmp_sound_file.wav'</em><big>)</big><a class="reference internal" href="../../_modules/play_sound_sm.html#PlaySoundOnceState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#play_sound_sm.PlaySoundOnceState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plays an .OGG or .WAV file. The path to the file should be absolute,
+and be valid on the computer on which sound_play is running.
+Bare in mind that only one sound at a time can be reproduced.
+If you are playing one sound and then another it will probably
+stop the first one and start the second one.
+IMPORTANT: When executing bare in mind that when executing in Reem,
+the to_execute_sound_file_path has to be the path in the m PC, which has to have
+the pkg sound_play soundplay_node.launch launched.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="play_sound_sm.ShutUp">
+<em class="property">class </em><tt class="descclassname">play_sound_sm.</tt><tt class="descname">ShutUp</tt><a class="reference internal" href="../../_modules/play_sound_sm.html#ShutUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#play_sound_sm.ShutUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>This state makes that no sound is produced antil CTRL + C is pressed.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-probability_vector">
+<span id="probability-vector-py"></span><h3>probability_vector.py<a class="headerlink" href="#module-probability_vector" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="probability_vector.CreateAcumulatedProbabilityVector">
+<tt class="descclassname">probability_vector.</tt><tt class="descname">CreateAcumulatedProbabilityVector</tt><big>(</big><em>vector</em><big>)</big><a class="reference internal" href="../../_modules/probability_vector.html#CreateAcumulatedProbabilityVector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#probability_vector.CreateAcumulatedProbabilityVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>This creates a vector that the lements with higher probability
+have a bigger segment of the interval [0,1]. This will invitably
+lead to elements with bigger segments will be more often pos_selected
+than the others when generated a random number range[0,1]</p>
+<dl class="docutils">
+<dt>Example: v = [0&#8216;2,0&#8216;3,0&#8216;5] &#8211;&gt; v_acu = [0&#8216;2,0&#8216;5,1]</dt>
+<dd><blockquote class="first">
+<div>A   B    C</div></blockquote>
+<p class="last"><a href="#id23"><span class="problematic" id="id24">|&#8211;|</span></a>&#8212;<a href="#id25"><span class="problematic" id="id26">|&#8212;&#8211;|</span></a></p>
+</dd>
+</dl>
+<p>Bare in mind that if the input vector isn&#8217;t normalized,
+it will be normalized to produce a correct acumulated probability vector.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="probability_vector.FillRandomProbabilityVector">
+<tt class="descclassname">probability_vector.</tt><tt class="descname">FillRandomProbabilityVector</tt><big>(</big><em>vector</em><big>)</big><a class="reference internal" href="../../_modules/probability_vector.html#FillRandomProbabilityVector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#probability_vector.FillRandomProbabilityVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a vector, it fills it with random numbers that add up to 1</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="probability_vector.GenerateVector">
+<tt class="descclassname">probability_vector.</tt><tt class="descname">GenerateVector</tt><big>(</big><em>L</em><big>)</big><a class="reference internal" href="../../_modules/probability_vector.html#GenerateVector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#probability_vector.GenerateVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a vector full of zeros of length &#8216;L&#8217;</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="probability_vector.NormalizeVector">
+<tt class="descclassname">probability_vector.</tt><tt class="descname">NormalizeVector</tt><big>(</big><em>vector</em><big>)</big><a class="reference internal" href="../../_modules/probability_vector.html#NormalizeVector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#probability_vector.NormalizeVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize Vector, al the vector numbers sum up a total of 1.
+Thre is an exception: if the vector is a Null vector ( all elemnts are Zero)
+then normalize has no meaning and therefore the vector is returned unmodified.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="probability_vector.RandomPickFromProbabilityVector">
+<em class="property">class </em><tt class="descclassname">probability_vector.</tt><tt class="descname">RandomPickFromProbabilityVector</tt><a class="reference internal" href="../../_modules/probability_vector.html#RandomPickFromProbabilityVector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#probability_vector.RandomPickFromProbabilityVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a probability vector , it will return in pos_selected_out the element
+picked randomly, but based on who has more probabilities of winning.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="id9">
+<h3>__init__.py<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-__init__"></span></div>
+<div class="section" id="module-check_using_robot">
+<span id="check-using-robot-py"></span><h3>check_using_robot.py<a class="headerlink" href="#module-check_using_robot" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="check_using_robot.CheckUsingRobot">
+<em class="property">class </em><tt class="descclassname">check_using_robot.</tt><tt class="descname">CheckUsingRobot</tt><big>(</big><em>input_keys=</em><span class="optional">[</span><span class="optional">]</span>, <em>output_keys=</em><span class="optional">[</span><span class="optional">]</span>, <em>print_checking=True</em>, <em>check_computername=True</em>, <em>check_ros_master_uri=True</em><big>)</big><a class="reference internal" href="../../_modules/check_using_robot.html#CheckUsingRobot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#check_using_robot.CheckUsingRobot" title="Permalink to this definition">¶</a></dt>
+<dd><p>This State check if the robot is being used.</p>
+<p>Will check if ROS_MASTER_URI is pointing to the robot or if the COMPUTERNAME contains the robot names.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-concurrence_robocup">
+<span id="concurrence-robocup-py"></span><h3>concurrence_robocup.py<a class="headerlink" href="#module-concurrence_robocup" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="concurrence_robocup.ConcurrenceRobocup">
+<em class="property">class </em><tt class="descclassname">concurrence_robocup.</tt><tt class="descname">ConcurrenceRobocup</tt><big>(</big><em>states=[], state_names=[], default_outcome='aborted', input_keys=[], output_keys=[], outcome_map=None, outcomes=['succeeded', 'aborted']</em><big>)</big><a class="reference internal" href="../../_modules/concurrence_robocup.html#ConcurrenceRobocup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#concurrence_robocup.ConcurrenceRobocup" title="Permalink to this definition">¶</a></dt>
+<dd><p>ConcurrenceRobocup State.</p>
+<p>Use this StateMachine to execute a lot of States or State Machines with concurrence.</p>
+<dl class="docutils">
+<dt>Example of use:</dt>
+<dd><p class="first">STATES = [MoveToRoomStateMachine(announcement=None), SpeakActionState(&#8220;This is a test!&#8221;)]
+STATE_NAMES = [&#8220;MOVE_TO_EXIT&#8221;, &#8220;SPEAK_SOMETHING&#8221;]
+outcome_map = {succeeded: {&#8220;MOVE_TO_EXIT&#8221;: succeeded, &#8220;SPEAK_SOMETHING&#8221;: succeeded}}</p>
+<dl class="last docutils">
+<dt>smach.StateMachine.add(</dt>
+<dd>&#8220;MOVE_AND_SPEAK&#8221;,
+ConcurrenceRobocup(states=STATES, state_names=STATE_NAMES, input_keys=[&#8220;room_name&#8221;], outcome_map=outcome_map)
+)</dd>
+</dl>
+</dd>
+</dl>
+<p>You can test it running: roslaunch cocktail_party test_concurrence_robocup.launch</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-alert">
+<span id="alert-py"></span><h3>alert.py<a class="headerlink" href="#module-alert" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="alert.AlertState">
+<em class="property">class </em><tt class="descclassname">alert.</tt><tt class="descname">AlertState</tt><big>(</big><em>text=None</em>, <em>input_keys=</em><span class="optional">[</span><span class="optional">]</span>, <em>output_keys=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../../_modules/alert.html#AlertState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#alert.AlertState" title="Permalink to this definition">¶</a></dt>
+<dd><p>AlertState.</p>
+<p>Use this state to display an alert.
+The alert displayed will be a javax.swing.JOptionPane</p>
+<p>Important: This State will run the Alert.java file and is high probably that the current compiled version is not compatible with your
+computer. Then if nothing is being displayed, you should compile the java file with the command: javac Alert.java</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-topic_reader">
+<span id="topic-reader-py"></span><h3>topic_reader.py<a class="headerlink" href="#module-topic_reader" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="topic_reader.TopicReaderState">
+<em class="property">class </em><tt class="descclassname">topic_reader.</tt><tt class="descname">TopicReaderState</tt><big>(</big><em>topic_name, msg_type, callback=None, timeout=None, outcomes=['succeeded', 'aborted', 'preempted'], input_keys=[], output_keys=['message'], io_keys=[]</em><big>)</big><a class="reference internal" href="../../_modules/topic_reader.html#TopicReaderState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#topic_reader.TopicReaderState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Custom SMACH state for reading a value from a topic.</p>
+<p>Required parameters:
+&#64;topic_name: the name of the topic to read
+&#64;msg_type: the type of the message</p>
+<p>Optional parameters:
+&#64;callback: a method to call once the first message is received;</p>
+<blockquote>
+<div>it&#8217;ll receive (userdata, message) as parameters and
+it must return an outcome or None (for &#8216;succeeded&#8217;).</div></blockquote>
+<dl class="docutils">
+<dt>&#64;timeout: a timeout, in seconds, after which this state will</dt>
+<dd>return with aborted if no message was received.</dd>
+<dt>&#64;outcomes: possible outcomes (at least &#8216;aborted&#8217;, &#8216;preempted&#8217;</dt>
+<dd>and an additional outcome).</dd>
+</dl>
+<p>&#64;input_keys: input keys
+&#64;output_keys: output keys; [&#8216;message&#8217;] by default
+&#64;io_keys: io_keys</p>
+<p>If <a href="#id10"><span class="problematic" id="id11">`</span></a>callback&#8217; is None, the first message received will be output
+as user data with key &#8220;message&#8221;.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="topic_reader.TopicReaderStateMultiOutcomes">
+<em class="property">class </em><tt class="descclassname">topic_reader.</tt><tt class="descname">TopicReaderStateMultiOutcomes</tt><big>(</big><em>topic_name, msg_type, callback=None, timeout=1, outcomes=['topic_reader_outcome1', 'topic_reader_outcome2', 'topic_reader_outcome3', 'topic_reader_outcome4', 'aborted', 'preempted'], input_keys=[], output_keys=['message'], io_keys=['general_data']</em><big>)</big><a class="reference internal" href="../../_modules/topic_reader.html#TopicReaderStateMultiOutcomes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#topic_reader.TopicReaderStateMultiOutcomes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Same but with diferent outcome from succeeded aborted and preempted
+It has four outcomes o1,2,3,4. You use the ones you need and the rest
+you can just link the to the same outcome as abort.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-drink_order">
+<span id="drink-order-py"></span><h3>drink_order.py<a class="headerlink" href="#module-drink_order" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="drink_order.DrinkOrder">
+<em class="property">class </em><tt class="descclassname">drink_order.</tt><tt class="descname">DrinkOrder</tt><big>(</big><em>name</em>, <em>drink</em>, <em>person_pose=None</em><big>)</big><a class="reference internal" href="../../_modules/drink_order.html#DrinkOrder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#drink_order.DrinkOrder" title="Permalink to this definition">¶</a></dt>
+<dd><p>DrinkOrder.</p>
+<p>Use this class to represent a drink order.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-stop_till_press_enter_and_read_key_board">
+<span id="stop-till-press-enter-and-read-key-board-py"></span><h3>stop_till_press_enter_and_read_key_board.py<a class="headerlink" href="#module-stop_till_press_enter_and_read_key_board" title="Permalink to this headline">¶</a></h3>
+<p>STOP TILL PRESS ENTER AND READ KEYBOARD</p>
+<dl class="class">
+<dt id="stop_till_press_enter_and_read_key_board.StopTillPressEnterAndReadKeyBoard">
+<em class="property">class </em><tt class="descclassname">stop_till_press_enter_and_read_key_board.</tt><tt class="descname">StopTillPressEnterAndReadKeyBoard</tt><big>(</big><em>intro_text='Press any Key to continue</em>, <em>type EXIT to finish.'</em>, <em>abort_string='EXIT'</em>, <em>debugging=False</em><big>)</big><a class="reference internal" href="../../_modules/stop_till_press_enter_and_read_key_board.html#StopTillPressEnterAndReadKeyBoard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stop_till_press_enter_and_read_key_board.StopTillPressEnterAndReadKeyBoard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stops untill you press any key.
+Outputs what you typed.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-fases_set_up_restaurant">
+<span id="fases-set-up-restaurant-py"></span><h3>fases_set_up_restaurant.py<a class="headerlink" href="#module-fases_set_up_restaurant" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="fases_set_up_restaurant.DeliverRestaurantFaseSetUp">
+<em class="property">class </em><tt class="descclassname">fases_set_up_restaurant.</tt><tt class="descname">DeliverRestaurantFaseSetUp</tt><a class="reference internal" href="../../_modules/fases_set_up_restaurant.html#DeliverRestaurantFaseSetUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fases_set_up_restaurant.DeliverRestaurantFaseSetUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises all the protocols that CompleteGraspPipelineStateMachine need to work.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="fases_set_up_restaurant.InitialRestaurantFaseSetUp">
+<em class="property">class </em><tt class="descclassname">fases_set_up_restaurant.</tt><tt class="descname">InitialRestaurantFaseSetUp</tt><a class="reference internal" href="../../_modules/fases_set_up_restaurant.html#InitialRestaurantFaseSetUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fases_set_up_restaurant.InitialRestaurantFaseSetUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stops all the the services not needed during all the test and/or the initial fase.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-learn_face">
+<span id="learn-face-py"></span><h3>learn_face.py<a class="headerlink" href="#module-learn_face" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="learn_face.LearnFaceStateMachine">
+<em class="property">class </em><tt class="descclassname">learn_face.</tt><tt class="descname">LearnFaceStateMachine</tt><a class="reference internal" href="../../_modules/learn_face.html#LearnFaceStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_face.LearnFaceStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>LearnFaceStateMachine.</p>
+<p>Use this State Machine to learn a face.</p>
+<dl class="docutils">
+<dt>Steps of this State Machine:</dt>
+<dd>The robot will: ask for name; enable the grammar defined on cocktail_party.yaml file as &#8216;people_grammar_name&#8217;; listen the name;
+ask the person to look at his face and learn the face.</dd>
+<dt>Important:</dt>
+<dd>If the robot can&#8217;t understand what the person is saying or the name was already asigned to another person, then a new person name
+will be asigned. The name is a random name loaded from the iam.gram file located on the Cocktail Party package. The names should be the
+same of the grammar robocup/iam.gram located on the robot.</dd>
+<dt>Output Keys:</dt>
+<dd>&#64;type out_person_name: out_person_name
+&#64;return out_person_name:  If a face is learned, out_person_name=&#8221;Person name&#8221;, otherwise out_person_name=None</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mp3_to_wav_converter">
+<span id="mp3-to-wav-converter-py"></span><h3>mp3_to_wav_converter.py<a class="headerlink" href="#module-mp3_to_wav_converter" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="mp3_to_wav_converter.Mp3ToWavConverter">
+<tt class="descclassname">mp3_to_wav_converter.</tt><tt class="descname">Mp3ToWavConverter</tt><big>(</big><em>input_mp3_absolute_path</em>, <em>output_wav_absolute_path='/tmp/tmp_sound_file.wav'</em><big>)</big><a class="reference internal" href="../../_modules/mp3_to_wav_converter.html#Mp3ToWavConverter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mp3_to_wav_converter.Mp3ToWavConverter" title="Permalink to this definition">¶</a></dt>
+<dd><p>To use this function you need to have installed lame
+$sudo apt-get install lame
+If output_wav_absolute_path is not given , then the output file will be placed
+$/tmp/tmp_sound_file.wav. If its a wav file it just copeies it to the output_wav_absolute_path.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-gesture_recognition">
+<span id="gesture-recognition-py"></span><h3>gesture_recognition.py<a class="headerlink" href="#module-gesture_recognition" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="gesture_recognition.GestureRecognition">
+<em class="property">class </em><tt class="descclassname">gesture_recognition.</tt><tt class="descname">GestureRecognition</tt><big>(</big><em>gesture_looking_for='Wave'</em><big>)</big><a class="reference internal" href="../../_modules/gesture_recognition.html#GestureRecognition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gesture_recognition.GestureRecognition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns succeeded when detected the gesture given in gesture_looking_for.
+By default it looks for a Wave gesture.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-take_keyboard_input_state">
+<span id="take-keyboard-input-state-py"></span><h3>take_keyboard_input_state.py<a class="headerlink" href="#module-take_keyboard_input_state" title="Permalink to this headline">¶</a></h3>
+<p>This module alows us to play and stop any kind of sound in ogg or wav format,
+and it also gives as an auxiliary Text to Speach module.</p>
+<p>In order to use it you have to:
+1)Install the audio-commons of ROS.
+<a class="reference external" href="http://www.ros.org/wiki/audio_common/Tutorials/">http://www.ros.org/wiki/audio_common/Tutorials/</a></p>
+<p>2)Launch soundplay_node.launch, add the following line to your launch.
+&lt;include file=&#8221;$(find sound_play)/soundplay_node.launch&#8221; /&gt;</p>
+<dl class="class">
+<dt id="take_keyboard_input_state.TakeKeyBoardInputState">
+<em class="property">class </em><tt class="descclassname">take_keyboard_input_state.</tt><tt class="descname">TakeKeyBoardInputState</tt><a class="reference internal" href="../../_modules/take_keyboard_input_state.html#TakeKeyBoardInputState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#take_keyboard_input_state.TakeKeyBoardInputState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Outputs the string typed with the keyboard.
+Type EXIT to outcome exit the State.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-run_command_local">
+<span id="run-command-local-py"></span><h3>run_command_local.py<a class="headerlink" href="#module-run_command_local" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="run_command_local.RunCommandLocal">
+<em class="property">class </em><tt class="descclassname">run_command_local.</tt><tt class="descname">RunCommandLocal</tt><big>(</big><em>command=None</em>, <em>sudo_enabled=False</em>, <em>input_keys=</em><span class="optional">[</span><span class="optional">]</span>, <em>output_keys=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../../_modules/run_command_local.html#RunCommandLocal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#run_command_local.RunCommandLocal" title="Permalink to this definition">¶</a></dt>
+<dd><p>RunCommandLocal State.</p>
+<p>Use this State to run a command on the local computer.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-run_script_local">
+<span id="run-script-local-py"></span><h3>run_script_local.py<a class="headerlink" href="#module-run_script_local" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="run_script_local.RunScriptLocal">
+<em class="property">class </em><tt class="descclassname">run_script_local.</tt><tt class="descname">RunScriptLocal</tt><big>(</big><em>script_name=None</em>, <em>sudo_enabled=False</em>, <em>input_keys=</em><span class="optional">[</span><span class="optional">]</span>, <em>output_keys=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../../_modules/run_script_local.html#RunScriptLocal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#run_script_local.RunScriptLocal" title="Permalink to this definition">¶</a></dt>
+<dd><p>RunScriptLocal State.</p>
+<p>Use this State to execute a script locally.
+The scripts that this State can run are located on &#8216;robocup_stacks/scripts&#8217; folder.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-count_down_sm">
+<span id="count-down-sm-py"></span><h3>count_down_sm.py<a class="headerlink" href="#module-count_down_sm" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-ssh_client">
+<span id="ssh-client-py"></span><h3>ssh_client.py<a class="headerlink" href="#module-ssh_client" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="ssh_client.SSHClient">
+<em class="property">class </em><tt class="descclassname">ssh_client.</tt><tt class="descname">SSHClient</tt><big>(</big><em>hostname</em>, <em>username=None</em>, <em>password=None</em>, <em>port=22</em><big>)</big><a class="reference internal" href="../../_modules/ssh_client.html#SSHClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ssh_client.SSHClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>SSHClient State.</p>
+<p>Use this state to execute a remote command using the ssh protocol.
+The output of the remote computer will be printed on the screen (terminal).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-bpm_conversions">
+<span id="bpm-conversions-py"></span><h3>bpm_conversions.py<a class="headerlink" href="#module-bpm_conversions" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="bpm_conversions.BpmToFreq">
+<tt class="descclassname">bpm_conversions.</tt><tt class="descname">BpmToFreq</tt><big>(</big><em>bpm</em>, <em>multiplier=1.0</em><big>)</big><a class="reference internal" href="../../_modules/bpm_conversions.html#BpmToFreq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bpm_conversions.BpmToFreq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns BPM into Hz.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bpm_conversions.BpmToPeriod">
+<tt class="descclassname">bpm_conversions.</tt><tt class="descname">BpmToPeriod</tt><big>(</big><em>bpm</em>, <em>multiplier=1.0</em><big>)</big><a class="reference internal" href="../../_modules/bpm_conversions.html#BpmToPeriod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bpm_conversions.BpmToPeriod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns BPM to seconds between beats. Period between one neat and the next.
+The second variable is a multiplier to allow us to
+have multiples of the basic period. Its default value is 1.0.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bpm_conversions.PeriodToBpm">
+<tt class="descclassname">bpm_conversions.</tt><tt class="descname">PeriodToBpm</tt><big>(</big><em>period</em><big>)</big><a class="reference internal" href="../../_modules/bpm_conversions.html#PeriodToBpm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bpm_conversions.PeriodToBpm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns Perod to beats per minute. Period between one beat and the next.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-run_script_on_robot">
+<span id="run-script-on-robot-py"></span><h3>run_script_on_robot.py<a class="headerlink" href="#module-run_script_on_robot" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="run_script_on_robot.RunScriptOnRobot">
+<em class="property">class </em><tt class="descclassname">run_script_on_robot.</tt><tt class="descname">RunScriptOnRobot</tt><big>(</big><em>script_name=None</em>, <em>use_path=True</em>, <em>robot_scripts_path='/mnt_flash/stacks/robocup_stacks/scripts/'</em>, <em>input_keys=</em><span class="optional">[</span><span class="optional">]</span>, <em>output_keys=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../../_modules/run_script_on_robot.html#RunScriptOnRobot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#run_script_on_robot.RunScriptOnRobot" title="Permalink to this definition">¶</a></dt>
+<dd><p>RunScriptOnRobot State.</p>
+<p>Use this state to execute a script on the robot.</p>
+<p>If you are running this State from your computer, the robot name will be get from the variable ROS_MASTER_URI.
+The default login and password are defined on the variables USERNAME and PASSWORD that can be found in this file.</p>
+<p>If you are running directly on the robot (not from your computer), the command will be executed locally by RunCommandLocal State.</p>
+<p>Be carefull: All commands executed on the robot will run as root user.</p>
+<dl class="docutils">
+<dt>Important:</dt>
+<dd>If you are running this State from your computer, with ROS_MASTER_URI pointing to the robot, the script will probably not works good.
+The problem is because using ssh, the default executable on the target is &#8216;/bin/sh&#8217;, not &#8216;/bin/bash&#8217;.
+But if you are running this State directly on the robot, it will works perfectly.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-publish_marker">
+<span id="publish-marker-py"></span><h3>publish_marker.py<a class="headerlink" href="#module-publish_marker" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="publish_marker.PublishGeneralMarker">
+<em class="property">class </em><tt class="descclassname">publish_marker.</tt><tt class="descname">PublishGeneralMarker</tt><big>(</big><em>scale=0.2</em>, <em>marker_ns='markers_namespace'</em>, <em>marker_name='/visualization_marker'</em>, <em>marker_type='CYLINDER'</em>, <em>marker_frame_id='/base_link'</em>, <em>marker_id=0</em>, <em>mk_length=1</em>, <em>colour='RED'</em>, <em>marker_duration=0</em><big>)</big><a class="reference internal" href="../../_modules/publish_marker.html#PublishGeneralMarker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#publish_marker.PublishGeneralMarker" title="Permalink to this definition">¶</a></dt>
+<dd><p>&#64;userdata.in_pose: A geometry_msgs.msg Pose() object.
+Publishes the figure given pased on the input pose.
+You can input the marker_name and the scale.
+You can state its name.
+You can state the frame ID you want.
+The duration in second of the life of the marker can aslo be modified.
+Basic Colours can be selected (RED,BLUE,GREEN and RANDOM). RED is the default colour.
+You can change the length of the marker ( lets say the length of this marker buffer).
+If no marker_ns is given, but a marker name yes, it will put it in ns also without the / and <a href="#id27"><span class="problematic" id="id28">ns_</span></a> at the beginning.
+This a first mesure to avoid different markers have the same ns and id.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="publish_marker.PublishMarker">
+<em class="property">class </em><tt class="descclassname">publish_marker.</tt><tt class="descname">PublishMarker</tt><big>(</big><em>scale=0.2</em><big>)</big><a class="reference internal" href="../../_modules/publish_marker.html#PublishMarker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#publish_marker.PublishMarker" title="Permalink to this definition">¶</a></dt>
+<dd><p>&#64;userdata.in_pose: A geometry_msgs.msg Pose() object.
+Publishes a basic cilinder marker with fixed dimensions,
+in the input position given.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="publish_marker.PublishMarkerWithName">
+<em class="property">class </em><tt class="descclassname">publish_marker.</tt><tt class="descname">PublishMarkerWithName</tt><big>(</big><em>scale=0.2</em>, <em>marker_name='/visualization_marker'</em><big>)</big><a class="reference internal" href="../../_modules/publish_marker.html#PublishMarkerWithName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#publish_marker.PublishMarkerWithName" title="Permalink to this definition">¶</a></dt>
+<dd><p>&#64;userdata.in_pose: A geometry_msgs.msg Pose() object.
+Publishes a basic cilinder marker with fixed dimensions,
+in the input position given.
+You can input the marker_name and the scale</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="publish_marker.PublishPoseMarkers">
+<tt class="descclassname">publish_marker.</tt><tt class="descname">PublishPoseMarkers</tt><big>(</big><em>pose</em>, <em>marker_name</em>, <em>marker_type</em>, <em>colour</em><big>)</big><a class="reference internal" href="../../_modules/publish_marker.html#PublishPoseMarkers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#publish_marker.PublishPoseMarkers" title="Permalink to this definition">¶</a></dt>
+<dd><p>The input is a Pose().</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="publish_marker.SetMarkerType">
+<tt class="descclassname">publish_marker.</tt><tt class="descname">SetMarkerType</tt><big>(</big><em>marker_type</em><big>)</big><a class="reference internal" href="../../_modules/publish_marker.html#SetMarkerType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#publish_marker.SetMarkerType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the marker type given.
+If Marker Nost supported returns assert error.
+Supported ARROW, CUBE, SPHERE AND CYLINDER.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-check_dependences">
+<span id="check-dependences-py"></span><h3>check_dependences.py<a class="headerlink" href="#module-check_dependences" title="Permalink to this headline">¶</a></h3>
+<p>Contains calls the State that check all depencences of Cocktail Party.</p>
+<dl class="class">
+<dt id="check_dependences.CocktailPartyCheckDependences">
+<em class="property">class </em><tt class="descclassname">check_dependences.</tt><tt class="descname">CocktailPartyCheckDependences</tt><a class="reference internal" href="../../_modules/check_dependences.html#CocktailPartyCheckDependences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#check_dependences.CocktailPartyCheckDependences" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the dependences of the CocktailPartyStateMachine and check
+the &#8216;consistence&#8217;</p>
+<dl class="method">
+<dt id="check_dependences.CocktailPartyCheckDependences.execute">
+<tt class="descname">execute</tt><big>(</big><em>userdata</em><big>)</big><a class="reference internal" href="../../_modules/check_dependences.html#CocktailPartyCheckDependences.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#check_dependences.CocktailPartyCheckDependences.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>The main function.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="check_dependences.main">
+<tt class="descclassname">check_dependences.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/check_dependences.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#check_dependences.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main function</p>
+</dd></dl>
+
+</div>
+<div class="section" id="sm-fko-py">
+<h3>sm_fko.py<a class="headerlink" href="#sm-fko-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-find_and_recognize_people">
+<span id="find-and-recognize-people-py"></span><h3>find_and_recognize_people.py<a class="headerlink" href="#module-find_and_recognize_people" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-run_command_on_robot">
+<span id="run-command-on-robot-py"></span><h3>run_command_on_robot.py<a class="headerlink" href="#module-run_command_on_robot" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="run_command_on_robot.RunCommandOnRobot">
+<em class="property">class </em><tt class="descclassname">run_command_on_robot.</tt><tt class="descname">RunCommandOnRobot</tt><big>(</big><em>command=None</em>, <em>input_keys=</em><span class="optional">[</span><span class="optional">]</span>, <em>output_keys=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../../_modules/run_command_on_robot.html#RunCommandOnRobot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#run_command_on_robot.RunCommandOnRobot" title="Permalink to this definition">¶</a></dt>
+<dd><p>RunCommandOnRobot State.</p>
+<p>Use this state to execute a command on the robot.</p>
+<p>If you are running this State from your computer, the robot name will be get from the variable ROS_MASTER_URI.
+The default login and password are defined on the run_script_on_robot.py file.</p>
+<p>If you are running directly on the robot (not from your computer), the command will be executed locally by RunCommandLocal State.</p>
+<p>Be carefull: All commands executed on the robot will run as root user.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-math_utils">
+<span id="math-utils-py"></span><h3>math_utils.py<a class="headerlink" href="#module-math_utils" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="math_utils.add_vectors">
+<tt class="descclassname">math_utils.</tt><tt class="descname">add_vectors</tt><big>(</big><em>vec1</em>, <em>vec2</em><big>)</big><a class="reference internal" href="../../_modules/math_utils.html#add_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#math_utils.add_vectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Element-wise addition of vec1 and vec2.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="math_utils.cross_product">
+<tt class="descclassname">math_utils.</tt><tt class="descname">cross_product</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="reference internal" href="../../_modules/math_utils.html#cross_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#math_utils.cross_product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes the cross product of two vectors</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="math_utils.dot_product">
+<tt class="descclassname">math_utils.</tt><tt class="descname">dot_product</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="reference internal" href="../../_modules/math_utils.html#dot_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#math_utils.dot_product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a dot product of two vectors
+Returns a number</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="math_utils.multiply_quaternions">
+<tt class="descclassname">math_utils.</tt><tt class="descname">multiply_quaternions</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="reference internal" href="../../_modules/math_utils.html#multiply_quaternions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#math_utils.multiply_quaternions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiplies quaternions <cite>a&#8217; and `b</cite>. Remember that this operation
+is noncommutative.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="math_utils.multiply_vector">
+<tt class="descclassname">math_utils.</tt><tt class="descname">multiply_vector</tt><big>(</big><em>vec</em>, <em>factor</em><big>)</big><a class="reference internal" href="../../_modules/math_utils.html#multiply_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#math_utils.multiply_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiplies each component of <em>vec</em> by the given <em>factor</em>.
+There is the factor zero condition, to aviod having variables
+that were negative having a value or -0.0.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="math_utils.normalize_vector">
+<tt class="descclassname">math_utils.</tt><tt class="descname">normalize_vector</tt><big>(</big><em>vec</em><big>)</big><a class="reference internal" href="../../_modules/math_utils.html#normalize_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#math_utils.normalize_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a normalized (unitary) copy of <em>vec</em>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="math_utils.substract_vector">
+<tt class="descclassname">math_utils.</tt><tt class="descname">substract_vector</tt><big>(</big><em>vec1</em>, <em>vec2</em><big>)</big><a class="reference internal" href="../../_modules/math_utils.html#substract_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#math_utils.substract_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Element-wise substraction of vec2 from vec1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="math_utils.vector_magnitude">
+<tt class="descclassname">math_utils.</tt><tt class="descname">vector_magnitude</tt><big>(</big><em>vec</em><big>)</big><a class="reference internal" href="../../_modules/math_utils.html#vector_magnitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#math_utils.vector_magnitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the magnitude of the given vector.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="math_utils.xy_with_angle">
+<tt class="descclassname">math_utils.</tt><tt class="descname">xy_with_angle</tt><big>(</big><em>alfa</em>, <em>distance</em><big>)</big><a class="reference internal" href="../../_modules/math_utils.html#xy_with_angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#math_utils.xy_with_angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the x and y components for a 2D vector that
+has that angle ( radians) reffered to the horizontal and has the
+magnitude distance.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-introduce_yourself">
+<span id="introduce-yourself-py"></span><h3>introduce_yourself.py<a class="headerlink" href="#module-introduce_yourself" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="introduce_yourself.IntroduceYourselfStateMachine">
+<em class="property">class </em><tt class="descclassname">introduce_yourself.</tt><tt class="descname">IntroduceYourselfStateMachine</tt><big>(</big><em>announce_unknown_face=True</em><big>)</big><a class="reference internal" href="../../_modules/introduce_yourself.html#IntroduceYourselfStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#introduce_yourself.IntroduceYourselfStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reem tells his name and nothing else.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-cocktail_party_variables">
+<span id="cocktail-party-variables-py"></span><h3>cocktail_party_variables.py<a class="headerlink" href="#module-cocktail_party_variables" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="cocktail_party_variables.CocktailPartyVariables">
+<em class="property">class </em><tt class="descclassname">cocktail_party_variables.</tt><tt class="descname">CocktailPartyVariables</tt><big>(</big><em>print_variables=True</em><big>)</big><a class="reference internal" href="../../_modules/cocktail_party_variables.html#CocktailPartyVariables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cocktail_party_variables.CocktailPartyVariables" title="Permalink to this definition">¶</a></dt>
+<dd><p>CocktailPartyVariables class.</p>
+<p>Use this class to get all variables required by the CocktailPartyStateMachine.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-recognize_face">
+<span id="recognize-face-py"></span><h3>recognize_face.py<a class="headerlink" href="#module-recognize_face" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="recognize_face.RecognizeFaceStateMachine">
+<em class="property">class </em><tt class="descclassname">recognize_face.</tt><tt class="descname">RecognizeFaceStateMachine</tt><big>(</big><em>announce_unknown_face=True</em>, <em>instructions_tts=True</em><big>)</big><a class="reference internal" href="../../_modules/recognize_face.html#RecognizeFaceStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recognize_face.RecognizeFaceStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>RecognizeFaceStateMachine.</p>
+<p>Use this State Machine to recognize a face.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="recognize_face.RecognizeSeveralFacesStateMachine">
+<em class="property">class </em><tt class="descclassname">recognize_face.</tt><tt class="descname">RecognizeSeveralFacesStateMachine</tt><big>(</big><em>num_persons</em>, <em>recognize_existing=True</em><big>)</big><a class="reference internal" href="../../_modules/recognize_face.html#RecognizeSeveralFacesStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#recognize_face.RecognizeSeveralFacesStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Looks for <a href="#id12"><span class="problematic" id="id13">`</span></a>num_persons&#8217; persons introducing themselves to the robot
+one after another (with a PERSON_CHANGE_TIME second long wait between
+them).</p>
+<p>The names of all persons are returned in an ordered list in <a href="#id14"><span class="problematic" id="id15">`</span></a>person_names&#8217;.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-enter_room">
+<span id="enter-room-py"></span><h3>enter_room.py<a class="headerlink" href="#module-enter_room" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-satisfy_delivery_order">
+<span id="satisfy-delivery-order-py"></span><h3>satisfy_delivery_order.py<a class="headerlink" href="#module-satisfy_delivery_order" title="Permalink to this headline">¶</a></h3>
+<p>SATISFY_DELIVERY_ORDER.PY</p>
+<dl class="class">
+<dt id="satisfy_delivery_order.SatisfyDeliveryOrder">
+<em class="property">class </em><tt class="descclassname">satisfy_delivery_order.</tt><tt class="descname">SatisfyDeliveryOrder</tt><a class="reference internal" href="../../_modules/satisfy_delivery_order.html#SatisfyDeliveryOrder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#satisfy_delivery_order.SatisfyDeliveryOrder" title="Permalink to this definition">¶</a></dt>
+<dd><p>This SM That takes in a list of vectors, where for each object there is
+a location where to take that object.
+It basicaly take object 1 to location A, 2 to B and so on.
+Finishes when it has delivered all the objects in the list that are also in
+its POI memory banks. If a non memorised previously object is in the list
+it will just let you know that she doesnt have it memorised.</p>
+<dl class="docutils">
+<dt>&#64;Input_keys: in_delivery_order_list&#8211;&gt;  List of vector elements of two positions.</dt>
+<dd>Firstone is the object, secondone is the
+delivery location for that object.</dd>
+</dl>
+<p>Behaviour:
+#. If it cant fetch the object, it will just skip to the nextone in the list.
+#.If it has the object but then it cant deliver it, it will deliver the object
+in the location where she fetched it.
+#. If it cant return the object to its original place, then the statemachine aborts.
+should be improved in some way like, trying to put it else where or just drop the
+object to the floor.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-listen_command_for_restaurant">
+<span id="listen-command-for-restaurant-py"></span><h3>listen_command_for_restaurant.py<a class="headerlink" href="#module-listen_command_for_restaurant" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-learn_person">
+<span id="learn-person-py"></span><h3>learn_person.py<a class="headerlink" href="#module-learn_person" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="learn_person.FaceProcessData">
+<em class="property">class </em><tt class="descclassname">learn_person.</tt><tt class="descname">FaceProcessData</tt><a class="reference internal" href="../../_modules/learn_person.html#FaceProcessData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_person.FaceProcessData" title="Permalink to this definition">¶</a></dt>
+<dd><p>You input a vector of names &#8216;process_names&#8217; and confidence &#8216;process_confidence&#8217;
+if (confidence &gt; MINIMUM_CONFIDENCE) &#8211;&gt;    it returns succeeded and</p>
+<blockquote>
+<div>the name of the highest confidence</div></blockquote>
+<dl class="docutils">
+<dt>else &#8211;&gt;    returns face_not_found and</dt>
+<dd>the name = &#8216;no_name&#8217;
+At the end it will wait t = SLEEP_TIME_WHEN_FAILS,
+after which the state will terminate.</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="learn_person.LearnPerson">
+<em class="property">class </em><tt class="descclassname">learn_person.</tt><tt class="descname">LearnPerson</tt><big>(</big><em>learn_face=False</em><big>)</big><a class="reference internal" href="../../_modules/learn_person.html#LearnPerson"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_person.LearnPerson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the perosnId and positions and speed data of the closest person in the people_tracking_learning area.
+This Area is defined by the params in the file params_follow_me in teh follow_me pkg.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="learn_person.PeopleTrackingProcessData">
+<em class="property">class </em><tt class="descclassname">learn_person.</tt><tt class="descname">PeopleTrackingProcessData</tt><a class="reference internal" href="../../_modules/learn_person.html#PeopleTrackingProcessData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#learn_person.PeopleTrackingProcessData" title="Permalink to this definition">¶</a></dt>
+<dd><p>You input a vector of an array &#8216;process_peopleSet&#8217; type peopleTRacking.msg
+if (    distance between Reem and candidate &lt; MAX_DISTANCE and</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>the canditade is properly centered abs(pos.y) &lt; MAX_DISPLACEMENT  )</dt>
+<dd><dl class="first last docutils">
+<dt>&#8211;&gt; it returns succeeded and</dt>
+<dd>the Id of the candidate nearest to Reem and the whole peopleTracking message</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="docutils">
+<dt>else &#8211;&gt;    returns faulty_peopletrack and</dt>
+<dd>the name = &#8216;no_name&#8217;
+At the end it will wait t = SLEEP_TIME_WHEN_FAILS,
+after which the state will terminate.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-serve_drinks">
+<span id="serve-drinks-py"></span><h3>serve_drinks.py<a class="headerlink" href="#module-serve_drinks" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="serve_drinks.ServeDrinkStateMachine">
+<em class="property">class </em><tt class="descclassname">serve_drinks.</tt><tt class="descname">ServeDrinkStateMachine</tt><a class="reference internal" href="../../_modules/serve_drinks.html#ServeDrinkStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#serve_drinks.ServeDrinkStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>ServeDrinkStateMachine.</p>
+<dl class="docutils">
+<dt>Requirements:</dt>
+<dd>Kinect connected on the robot.
+Drinks located in a table in drinks_location.
+scripts/graspingStartNoKinect.sh should be previously launched.</dd>
+</dl>
+<p>Use this class to serve the drink orders.
+Steps of this State Machine:</p>
+<blockquote>
+<div>First, the kinect to use in the grasp will be activated. After this, the robot will move to drinks_location; enable the controllers of
+the head, left and right arm to be able to look for the objects and grasp; look for the object and grasp it if found; stop the kinect
+used on grasping to avoid conflicts with GestureRecognition driver if the person that has requested the drink is not in the same position;
+stop all controllers; back to the position where the person is located; try recognize the person. If the person is not in the same position,
+the robot will ask where the person is; The robot will serve the drink.</div></blockquote>
+</dd></dl>
+
+<dl class="class">
+<dt id="serve_drinks.ServeOrdersStateMachine">
+<em class="property">class </em><tt class="descclassname">serve_drinks.</tt><tt class="descname">ServeOrdersStateMachine</tt><big>(</big><em>number_persons</em><big>)</big><a class="reference internal" href="../../_modules/serve_drinks.html#ServeOrdersStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#serve_drinks.ServeOrdersStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>ServeOrdersStateMachine</p>
+<p>Use this class to serve the drink orders.
+This class will execute ServeDrinkStateMachine() iterating X times.
+X is number_persons.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-return_to_ordering_location">
+<span id="return-to-ordering-location-py"></span><h3>return_to_ordering_location.py<a class="headerlink" href="#module-return_to_ordering_location" title="Permalink to this headline">¶</a></h3>
+<p>RETURN_TO_ORDERING_LOCATION.PY</p>
+<dl class="class">
+<dt id="return_to_ordering_location.ReturnToOrderingLocation">
+<em class="property">class </em><tt class="descclassname">return_to_ordering_location.</tt><tt class="descname">ReturnToOrderingLocation</tt><a class="reference internal" href="../../_modules/return_to_ordering_location.html#ReturnToOrderingLocation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#return_to_ordering_location.ReturnToOrderingLocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes the Reem return to a previously memorised location called ordering_location.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-memorise_ordering_location">
+<span id="memorise-ordering-location-py"></span><h3>memorise_ordering_location.py<a class="headerlink" href="#module-memorise_ordering_location" title="Permalink to this headline">¶</a></h3>
+<p>MEMORISE_ORDERING_LOCATION.PY</p>
+<dl class="class">
+<dt id="memorise_ordering_location.MemoriseOrderingLocation">
+<em class="property">class </em><tt class="descclassname">memorise_ordering_location.</tt><tt class="descname">MemoriseOrderingLocation</tt><a class="reference internal" href="../../_modules/memorise_ordering_location.html#MemoriseOrderingLocation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#memorise_ordering_location.MemoriseOrderingLocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Memorised the current position as the ordering location.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-find_and_recognize_person">
+<span id="find-and-recognize-person-py"></span><h3>find_and_recognize_person.py<a class="headerlink" href="#module-find_and_recognize_person" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-recognize_and_move_to_caller">
+<span id="recognize-and-move-to-caller-py"></span><h3>recognize_and_move_to_caller.py<a class="headerlink" href="#module-recognize_and_move_to_caller" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="listen-command-for-follow-me-py">
+<h3>listen_command_for_follow_me.py<a class="headerlink" href="#listen-command-for-follow-me-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-take_several_drink_orders">
+<span id="take-several-drink-orders-py"></span><h3>take_several_drink_orders.py<a class="headerlink" href="#module-take_several_drink_orders" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="take_several_drink_orders.TakeSeveralDrinkOrdersStateMachine">
+<em class="property">class </em><tt class="descclassname">take_several_drink_orders.</tt><tt class="descname">TakeSeveralDrinkOrdersStateMachine</tt><big>(</big><em>num_persons</em>, <em>sleep</em>, <em>ask_to_come</em><big>)</big><a class="reference internal" href="../../_modules/take_several_drink_orders.html#TakeSeveralDrinkOrdersStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#take_several_drink_orders.TakeSeveralDrinkOrdersStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>TakeSeveralDrinkOrdersStateMachine</p>
+<dl class="docutils">
+<dt>Requirements:</dt>
+<dd>Kinect connected on the robot.
+Grammar: robocup/iam and robocup/drinks</dd>
+</dl>
+<p>Use this class to take the orders.
+The robot will ask for someone that want a drink and some person should wave the hand. Then the robot will move to the person, learn his
+face and ask for the drink that the person want.</p>
+<p>The orders are returned in a list in <a href="#id16"><span class="problematic" id="id17">`</span></a>drink_orders&#8217; of type DrinkOrder.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-navigation_state">
+<span id="navigation-state-py"></span><h3>navigation_state.py<a class="headerlink" href="#module-navigation_state" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-elevator_handling">
+<span id="elevator-handling-py"></span><h3>elevator_handling.py<a class="headerlink" href="#module-elevator_handling" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-go_to_closest_person">
+<span id="go-to-closest-person-py"></span><h3>go_to_closest_person.py<a class="headerlink" href="#module-go_to_closest_person" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-move_to_object">
+<span id="move-to-object-py"></span><h3>move_to_object.py<a class="headerlink" href="#module-move_to_object" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="move_to_object.MoveToObjectBelongingLocSM">
+<em class="property">class </em><tt class="descclassname">move_to_object.</tt><tt class="descname">MoveToObjectBelongingLocSM</tt><a class="reference internal" href="../../_modules/move_to_object.html#MoveToObjectBelongingLocSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#move_to_object.MoveToObjectBelongingLocSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the target object is expected to be in a input key named <a href="#id18"><span class="problematic" id="id19">`</span></a>object_name&#8217;.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="listen-command-for-follow-me-again-py">
+<h3>listen_command_for_follow_me_again.py<a class="headerlink" href="#listen-command-for-follow-me-again-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-take_serve_drinks">
+<span id="take-serve-drinks-py"></span><h3>take_serve_drinks.py<a class="headerlink" href="#module-take_serve_drinks" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="take_serve_drinks.TakeServeDrinkOrdersSM">
+<em class="property">class </em><tt class="descclassname">take_serve_drinks.</tt><tt class="descname">TakeServeDrinkOrdersSM</tt><big>(</big><em>num_persons</em>, <em>all_at_a_time</em>, <em>room_name</em>, <em>sleep</em>, <em>ask_to_come</em><big>)</big><a class="reference internal" href="../../_modules/take_serve_drinks.html#TakeServeDrinkOrdersSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#take_serve_drinks.TakeServeDrinkOrdersSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use this class to take the drink orders and serve.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-move_action">
+<span id="move-action-py"></span><h3>move_action.py<a class="headerlink" href="#module-move_action" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="move_action.MoveActionState">
+<em class="property">class </em><tt class="descclassname">move_action.</tt><tt class="descname">MoveActionState</tt><big>(</big><em>frame_id='/base_link'</em>, <em>move_base_action_name='/move_base'</em>, <em>pose=None</em>, <em>goal_cb=None</em>, <em>goal_key=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/move_action.html#MoveActionState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#move_action.MoveActionState" title="Permalink to this definition">¶</a></dt>
+<dd><p>MoveActionState State.</p>
+<p>Use this State to move the robot.</p>
+<p>The input data you give has to be of type Pose</p>
+</dd></dl>
+
+</div>
+<div class="section" id="listen-command-for-gpsr-follow-py">
+<h3>listen_command_for_gpsr_follow.py<a class="headerlink" href="#listen-command-for-gpsr-follow-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-listen_to_command">
+<span id="listen-to-command-py"></span><h3>listen_to_command.py<a class="headerlink" href="#module-listen_to_command" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="follow-and-stop-py">
+<h3>follow_and_stop.py<a class="headerlink" href="#follow-and-stop-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id20">
+<h3>__init__.py<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-__init__"></span></div>
+<div class="section" id="module-set_distance_new_location">
+<span id="set-distance-new-location-py"></span><h3>set_distance_new_location.py<a class="headerlink" href="#module-set_distance_new_location" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="set_distance_new_location.Set_L_New_Location">
+<em class="property">class </em><tt class="descclassname">set_distance_new_location.</tt><tt class="descname">Set_L_New_Location</tt><big>(</big><em>distance=0.5</em>, <em>we_lost_person=False</em><big>)</big><a class="reference internal" href="../../_modules/set_distance_new_location.html#Set_L_New_Location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#set_distance_new_location.Set_L_New_Location" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>This state does the following:</dt>
+<dd><dl class="first docutils">
+<dt>inputs &#8211;&gt;  distance: the distance you want the robots to keep between him and the person he has detected (S.I.:metres)</dt>
+<dd><dl class="first last docutils">
+<dt>we_lost_person: Boolean.    If false, it will just calculate the l_navgoal and will put the l_lost_person key to False</dt>
+<dd>If true, it will calculate the l_navgoal and will put the l_lost_person key to True.
+It will also evaluate the l_no_people_counter to NUMBER_TIMES_AFTER_LOST_BEFORE_LOOSING_AGAIN.
+The new position will be L metres AWAY from the last know persons position, mainly because we
+decided  that if we lose a person we will move a distance AHEAD to alow a new search, and prehaps find.</dd>
+</dl>
+</dd>
+</dl>
+<p>input_keys &#8211;&gt; &#8216;FO_people_location&#8217;:Type pose(). Pose where we have detected the person.</p>
+<dl class="last docutils">
+<dt>Notes:  l_no_people_counter we use it to keep track how many times we lost a person and will be used outside to select</dt>
+<dd>whether we use we_lost_person = true or false.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-follow_operator">
+<span id="follow-operator-py"></span><h3>follow_operator.py<a class="headerlink" href="#module-follow_operator" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-get_current_pos">
+<span id="get-current-pos-py"></span><h3>get_current_pos.py<a class="headerlink" href="#module-get_current_pos" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="get_current_pos.GetPosition">
+<em class="property">class </em><tt class="descclassname">get_current_pos.</tt><tt class="descname">GetPosition</tt><a class="reference internal" href="../../_modules/get_current_pos.html#GetPosition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#get_current_pos.GetPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>This SM just gets the position and orientation of the robot in Base_link and outputs this data
+in form of a Pose type variable.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="listen-commands-py">
+<h3>listen_commands.py<a class="headerlink" href="#listen-commands-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-listen_and_satisfy_delivery_order">
+<span id="listen-and-satisfy-delivery-order-py"></span><h3>listen_and_satisfy_delivery_order.py<a class="headerlink" href="#module-listen_and_satisfy_delivery_order" title="Permalink to this headline">¶</a></h3>
+<p>LISTEN_AND_SATISFY_DELIVERY_ORDER.PY</p>
+<dl class="class">
+<dt id="listen_and_satisfy_delivery_order.ListenAndSatisfyDeliveryOrderSM">
+<em class="property">class </em><tt class="descclassname">listen_and_satisfy_delivery_order.</tt><tt class="descname">ListenAndSatisfyDeliveryOrderSM</tt><a class="reference internal" href="../../_modules/listen_and_satisfy_delivery_order.html#ListenAndSatisfyDeliveryOrderSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#listen_and_satisfy_delivery_order.ListenAndSatisfyDeliveryOrderSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>This SM listens to a delivery order of three objects to deliver
+in a maximum of two diferent locations. All the 5 locations must be
+memorised as POIS before using this SM, otherwise it will just give
+an error message telling you that it didnt find the locations that werent
+memorised.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-move_to_caller">
+<span id="move-to-caller-py"></span><h3>move_to_caller.py<a class="headerlink" href="#module-move_to_caller" title="Permalink to this headline">¶</a></h3>
+<p>Contains the MoveToCallerStateMachine</p>
+<dl class="class">
+<dt id="move_to_caller.MoveToCallerStateMachine">
+<em class="property">class </em><tt class="descclassname">move_to_caller.</tt><tt class="descname">MoveToCallerStateMachine</tt><big>(</big><em>ask_for_movement_msg_cb=None</em>, <em>rotation_left=True</em>, <em>input_keys=</em><span class="optional">[</span><span class="optional">]</span>, <em>output_keys=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../../_modules/move_to_caller.html#MoveToCallerStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#move_to_caller.MoveToCallerStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>MoveToCallerStateMachine.</p>
+<p>Use this State Machine to move the robot to someone that is waving the hand.</p>
+<dl class="docutils">
+<dt>Requirements:</dt>
+<dd>Kinect</dd>
+</dl>
+<p>When calling this State Machine, the robot will execute the script gestureRecognitionStart.sh that enables the kinect.
+Will look for someone waving the hand. If no movements are found, will rotate 90 degrees and look for movement again.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-find_particular_people">
+<span id="find-particular-people-py"></span><h3>find_particular_people.py<a class="headerlink" href="#module-find_particular_people" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-move_to_room">
+<span id="move-to-room-py"></span><h3>move_to_room.py<a class="headerlink" href="#module-move_to_room" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="move_to_room.MoveToRoomStateMachine">
+<em class="property">class </em><tt class="descclassname">move_to_room.</tt><tt class="descname">MoveToRoomStateMachine</tt><big>(</big><em>announcement='%s</em>, <em>here I go!'</em>, <em>ignore_orientation=False</em><big>)</big><a class="reference internal" href="../../_modules/move_to_room.html#MoveToRoomStateMachine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#move_to_room.MoveToRoomStateMachine" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the target room is expected to be in a input key named <a href="#id21"><span class="problematic" id="id22">`</span></a>room_name&#8217;.</p>
+<dl class="docutils">
+<dt>The announcement argument in the constructor is the text to be announced while going to the room.</dt>
+<dd>If it&#8217;s a string, a SpeakActionState is used. If it&#8217;s a list of strings, a SpeakActionFromPoolStateMachine is used.
+All the strings (either the single string or all the strings inside the list) must have a %s to be replaced for the room&#8217;s name.
+If the announcement argument equals None no speak action is used and the robot simply moves to the room.</dd>
+</dl>
+<p>The ignore_orientation parameter performs a dynamic reconfigure to ignore the orientation at the goal, if set to True</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-move_to_table">
+<span id="move-to-table-py"></span><h3>move_to_table.py<a class="headerlink" href="#module-move_to_table" title="Permalink to this headline">¶</a></h3>
+<p>MOVE_TO_TABLE.PY</p>
+<dl class="class">
+<dt id="move_to_table.MoveToTable">
+<em class="property">class </em><tt class="descclassname">move_to_table.</tt><tt class="descname">MoveToTable</tt><a class="reference internal" href="../../_modules/move_to_table.html#MoveToTable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#move_to_table.MoveToTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moves to a table in sight.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-track_operator">
+<span id="track-operator-py"></span><h3>track_operator.py<a class="headerlink" href="#module-track_operator" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="track_operator.PublishGoToLocationMarkers">
+<tt class="descclassname">track_operator.</tt><tt class="descname">PublishGoToLocationMarkers</tt><big>(</big><em>pose</em><big>)</big><a class="reference internal" href="../../_modules/track_operator.html#PublishGoToLocationMarkers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#track_operator.PublishGoToLocationMarkers" title="Permalink to this definition">¶</a></dt>
+<dd><p>The input is a Pose(). Publishes a blue sphere in the position of the goal.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="track_operator.applyFilterFour">
+<tt class="descclassname">track_operator.</tt><tt class="descname">applyFilterFour</tt><big>(</big><em>tracked_person=None</em>, <em>peopleSet=None</em><big>)</big><a class="reference internal" href="../../_modules/track_operator.html#applyFilterFour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#track_operator.applyFilterFour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to find the nearest person to the robot.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="track_operator.applyFilterOne">
+<tt class="descclassname">track_operator.</tt><tt class="descname">applyFilterOne</tt><big>(</big><em>tracked_person=None</em>, <em>peopleSet=None</em><big>)</big><a class="reference internal" href="../../_modules/track_operator.html#applyFilterOne"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#track_operator.applyFilterOne" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to find the last person we were tracking. To do this we only have to
+look for the same target id.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="track_operator.applyFilterThree">
+<tt class="descclassname">track_operator.</tt><tt class="descname">applyFilterThree</tt><big>(</big><em>tracked_person=None</em>, <em>peopleSet=None</em><big>)</big><a class="reference internal" href="../../_modules/track_operator.html#applyFilterThree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#track_operator.applyFilterThree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to find the nearest person to the last position
+of the last tracked person.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="track_operator.applyFilterTwo">
+<tt class="descclassname">track_operator.</tt><tt class="descname">applyFilterTwo</tt><big>(</big><em>tracked_person=None</em>, <em>peopleSet=None</em><big>)</big><a class="reference internal" href="../../_modules/track_operator.html#applyFilterTwo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#track_operator.applyFilterTwo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to find a person within a circle of MAX_LAST_POSITION_RADIUS radius around the last position
+of the last tracked person.</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="../../_sources/pkg_documentation/pal_smach_utils/pal_smach_utils_doc.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

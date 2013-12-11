@@ -1,0 +1,11 @@
+# Define the goal
+int8 start
+---
+# Define the result
+geometry_msgs/PoseStamped base_poses
+arm_navigation_msgs/MotionPlanRequest arm_poses
+string planner_service_name
+string state
+---
+# Define a feedback message
+int8 searching

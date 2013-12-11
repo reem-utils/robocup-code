@@ -1,0 +1,27 @@
+<package>
+  <description brief="object_finding_behaviour_tests">
+
+     object_finding_behaviour_tests
+
+  </description>
+  <author>Gerard Canal</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/object_finding_behaviour_tests</url>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <depend package="pal_smach_utils"/>
+  <depend package="next_location_provider"/>
+  <depend package="object_recognition_mock"/>
+  <depend package="move_base"/>
+  <depend package="iri_moped_handler" />
+  <depend package="text_to_speech" />
+  <depend package="pr2_controllers_msgs" />
+  <depend package="tabletop_object_detector" />
+  <!-- <depend package="furniture_detector_service" /> This line was commented because is only for tests, and was not tested perfectly.-->
+  <depend package="reem_tabletop_manipulation_launch" />
+  <depend package="pal_srvs" />
+</package>
+
+

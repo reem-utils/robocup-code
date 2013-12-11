@@ -1,0 +1,16 @@
+# Values to identify inner corners (corner ids). Use the string or the number as you prefer
+# Up-Left    = UL or 1
+# Up-Right   = UR or 2
+# Down-Left  = DL or 3
+# Down-Right = DR or 4
+corner_data:
+    # Syntax: [[c1x, c1y], [c2x, c2y], [c3x, c3y], [c4x, c4y], [[x, y, corner_id], ...]]
+    # There are 4 points [c1x, c1y] representing the 4 corners of the room.
+    # The fifth parameter is a list of lists where each list contain the x and y cordinate of a coorner and a corner id.
+    #   that corners represent inner corners. While the first corners represent the rectangular room, the inner corners
+    #   represent the irregularities of the room. For example, if the room is not rectangular at all and it's shape is like
+    #   an L, the 4 corners would be the ones that cover all the rectangle of the L, and there would be a inner corner that's
+    #   the point between the horizontal line (_) and the vertical one (|).
+    living: [[0.833, 9.418], [1.061, 12.476], [8.049, 9.1], [8.001, 11.957], [[7.007, 10.713, UR], [5.512, 11.194, DR]]]
+    kitchen: [[10.883, -5.320], [8.637, -5.252], [7.943, -1.831], [11.107, -1.888], []]
+    robocup: [[-2.713, 0.296], [2.187, 1.581], [3.381, -1.489], [-1.416, -2.789], []]

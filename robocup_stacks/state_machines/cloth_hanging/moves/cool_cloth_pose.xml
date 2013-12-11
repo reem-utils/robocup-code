@@ -1,0 +1,52 @@
+<motion id = "car_drive_ferrari"  model = "body" type = "motion_action" >
+<motion_action>
+  <motion_aggregation id = "" >
+    <motion_basic id = "NO_ID"  type = "joint"  completion_required = "1" >
+      <dofs>1 1  1 1   1 1 1 1 1 1 1   1 1 1 1 1 1 1</dofs>
+      <end_effector id = "" >
+        <op_frame link = "__BLANK__" >
+           <matrixHom>
+             <point_3D x = "0"  y = "0"  z = "0" ></point_3D>
+             <matrixRot rodrigues_x = "0"  rodrigues_y = "0"  rodrigues_z = "0" ></matrixRot>
+           </matrixHom>        
+        </op_frame>
+      </end_effector>
+      <goal derived = "goal_interpol" >
+        <goal_interpol>
+
+          <!-- 1 -->
+          <point delta_time = "4.0" >
+            <value> 0 0   0 0   1.28392261272 0 -0.697265212565 0 0.291463327131 0 0    1.21813629192 0.0213628934561 -0.230282249134 0.526567231664 0.146232016813 0.0221133713428 0.115262675829 </value>
+          </point>
+
+          <!-- 1 -->
+          <point delta_time = "2.0" >
+            <value> 0 0   0 0   0.945 0.014 -1.596 1.300 0 0 0    1.632 -0.122 -1.821 0 0.187 0 0 </value>
+          </point>
+
+          <!-- 2 -->
+          <point delta_time = "2.0" >
+            <value> 0 0   0 0   0.945834111848 0.0147464203171 -1.59678004945 1.30016100259 0 0 0    1.63234517581 -0.122659490369 -1.82191343767 1.69673538085 0.187790153366 0 0 </value>
+          </point>
+
+	  <!-- 3 -->
+          <point delta_time = "2.0" >
+            <value> 0 0   0 0   1.45645886948 0.0147464203171 -1.59678004945 0.444627928014 0 0 0    1.63234517581 -0.122659490369 -1.82191343767 1.69673538085 0.187790153366 0 0 </value>
+          </point>
+
+
+          <point delta_time = "2.0" >
+            <value> 0 0   0 0   1.45645886948 0.0147464203171 -1.59678004945 0.444627928014 0 0 0    1.63234517581 -0.122659490369 -2.30370650235 1.43324022013 0.187790153366 0 0 </value>
+          </point>
+
+           <!--<point delta_time = "2.0" >
+            <value> 0 0   0 0   1.45645886948 0.0147464203171 -1.59678004945 0.896897993213 0 0 0    0.477219457935 0.398491173956 -1.51726460298 0.143438314145 0.906717545381 0 0 </value>
+          </point>-->
+
+        </goal_interpol>
+      </goal>
+      <controller kp = "4.0" ></controller>
+    </motion_basic>
+  </motion_aggregation>
+  </motion_action>
+</motion>

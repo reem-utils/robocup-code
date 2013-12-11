@@ -1,0 +1,30 @@
+#File generated with the param_configurator script!
+locations_prob: # Locations and its probabilities of having objects on top
+    # Syntax: Name_of_room/location_in_room: [probabolity, pos.x, pos.y, angle]
+    hallway:
+        bench: [0.8, 2.531, 4.185, 1.699]
+        hallway table: [0.9, 2.902, 1.792, 0.152]
+    living_room:
+        tv_counter: [0.5, 9.392, 0.692, -1.472]
+        bookshelf: [0.7, 5.062, 2.373, -3.062]
+        cabinet: [0.7, 6.029, 4.451, 1.642]
+        couch_table: [0.5, 8.762, 3.311, 0.023]
+        arm chair: [0.3, 8.744, 4.606, 0.795]
+        right_dinner_table: [0.9, 6.412, 4.076, -1.433]
+        left_dinner_table: [0.9, 6.900, 1.040, 1.718]
+        pantry_l: [0.8, 5.626, 0.083, -1.401]
+        pantry_r: [0.8, 6.137, 0.153, -1.454]
+    kitchen:
+        bar_1: [0.75, 6.651, -2.552, 0.100]
+        bar_2: [0.75, 6.702, -3.163, 0.067]
+        table_1: [0.85, 5.930, -2.533, -2.965]
+        table_2: [0.85, 3.884, -2.802, 0.196]
+        table_3: [0.7, 4.755, -1.611, -1.439]
+        counter: [0.8, 3.198, -4.534, 3.130]
+        stove: [0.95, 2.891, -2.775, -2.819]
+    bedroom:
+        dresser: [0.9, 8.854, -3.677, -1.378]
+        sideboard: [0.65, 8.239, -2.382, -2.959]
+        sideboard_1: [0.65, 8.421, -3.052, -3.016]
+        bed_1: [0.5, 9.580, -2.891, 0.244]
+        bed_2: [0.5, 9.335, -1.565, 0.023]

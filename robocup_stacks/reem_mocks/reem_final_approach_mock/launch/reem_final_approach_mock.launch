@@ -1,0 +1,9 @@
+<launch>
+
+  <node pkg ="reem_final_approach_mock"
+        type="reem_final_approach_mock.py"
+        name="reem_final_approach_mock"
+        output="screen">
+  </node>
+
+</launch>

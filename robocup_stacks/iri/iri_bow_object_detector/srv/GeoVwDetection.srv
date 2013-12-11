@@ -1,0 +1,5 @@
+iri_perception_msgs/GeoVwSet[] geo_vw_sets
+sensor_msgs/Image image
+sensor_msgs/Image mask
+---
+iri_bow_object_detector/ObjectBox[] posible_solutions

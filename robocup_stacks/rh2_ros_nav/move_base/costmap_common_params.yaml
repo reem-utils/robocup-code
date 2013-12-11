@@ -1,0 +1,17 @@
+transform_tolerance: 0.2
+obstacle_range: 2.5
+raytrace_range: 3.0
+#robot_radius: ir_of_robot
+robot_radius: 0.45
+inflation_radius: 1
+
+#footprint: [[-0.11, -0.145], [-0.11, 0.145], [0.11, 0.145], [0.14, 0.0], [0.11, -0.145]]
+
+#observation_sources: base_scan_shadow_filtered base_scan 
+observation_sources:  base_scan
+
+#base_scan_shadow_filtered: {sensor_frame: base_laser_link, data_type: PointCloud, expected_update_rate: 0.2,
+#  observation_persistence: 0.0, marking: true, clearing: false, min_obstacle_height: -0.08, max_obstalce_height: 2.0}
+
+base_scan: {sensor_frame: base_laser_link, data_type: LaserScan, topic: /LMS1xx/LAS_00, expected_update_rate: 0.2,
+  observation_persistence: 0.0, marking: false, clearing: true, min_obstacle_height: -0.08, max_obstalce_height: 2.0}

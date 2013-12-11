@@ -1,0 +1,522 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Object Finding Algorithms &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="object-finding-algorithms">
+<h1>Object Finding Algorithms<a class="headerlink" href="#object-finding-algorithms" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>Object Finding Algorithms<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Here we have the modules for skills that help us work with objects.</p>
+<div class="section" id="module-calc_sensing_locations_sm">
+<span id="calc-sensing-locations-sm-py"></span><h3>calc_sensing_locations_sm.py<a class="headerlink" href="#module-calc_sensing_locations_sm" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="calc_sensing_locations_sm.CalculateSensingLocations">
+<em class="property">class </em><tt class="descclassname">calc_sensing_locations_sm.</tt><tt class="descname">CalculateSensingLocations</tt><big>(</big><em>publish_markers=True</em><big>)</big><a class="reference internal" href="../../_modules/calc_sensing_locations_sm.html#CalculateSensingLocations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calc_sensing_locations_sm.CalculateSensingLocations" title="Permalink to this definition">¶</a></dt>
+<dd><p>SMACH StateMachine to calculate sensing locations using the Visib-PRM algorithm.
+The in_room_name is the name of the room to get the corner data.
+The out_guards is a list of pairs (x,y) that represent the sensing locations.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="detect-furniture-of-zone-sm-py">
+<h3>detect_furniture_of_zone_sm.py<a class="headerlink" href="#detect-furniture-of-zone-sm-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="detect-furniture-py">
+<h3>detect_furniture.py<a class="headerlink" href="#detect-furniture-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-detect_tables_of_zone_sm">
+<span id="detect-tables-of-zone-sm-py"></span><h3>detect_tables_of_zone_sm.py<a class="headerlink" href="#module-detect_tables_of_zone_sm" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="detect_tables_of_zone_sm.DetectTablesOfZoneSM">
+<em class="property">class </em><tt class="descclassname">detect_tables_of_zone_sm.</tt><tt class="descname">DetectTablesOfZoneSM</tt><big>(</big><em>distance_treshold=0.5</em>, <em>dist_to_table=0.3</em>, <em>rads_per_turn=1.5707963267948966</em>, <em>times_to_turn=3</em>, <em>publish_markers=True</em><big>)</big><a class="reference internal" href="../../_modules/detect_tables_of_zone_sm.html#DetectTablesOfZoneSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#detect_tables_of_zone_sm.DetectTablesOfZoneSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detects the tables of a zone, rotating on the actual robot pose.
+It outputs in out_table_pose_list a list of tuples (x, y) with the poses of the tables,
+Also outputs out_table_orientation_list that is a list with the quaternion representing the orientation
+in DEST_FRAME frame_id for every element of the list of poses.
+You can create a single list of tuples ((x, y), q) by zipping the two lists (like this zip(table_pose_list, orientation_list))
+Creator arguments:</p>
+<blockquote>
+<div>rads_per_turn: Radiants to turn every time.
+times_to_turn: It will end when it has turned that number of times
+distance_treshold: Distance treshold to decide if two tables are the same.
+dist_to_table: Distance to approach to the table. The resulting poses will be at this distance from the table.</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-detect_tabletop_head_scan">
+<span id="detect-tabletop-head-scan-py"></span><h3>detect_tabletop_head_scan.py<a class="headerlink" href="#module-detect_tabletop_head_scan" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="detect_tabletop_head_scan.DetectTabletop">
+<em class="property">class </em><tt class="descclassname">detect_tabletop_head_scan.</tt><tt class="descname">DetectTabletop</tt><big>(</big><em>recognize_objects=False</em><big>)</big><a class="reference internal" href="../../_modules/detect_tabletop_head_scan.html#DetectTabletop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#detect_tabletop_head_scan.DetectTabletop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a head scan action that makes snapshots of the pointcloud and the calls to the TabletopDetection service.</p>
+<dl class="docutils">
+<dt>If the parameter recognize_objects is True, the output key tabletop_info is a list with one message of type</dt>
+<dd>tabletop_object_detector/TabletopDetectionResult that contains the results of the detection.</dd>
+<dt>If the parameter recognize_objects is False, the output key tabletop_info is a list with one message of type</dt>
+<dd>tabletop_object_detector/Table that contains the results of the detected table.</dd>
+</dl>
+<p>It outcomes &#8216;no_table&#8217; if it didn&#8217;t find a table, aborted if something else failed and succeeded if there was no problem.</p>
+<p>If the outcome is &#8216;no_table&#8217; or aborted, the output key tabletop_info is a list with one message of type TabletopDetectionResult.</p>
+<dl class="docutils">
+<dt>Note: to have the position of the table, the values to be used are the &#8220;x_min, y_min, x_max and y_max&#8221; of the Table message.</dt>
+<dd><p class="first">The PoseStamped of the message is needed to have the z component and the Header message with the frame_id.
+The other coordinates of the PoseStamped are not used (x and y are almost 0 in base_link frame).</p>
+<p class="last">Example of Pose at the center of the table: Pose(Point((x_min+x_max)/2, (y_min+y_max)/2, z), Quaternion())
+Where z is the z component of the position in the PoseStamped. The frame_id is the same as the PoseStamped too.
+Example of pose at a certain distance of the table: Pose(Point(x_min-DIST_TO_TABLE, (y_min+y_max)/2, z), Quaternion())</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-detect_tabletop">
+<span id="detect-tabletop-py"></span><h3>detect_tabletop.py<a class="headerlink" href="#module-detect_tabletop" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="detect_tabletop.DetectTabletop">
+<em class="property">class </em><tt class="descclassname">detect_tabletop.</tt><tt class="descname">DetectTabletop</tt><big>(</big><em>distance_treshold=0.5</em>, <em>recognize_objects=False</em><big>)</big><a class="reference internal" href="../../_modules/detect_tabletop.html#DetectTabletop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#detect_tabletop.DetectTabletop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs three looks and makes snapshots of the pointcloud and then calls to the TabletopDetection service.</p>
+<dl class="docutils">
+<dt>If the parameter recognize_objects is True, the output key tabletop_info is a list of messages of type</dt>
+<dd>tabletop_object_detector/TabletopDetectionResult that contains the results of the detection.</dd>
+<dt>If the parameter recognize_objects is False, the output key tabletop_info is a list of messages of type</dt>
+<dd>tabletop_object_detector/Table that contains the results of the detected table.</dd>
+</dl>
+<p>It outcomes &#8216;no_table&#8217; if it didn&#8217;t find a table, aborted if something else failed and succeeded if there was no problem.</p>
+<p>If the outcome is &#8216;no_table&#8217; or aborted, the output key tabletop_info is an empty list.</p>
+<dl class="docutils">
+<dt>Note: to have the position of the table, the values to be used are the &#8220;x_min, y_min, x_max and y_max&#8221; of the Table message.</dt>
+<dd><p class="first">The PoseStamped of the message is needed to have the z component and the Header message with the frame_id.
+The other coordinates of the PoseStamped are not used (x and y are almost 0 in base_link frame).</p>
+<p class="last">Example of Pose at the center of the table: Pose(Point((x_min+x_max)/2, (y_min+y_max)/2, z), Quaternion())
+Where z is the z component of the position in the PoseStamped. The frame_id is the same as the PoseStamped too.
+Example of pose at a certain distance of the table: Pose(Point(x_min-DIST_TO_TABLE, (y_min+y_max)/2, z), Quaternion())</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-object_check_states">
+<span id="object-check-states-py"></span><h3>object_check_states.py<a class="headerlink" href="#module-object_check_states" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="object_check_states.CheckObjectAndRemoveFromList">
+<em class="property">class </em><tt class="descclassname">object_check_states.</tt><tt class="descname">CheckObjectAndRemoveFromList</tt><big>(</big><em>target_frame</em>, <em>leave_unknowns=False</em><big>)</big><a class="reference internal" href="../../_modules/object_check_states.html#CheckObjectAndRemoveFromList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#object_check_states.CheckObjectAndRemoveFromList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if there is any object in the entering userdata. It removes the found object from the list and outputs the list.
+The target_frame parameter is the desired frame_id of the poses of the result.
+The leave_unknowns parameter specifies whether the objects tagged as unknown (not trained) should be used and left in the list
+or not.
+Outcomes:</p>
+<blockquote>
+<div><ul class="simple">
+<li>succeeded: A object was found and is returned. Also it was removed from the list.</li>
+<li>aborted: No object was found, or all the objects were unknown and leave_unknowns was set to False.</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Userdata:</dt>
+<dd><ul class="first last">
+<li><p class="first">in_objects_data: ObjectPoseList of objects found.</p>
+</li>
+<li><p class="first">in_target_object: String containing the name of the object wanted to be found. It&#8217;s the empty string ( &#8216;&#8217; ) if it&#8217;s looking for any object.</p>
+</li>
+<li><dl class="first docutils">
+<dt>out_object_found: The found object. It&#8217;s the first on the list if in_target_object is the empty string ( &#8216;&#8217; ), or the target_object if found.</dt>
+<dd><p class="first last">If no object is found, this output key has the value None (not a string).</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">out_objects_data: The list of objects exceptuating the object found. It&#8217;s the same list if no object is found.</p>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="object_check_states.CheckObjectAndRemoveFromList.fill_print_object_information_and_remove_from_list">
+<tt class="descname">fill_print_object_information_and_remove_from_list</tt><big>(</big><em>userdata</em>, <em>object_index</em><big>)</big><a class="reference internal" href="../../_modules/object_check_states.html#CheckObjectAndRemoveFromList.fill_print_object_information_and_remove_from_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#object_check_states.CheckObjectAndRemoveFromList.fill_print_object_information_and_remove_from_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fills in the selected output object and removes it of the list</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="object_check_states.CheckRemaining">
+<em class="property">class </em><tt class="descclassname">object_check_states.</tt><tt class="descname">CheckRemaining</tt><a class="reference internal" href="../../_modules/object_check_states.html#CheckRemaining"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#object_check_states.CheckRemaining" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if there are objects in a ObjectPoseList.
+Userdata:</p>
+<blockquote>
+<div><ul class="simple">
+<li>in_obj_list: ObjectPoseList of objects. Can be None if there aren&#8217;t objects yet.</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Outcomes:</dt>
+<dd><ul class="first last simple">
+<li>remaining: Means that there are objects remaining.</li>
+<li>empty: Means that the list is empty or that the ObjectPoseList equals None.</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-object_finding_behaviours">
+<span id="object-finding-behaviours-py"></span><h3>object_finding_behaviours.py<a class="headerlink" href="#module-object_finding_behaviours" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-ofb_first_approach">
+<span id="ofb-first-approach-py"></span><h3>ofb_first_approach.py<a class="headerlink" href="#module-ofb_first_approach" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="ofb_first_approach.OFBFirstApproach">
+<em class="property">class </em><tt class="descclassname">ofb_first_approach.</tt><tt class="descname">OFBFirstApproach</tt><big>(</big><em>target_object_key=None</em>, <em>target_frame='/map'</em><big>)</big><a class="reference internal" href="../../_modules/ofb_first_approach.html#OFBFirstApproach"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ofb_first_approach.OFBFirstApproach" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object finding state machine.
+Parameters:</p>
+<blockquote>
+<div><ul class="simple">
+<li>target_object_key: string indicating the name of the input_key that has the name of the object you want to find</li>
+<li>target_frame: the frame in what you want the output object&#8217;s location.</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Keys:</dt>
+<dd><ul class="first last simple">
+<li>in_room_name: Name of the room where the robot is and has to search objects.</li>
+<li>out_object_found: Information about the found object</li>
+<li>out_location_inside_room_name: name of the location where the object was found. I.E. the table.</li>
+</ul>
+</dd>
+<dt>Notes:</dt>
+<dd><ul class="first simple">
+<li>If there are objects remaining in a location, it will go to that location again, rather than searching for objects</li>
+</ul>
+<p class="last">in another room.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ofb_second_approach">
+<span id="ofb-second-approach-py"></span><h3>ofb_second_approach.py<a class="headerlink" href="#module-ofb_second_approach" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="ofb_second_approach.OFBSecondApproach">
+<em class="property">class </em><tt class="descclassname">ofb_second_approach.</tt><tt class="descname">OFBSecondApproach</tt><big>(</big><em>target_object_key=None</em>, <em>target_frame='/map'</em><big>)</big><a class="reference internal" href="../../_modules/ofb_second_approach.html#OFBSecondApproach"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ofb_second_approach.OFBSecondApproach" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object finding state machine.
+Parameters:</p>
+<blockquote>
+<div><ul class="simple">
+<li>target_object_key: string indicating the name of the input_key that has the name of the object you want to find</li>
+<li>target_frame: the frame in what you want the output object&#8217;s location.</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Keys:</dt>
+<dd><ul class="first last simple">
+<li>in_room_name: Name of the room where the robot is and has to search objects.</li>
+<li>out_object_found: Information about the found object</li>
+<li>out_location_inside_room_name: name of the location where the object was found. I.E. the table.</li>
+</ul>
+</dd>
+<dt>Notes:</dt>
+<dd><ul class="first simple">
+<li>If there are objects remaining in a location, it will go to that location again, rather than searching for objects</li>
+</ul>
+<p class="last">in another room.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="ofb-third-approach-py">
+<h3>ofb_third_approach.py<a class="headerlink" href="#ofb-third-approach-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-ofb_utils">
+<span id="ofb-utils-py"></span><h3>ofb_utils.py<a class="headerlink" href="#module-ofb_utils" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-math_utils">
+<span id="math-utils-py"></span><h3>math_utils.py<a class="headerlink" href="#module-math_utils" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="math_utils.add_vectors">
+<tt class="descclassname">math_utils.</tt><tt class="descname">add_vectors</tt><big>(</big><em>vec1</em>, <em>vec2</em><big>)</big><a class="reference internal" href="../../_modules/math_utils.html#add_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#math_utils.add_vectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Element-wise addition of vec1 and vec2.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="math_utils.cross_product">
+<tt class="descclassname">math_utils.</tt><tt class="descname">cross_product</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="reference internal" href="../../_modules/math_utils.html#cross_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#math_utils.cross_product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes the cross product of two vectors</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="math_utils.dot_product">
+<tt class="descclassname">math_utils.</tt><tt class="descname">dot_product</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="reference internal" href="../../_modules/math_utils.html#dot_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#math_utils.dot_product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a dot product of two vectors
+Returns a number</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="math_utils.multiply_quaternions">
+<tt class="descclassname">math_utils.</tt><tt class="descname">multiply_quaternions</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="reference internal" href="../../_modules/math_utils.html#multiply_quaternions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#math_utils.multiply_quaternions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiplies quaternions <cite>a&#8217; and `b</cite>. Remember that this operation
+is noncommutative.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="math_utils.multiply_vector">
+<tt class="descclassname">math_utils.</tt><tt class="descname">multiply_vector</tt><big>(</big><em>vec</em>, <em>factor</em><big>)</big><a class="reference internal" href="../../_modules/math_utils.html#multiply_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#math_utils.multiply_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiplies each component of <em>vec</em> by the given <em>factor</em>.
+There is the factor zero condition, to aviod having variables
+that were negative having a value or -0.0.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="math_utils.normalize_vector">
+<tt class="descclassname">math_utils.</tt><tt class="descname">normalize_vector</tt><big>(</big><em>vec</em><big>)</big><a class="reference internal" href="../../_modules/math_utils.html#normalize_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#math_utils.normalize_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a normalized (unitary) copy of <em>vec</em>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="math_utils.substract_vector">
+<tt class="descclassname">math_utils.</tt><tt class="descname">substract_vector</tt><big>(</big><em>vec1</em>, <em>vec2</em><big>)</big><a class="reference internal" href="../../_modules/math_utils.html#substract_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#math_utils.substract_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Element-wise substraction of vec2 from vec1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="math_utils.vector_magnitude">
+<tt class="descclassname">math_utils.</tt><tt class="descname">vector_magnitude</tt><big>(</big><em>vec</em><big>)</big><a class="reference internal" href="../../_modules/math_utils.html#vector_magnitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#math_utils.vector_magnitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the magnitude of the given vector.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="math_utils.xy_with_angle">
+<tt class="descclassname">math_utils.</tt><tt class="descname">xy_with_angle</tt><big>(</big><em>alfa</em>, <em>distance</em><big>)</big><a class="reference internal" href="../../_modules/math_utils.html#xy_with_angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#math_utils.xy_with_angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the x and y components for a 2D vector that
+has that angle ( radians) reffered to the horizontal and has the
+magnitude distance.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-take_snapshot">
+<span id="take-snapshot-py"></span><h3>take_snapshot.py<a class="headerlink" href="#module-take_snapshot" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-tell_move_and_recognize_sm">
+<span id="tell-move-and-recognize-sm-py"></span><h3>tell_move_and_recognize_sm.py<a class="headerlink" href="#module-tell_move_and_recognize_sm" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="tell_move_and_recognize_sm.GoAndRecognizeSM">
+<em class="property">class </em><tt class="descclassname">tell_move_and_recognize_sm.</tt><tt class="descname">GoAndRecognizeSM</tt><a class="reference internal" href="../../_modules/tell_move_and_recognize_sm.html#GoAndRecognizeSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tell_move_and_recognize_sm.GoAndRecognizeSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>State machine that goes to a location and recognizes objects.
+Userdata:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">in_location_pose_in_map: Location pose in /map coordinate frame where the robot has to go.</p>
+</li>
+<li><dl class="first docutils">
+<dt>in_target_object: Name of a target object to search for.</dt>
+<dd><p class="first last">If a specific object is not being searched (ie it doesn&#8217;t mind what object is found),
+the key MUST be filled with an empty string ( &#8216;&#8217; ).</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">out_objects_data: ObjectPoseList of recognized data.</p>
+</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Outcomes:</dt>
+<dd>Appart from the common ones:
+- move_failed: Is outcomed when the MOVE_TO_SEARCHING_LOCATION fails.</dd>
+<dt>Notes:</dt>
+<dd><ul class="first last simple">
+<li>The out_objects_data&#8217;s value is None if the move fails.</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="tell_move_and_recognize_sm.TellGoRecognizeSM">
+<em class="property">class </em><tt class="descclassname">tell_move_and_recognize_sm.</tt><tt class="descname">TellGoRecognizeSM</tt><big>(</big><em>msg_pool</em>, <em>arg_key='tell_argument'</em><big>)</big><a class="reference internal" href="../../_modules/tell_move_and_recognize_sm.html#TellGoRecognizeSM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tell_move_and_recognize_sm.TellGoRecognizeSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Says a message extracted from the msg_pool argument while goes to a location and looks for objects.
+Constructor parameters:</p>
+<blockquote>
+<div><p>arg_key is the name of the userdata key containing the argument to pass to the SpeakActionFromPoolStateMachine.
+You need to add a remap with the same value as the arg_key and put there the argument for the speech action.
+arg_key has to be None if the speak state don&#8217;t need a parameter.
+In the other case, the easiest way of using this state is ignoring the arg_key parameter and remapping the userdata</p>
+<blockquote>
+<div>variable containing the argument for the speak action to the input_key &#8216;tell_argument&#8217; of this state.</div></blockquote>
+</div></blockquote>
+<dl class="docutils">
+<dt>Userdata:</dt>
+<dd><ul class="first last">
+<li><p class="first">in_location_pose_in_map: Location pose in /map coordinate frame where the robot has to go.</p>
+</li>
+<li><dl class="first docutils">
+<dt>in_target_object: Name of a target object to search for.</dt>
+<dd><p class="first last">If a specific object is not being searched (ie it doesn&#8217;t mind what object is found),
+the key MUST be filled with an empty string ( &#8216;&#8217; ).</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">out_objects_data: ObjectPoseList of recognized data.</p>
+</li>
+<li><dl class="first docutils">
+<dt>tell_argument: Argument for the speak state. For example, it may be used to tell the name of the location.</dt>
+<dd><p class="first last">For more information, look the SpeakActionFromPoolStateMachine explanation.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outcomes:</dt>
+<dd>Appart from the common ones:
+- move_failed: Is outcomed when the move action fails.</dd>
+<dt>Notes:</dt>
+<dd><ul class="first last simple">
+<li>The out_objects_data&#8217;s value is None if the move fails.</li>
+</ul>
+</dd>
+<dt>Example of use:</dt>
+<dd><dl class="first last docutils">
+<dt>StateMachine.add(&#8216;TELL_GO_RECOGNIZE&#8217;, TellGoRecognizeSM(msg_pool=going_to_pool, arg_key=&#8217;location_name),</dt>
+<dd><dl class="first docutils">
+<dt>remapping={&#8216;location_name&#8217;: &#8216;location_room_name&#8217;,</dt>
+<dd>&#8216;out_objects_data&#8217;: &#8216;objects_data&#8217;,
+&#8216;in_target_object&#8217;: target_object_key,
+&#8216;in_location_pose_in_map&#8217;: &#8216;location_pose_in_map&#8217;},</dd>
+</dl>
+<p class="last">transitions={succeeded: succeeded, aborted: aborted, &#8216;move_failed&#8217;: &#8216;TELL_CANT_REACH&#8217;}</p>
+</dd>
+<dt>(or simply ignoring the arg_key and doing the remapping like this:</dt>
+<dd>remapping={&#8216;tell_argument&#8217;: &#8216;location_room_name&#8217;, ...})</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-tsp">
+<span id="tsp-py"></span><h3>tsp.py<a class="headerlink" href="#module-tsp" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-tsp_smach_state">
+<span id="tsp-smach-state-py"></span><h3>tsp_smach_state.py<a class="headerlink" href="#module-tsp_smach_state" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="tsp_smach_state.TSPState">
+<em class="property">class </em><tt class="descclassname">tsp_smach_state.</tt><tt class="descname">TSPState</tt><big>(</big><em>HC=False</em>, <em>add_start_pose=True</em>, <em>indices=False</em><big>)</big><a class="reference internal" href="../../_modules/tsp_smach_state.html#TSPState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tsp_smach_state.TSPState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Smach node to solve the TSP problem.
+The HC parameter in the constructor specifies if it&#8217;ll be solved with a Hill Climbing (True)
+or with a Simulated Annealing(False)
+The add_start_pose parameter in the constructor specifies whether the actual position of the robot should be
+adedd as the start position of the route or not. If True, the resulting route doesn&#8217;t contain the initial as a route.</p>
+<dl class="docutils">
+<dt>Userdata keys:</dt>
+<dd><ul class="first last simple">
+<li>in_nodes is expected to be a list of pairs representing the points to visit.</li>
+<li>out_route is a list of pairs in order of visiting, optimizing the distance of the total route.</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-visib_prm">
+<span id="visib-prm-py"></span><h3>visib_prm.py<a class="headerlink" href="#module-visib_prm" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="../../_sources/pkg_documentation/common/object_finding_algorithms_doc.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

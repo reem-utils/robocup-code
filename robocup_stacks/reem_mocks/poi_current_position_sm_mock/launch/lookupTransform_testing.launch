@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+
+<launch>
+
+
+  <!-- navigation_sm_mock -->
+  <node pkg ="poi_current_position_sm_mock"
+        type="lookupTransform.py"
+        name="lookupTransform" />
+
+
+  <node pkg ="poi_current_position_sm_mock"
+        type="lookupTransform_client.py"
+        name="lookupTransform_client"
+        output="screen" />
+
+</launch>
+

@@ -1,0 +1,31 @@
+<launch>
+  
+<!-- load the configuration file -->
+  <rosparam file="$(find clean_up)/config/clean_up.yaml"
+      command="load" ns="clean_up" />
+
+<!-- Load static transform for mocks -->
+  <node pkg="tf" type="static_transform_publisher" name="stereo_link_to_map" 
+          args="1.0 1.0 1.0 1.0 1.0 1.0 /head_2_link /map 40" />
+
+  <!-- fake action server nodes -->
+  <include file="$(find tts_mock)/launch/tts_mock.launch" />
+  <!--<include file="$(find door_detector_pal)/launch/door_detector_pal.launch" />-->
+  <include file="$(find object_recognition_mock)/launch/object_recognition_mock.launch" />
+  <include file="$(find speech_recognition_mock)/launch/speech_recognition_mock.launch" />
+  <include file="$(find coord_translator)/launch/coord_translator.launch" />
+  <include file="$(find face_recognition_mock)/launch/face_recognition_mock.launch" />
+  <include file="$(find person_detector_mock)/launch/person_detector_mock.launch" /> 
+  <include file="$(find arm_navigation_mock)/launch/arm_navigation_mock.launch" />
+  <include file="$(find close_hand_mock)/launch/close_hand_mock.launch" />
+  <include file="$(find move_base_mock)/launch/move_base_mock.launch"/>
+  <include file="$(find next_location_provider)/launch/next_location_provider_service.launch" />
+
+  <!-- Clean up it SMACH -->
+  <node pkg ="clean_up"
+        type="clean_up_test.py"
+        name="clean_up_test"
+        output="screen">
+  </node>
+
+</launch>

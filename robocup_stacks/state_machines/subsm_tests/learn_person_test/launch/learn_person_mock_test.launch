@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<launch>
+
+<!-- fake action server nodes -->
+<include file="$(find person_detector_mock)/launch/person_detector_mock.launch" />
+<include file="$(find face_recognition_mock)/launch/face_recognition_mock.launch" />
+<include file="$(find tts_mock)/launch/tts_mock.launch" />
+
+
+  <!-- follow_operator_test SMACH -->
+  <node pkg ="learn_person_test"
+        type="learn_person_test.py"
+        name="learn_person_test"
+        output="screen">
+  </node>
+
+</launch>
+

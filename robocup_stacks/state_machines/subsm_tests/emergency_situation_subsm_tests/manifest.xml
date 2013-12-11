@@ -1,0 +1,19 @@
+<package>
+  <description brief="emergency_situation_subsm_test">
+
+     emergency_situation_subsm_test
+
+  </description>
+  <author>pal</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/emergency_situation</url>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <depend package="move_base"/>
+  <depend package="coord_translator"/>
+  <depend package="pal_smach_utils"/>
+  <depend package="robocup_worlds"/>
+
+</package>

@@ -1,0 +1,9 @@
+#goal definition
+---
+#result definition
+string answer
+int16 code
+---
+#feedback
+float32 noise
+int8 status

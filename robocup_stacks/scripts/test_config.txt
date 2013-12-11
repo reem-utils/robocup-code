@@ -1,0 +1,78 @@
+#Every section begins with SECTION_NAME:. Then the parameters, and an empty line to show the end of the section
+Names: # Syntax: a name in every line
+John
+Ricardo
+Miguel
+Jonathan
+Sam
+David
+Gerard
+Jordi
+Ruben
+Albert #test_comment
+Guillem
+#Test comment
+Cecilio
+
+Rooms: # Syntax: room_name, x_coord, y_coord, angle
+kitchen, 9.67, -3.91, -3.1415927410125732
+living room, 0.23, 0.234, 0.2343
+bedroom, 0.23, 2.23, 0.32
+robocup, 0.23, 0.34, 1.23
+
+POIS:
+# Syntax: poi_name, x_coord, y_coord, angle[,arm_pose_x, arm_pose_y, arm_pose_angle, arm_pose_rot_x, arm_pose_rot_y, arm_pose_rot_z, arm_pose_rot_w]. The arm poses are optional
+exit, poi, -0.749, -9.969, -1.665
+pre_exit, poi, -0.749, -9.969, -1.665
+registration table, utensil, 4.979, -0.693, 1.546
+burrito_total, poi, 1.32, 2.32, 1.0
+table_7, table, 5.32, 4.32, 1.2
+apple, poi, 1.2, 4.3, 2.0
+table_1, poi, 0.5, 2.0, 1.2
+people, utensil, -2.81, -1.54, 0.0
+trash_bin, poi, 0.34, 0.243, 3.14
+#Test comment
+pringels, utensil, 2.81, 1.54, 0.0
+food, poi, 2.81, 1.54, 0.0 # test comment
+drinks, poi, 2.81, -1.54, 0.0
+charger, poi, -0.11, 0.38, 0.0
+dinner_table, utensil, 0.20, -0.35, 0.34, 0.20, -0.35, 1.10, 0.0, 0.0, 0.0, 1.0
+drinks_location, poi, 0.23, 0.34, 0.213
+party_room, poi, 0.234, 0.234, 0.54
+business, appliance, -0.47, -9.30, 0.0 # This should be a room... this is just for test!!
+software, table, -2.81, -1.54, 0.0 # This should be a room!!!
+
+Objects: # Syntax: Object name, object class, object location name (it'll be a POI or Room name), database_id
+milk, drinks, dinner_table, 12345
+hazelnuts, food, dinner_table, 18984
+coke, drinks, dinner_table, 18982
+juice, drinks, dinner_table, 18983
+#test comment
+water, drinks, dinner_table, 18500
+redbull, drinks, dinner_table, 18500 # test comment
+cookies, food, dinner_table, 18986
+
+ObjectFindingBehaviour: # Syntax: room_name, location_name, probability_of_objects, x_coord, y_coord, angle
+living room, table, 0.90, 1.878, 3.067, 1.047
+living room, chair, 0.65, 1.878, 3.067, 1.047
+living room, sofa, 0.40, 1.878, 3.067, 1.047
+living room, tv, 0.05, 1.878, 3.067, 1.047
+living room, shelf, 0.70, 1.878, 3.067, 1.047
+bedroom, desk, 0.85, 8.842, 10.315, -3.037
+bedroom, chair, 0.70, 6.842, 11.215, -3.037
+#test
+bedroom, shelf, 0.85, 6.154, 11.315, -3.037#testest
+bedroom, nightstand, 0.85, 7.865, 12.147, -3.037
+bedroom, floor, 0.40, 6.842, 11.315, -3.037
+bedroom, table, 0.90, 6.842, 11.315, -3.037
+bedroom, bed, 0.56, 6.842, 11.315, -3.037
+kitchen, countertop, 0.95, 8.961, -4.666, 3.137
+kitchen, table, 0.95, 9.646, -2.324, 1.482
+kitchen, dishwasher, 0.20, 9.895, -4.978, -1.632
+robocup, shelf, 0.95,2.006, -1.268, -1.307
+robocup, sofa, 0.85, 2.180, -0.558, 0.387
+robocup, table, 0.90, -0.020, -0.903, -1.188
+
+FireLocations:
+fire1_1, 9.887, -3.784, -1.589
+fire1_2, 1.168, -0.140, 1.553

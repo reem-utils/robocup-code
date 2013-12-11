@@ -1,0 +1,11 @@
+<launch>
+  <!-- load the Parameters configuration file -->
+  <rosparam file="$(find tts_mock)/config/tts.yaml"
+	    command="load" ns="params_tts" />
+  <!--Play Sound Node Launch-->
+  <include file="$(find sound_play)/soundplay_node.launch" />
+  <node
+    pkg="tts_mock" type="tts.py"
+    name="tts"/>
+
+</launch>

@@ -1,0 +1,5 @@
+estirabot_msgs/DirtyArea[] dirty_areas
+estirabot_msgs/PointsDistanceMsg[] distances
+estirabot_msgs/TraversedEllipses[] traversed_ellipses
+---
+string state_string

@@ -1,0 +1,130 @@
+<launch>
+ 
+  <!-- start gazebo with an empty plane -->
+  <param name="/use_sim_time" value="true" />
+  <node name="gazebo" pkg="gazebo" type="gazebo" args="$(find robocup_worlds)/worlds/robocup_house_fuerte3.world" respawn="false" /> 
+
+  <!-- putting urdf file -->		
+  <!--param name="robocup_house" textfile="$(find robocup_worlds)/objects/robocup_house.urdf" /-->
+  <!--node name="spawn_robocup_house" pkg="gazebo" type="spawn_model" args="-urdf -param robocup_house -model robocup_house -x 1 -y 1 -z 0 " respawn="false"/-->
+
+<!-- putting urdf file -->		
+  <param name="wall" textfile="$(find robocup_worlds)/objects/wall.urdf" />
+  <node name="spawn_wall" pkg="gazebo" type="spawn_model" args="-urdf -param wall -model wall -x -1 -y -1 -z 0 " respawn="false" output="screen" />
+
+<!-- putting urdf file -->		
+  <param name="sofa" textfile="$(find robocup_worlds)/objects/sofa.urdf" />
+  <node name="spawn_sofa" pkg="gazebo" type="spawn_model" args="-urdf -param sofa -model sofa -x 5.4 -y 9.7 -z 0 " respawn="false" output="screen" />
+
+<!-- putting urdf file -->		
+  <param name="stool" textfile="$(find robocup_worlds)/objects/stool.urdf" />
+  <node name="spawn_stool" pkg="gazebo" type="spawn_model" args="-urdf -param stool -model stool -x 4.0 -y 4.7 -z 0 " respawn="false" output="screen" />
+
+<!-- putting urdf file		-->
+  <param name="sideboard" textfile="$(find robocup_worlds)/objects/sideboard.urdf" />
+  <node name="spawn_sideboard" pkg="gazebo" type="spawn_model" args="-urdf -param sideboard -model sideboard -x 5.6 -y 4.7 -z 0 " respawn="false" output="screen" />  
+
+<!-- putting urdf file 		-->
+  <param name="wardrobe" textfile="$(find robocup_worlds)/objects/wardrobe.urdf" />
+  <node name="spawn_wardrobe" pkg="gazebo" type="spawn_model" args="-urdf -param wardrobe -model wardrobe -x 2.5 -y 2.1 -z 0 " respawn="false" output="screen" /> 
+
+<!-- putting urdf file 	 -->
+  <param name="bed" textfile="$(find robocup_worlds)/objects/bed.urdf" />
+  <node name="spawn_bed" pkg="gazebo" type="spawn_model" args="-urdf -param bed -model bed -x 4.7 -y -0.9 -z 0 " respawn="false" output="screen" />   
+
+<!-- putting urdf file -->		
+  <param name="bench" textfile="$(find robocup_worlds)/objects/bench.urdf" />
+  <node name="spawn_bench" pkg="gazebo" type="spawn_model" args="-urdf -param bench -model bench -x -0.9 -y 3.0 -z 0 " respawn="false" output="screen" />
+
+<!-- putting urdf file 		-->
+  <param name="sideboard2" textfile="$(find robocup_worlds)/objects/sideboard2.urdf" />
+  <node name="spawn_sideboard2" pkg="gazebo" type="spawn_model" args="-urdf -param sideboard2 -model sideboard2 -x 4.75 -y -0.45 -z 0 " respawn="false" output="screen" /> 
+
+<!-- putting urdf file 		-->
+  <param name="sideboard3" textfile="$(find robocup_worlds)/objects/sideboard3.urdf" />
+  <node name="spawn_sideboard3" pkg="gazebo" type="spawn_model" args="-urdf -param sideboard3 -model sideboard3 -x 3.6 -y 8 -z 0 " respawn="false" output="screen" /> 
+
+<!-- putting urdf file 		
+  <param name="kitchen_chair" textfile="$(find robocup_worlds)/objects/kitchen_chair.urdf" />
+  <node name="spawn_kitchen_chair" pkg="gazebo" type="spawn_model" args="-urdf -param kitchen_chair -model kitchen_chair -x 3.8 -y 7.3 -z 0 -R 0 -P 0 -Y 1.5708" respawn="false" output="screen" /> -->
+
+<!-- putting urdf file -->		
+  <param name="closet" textfile="$(find robocup_worlds)/objects/closet.urdf" />
+  <node name="spawn_closet" pkg="gazebo" type="spawn_model" args="-urdf -param closet -model closet -x 6.0 -y 1.5 -z 0 " respawn="false" output="screen" />
+
+<!-- putting urdf file -->		
+  <param name="closet" textfile="$(find robocup_worlds)/objects/closet.urdf" />
+  <node name="spawn_closet2" pkg="gazebo" type="spawn_model" args="-urdf -param closet -model closet2 -x 2.1 -y 5.7 -z 0 " respawn="false" output="screen" />
+
+<!-- putting urdf file -->		
+  <param name="dining_chair" textfile="$(find robocup_worlds)/objects/dining_chair.urdf" />
+  <node name="spawn_dining_chair" pkg="gazebo" type="spawn_model" args="-urdf -param dining_chair -model dining_chair -x 0 -y 8.2 -z 0 " respawn="false" output="screen" />  
+
+<!-- putting urdf file -->		
+  <param name="dining_chair2" textfile="$(find robocup_worlds)/objects/dining_chair2.urdf" />
+  <node name="spawn_dining_chair21" pkg="gazebo" type="spawn_model" args="-urdf -param dining_chair2 -model dining_chair21 -x -0.5 -y 9.2 -z 0 " respawn="false" output="screen" />
+
+<!-- putting urdf file -->		
+  <param name="dining_chair2" textfile="$(find robocup_worlds)/objects/dining_chair2.urdf" />
+  <node name="spawn_dining_chair22" pkg="gazebo" type="spawn_model" args="-urdf -param dining_chair2 -model dining_chair22 -x -0.5 -y 9.8 -z 0 " respawn="false" output="screen" />
+
+<!-- putting urdf file -->		
+  <param name="dining_chair2" textfile="$(find robocup_worlds)/objects/dining_chair2.urdf" />
+  <node name="spawn_dining_chair23" pkg="gazebo" type="spawn_model" args="-urdf -param dining_chair2 -model dining_chair23 -x -0.5 -y 10.4 -z 0 " respawn="false" output="screen" />
+
+<!-- putting urdf file -->		
+  <param name="dining_chair3" textfile="$(find robocup_worlds)/objects/dining_chair3.urdf" />
+  <node name="spawn_dining_chair3" pkg="gazebo" type="spawn_model" args="-urdf -param dining_chair3 -model dining_chair3 -x 0.4 -y 10.8 -z 0 " respawn="false" output="screen" />
+
+<!-- putting urdf file -->		
+  <param name="kitchen" textfile="$(find robocup_worlds)/objects/kitchen.urdf" />
+  <node name="spawn_kitchen" pkg="gazebo" type="spawn_model" args="-urdf -param kitchen -model kitchen -x 4.11 -y 6 -z 0 -R 0 -P 0 -Y -1.5708" respawn="false" output="screen" />
+
+<!-- putting urdf file -->		
+  <param name="kitchen2" textfile="$(find robocup_worlds)/objects/kitchen2.urdf" />
+  <node name="spawn_kitchen2" pkg="gazebo" type="spawn_model" args="-urdf -param kitchen2 -model kitchen2 -x 2.8 -y 6 -z 0 -R 0 -P 0 -Y -1.5708" respawn="false" output="screen" />
+
+<!-- putting urdf file -->		
+  <param name="plant" textfile="$(find robocup_worlds)/objects/plant.urdf" />
+  <node name="spawn_plant" pkg="gazebo" type="spawn_model" args="-urdf -param plant -model plant -x 2 -y 10.6 -z 0 " respawn="false" output="screen" />
+
+  <!-- putting urdf file -->		
+  <param name="kitchen_table" textfile="$(find robocup_worlds)/objects/kitchen_table.urdf" />
+  <node name="spawn_kitchen_table" pkg="gazebo" type="spawn_model" args="-urdf -param kitchen_table -model kitchen_table -x 5.4 -y 7 -z 0 -R 0 -P 0 -Y 1.5708" respawn="false" output="screen" />
+
+  <!-- putting urdf file -->		
+  <param name="lamp" textfile="$(find robocup_worlds)/objects/lamp.urdf" />
+  <node name="spawn_lamp" pkg="gazebo" type="spawn_model" args="-urdf -param lamp -model lamp -x 4.8 -y -0.7 -z 0.63 " respawn="false" output="screen" />
+
+  <!-- putting urdf file -->		
+  <param name="arm_chair" textfile="$(find robocup_worlds)/objects/arm_chair.urdf" />
+  <node name="spawn_arm_chair" pkg="gazebo" type="spawn_model" args="-urdf -param arm_chair -model arm_chair -x 4 -y 9.2 -z 0 " respawn="false" output="screen" />
+
+  <!-- putting urdf file -->		
+  <param name="tv" textfile="$(find robocup_worlds)/objects/tv.urdf" />
+  <node name="spawn_tv" pkg="gazebo" type="spawn_model" args="-urdf -param tv -model tv -x 4 -y 8 -z 0.63 " respawn="false" output="screen" />
+
+  <!-- putting urdf file -->		
+  <param name="dining_table" textfile="$(find robocup_worlds)/objects/dining_table.urdf" />
+  <node name="spawn_dining_table" pkg="gazebo" type="spawn_model" args="-urdf -param dining_table -model dining_table -x -0.3 -y 8.5 -z 0 " respawn="false" output="screen" />
+  
+    <!-- load door 
+  <param name="door_description" command="$(find xacro)/xacro.py '$(find robocup_worlds)/objects/door.urdf'" />
+  <node pkg="gazebo" type="spawn_model" args="-urdf -param door_description -n doorbot -model doorbot" respawn="false" name="door_description"/>
+-->
+
+  <!-- start REEM_H2 robot -->
+  <include file="$(find reem_gazebo)/launch/reem.launch"/> 
+  
+  <!-- start the joystick control for Reem -->
+  <!-- include file="$(find turtlebot_teleop)/joystick_teleop.launch"/-->
+
+  <!-- Objects -->
+  <include file="$(find robocup_worlds)/launch/objects_inside_house.launch" />
+
+
+  <node name="gazebo_gui" pkg="gazebo" type="gui" respawn="false" output="screen"/>
+
+</launch>
+
+

@@ -1,0 +1,38 @@
+<!-- Sides_8 -->
+<motion id = "sides_8"  model = "body" type = "motion_action" >
+<motion_action>
+  <motion_aggregation id = "" >
+    <motion_basic id = "NO_ID"  type = "joint"  completion_required = "1" >
+      <dofs>1 1  0 0   1 1 1 1 1 1 1   1 1 1 1 1 1 1 </dofs>
+      <end_effector id = "" >
+        <op_frame link = "__BLANK__" >
+           <matrixHom>
+             <point_3D x = "0"  y = "0"  z = "0" ></point_3D>
+             <matrixRot rodrigues_x = "0"  rodrigues_y = "0"  rodrigues_z = "0" ></matrixRot>
+           </matrixHom>        
+        </op_frame>
+      </end_effector>
+      <goal derived = "goal_interpol" >
+        <goal_interpol>
+
+          <!-- START MOVEMENT -->
+
+          <!-- Interact -->
+          <point delta_time = "MOVEMENT_TIME_PERIOD" >
+
+            <value> -0.3 0.05   0 0.2 0 1.2 0 0 0    0.2 0.6 0.8 1.9 0 0 0   </value>
+          </point>
+          
+	  <!-- Interact -->
+          <point delta_time = "MOVEMENT_TIME_PERIOD" >
+
+            <value> -0.4 0.1      0 0.25 0 0.76 0 0 0   0.2 0.65 0.35 1.15 0 0 0   </value>
+          </point>
+
+        </goal_interpol>
+      </goal>
+      <controller kp = "4.0" ></controller>
+    </motion_basic>
+  </motion_aggregation>
+  </motion_action>
+</motion>

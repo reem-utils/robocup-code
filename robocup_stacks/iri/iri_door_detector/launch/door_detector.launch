@@ -1,0 +1,44 @@
+<launch>
+
+	<!-- Launch door recognition pipeline using a representative namespace -->
+
+	<node pkg="tf" type="static_transform_publisher" name="right_hand_base_link_broadcaster"
+	      args="0.0 0.0 0.0 0.0 0.0 1.0 0.0 /base_link /right_hand_base_link 100" />
+
+	<group ns="iri_door_detector">
+		<!-- Start door detector action server -->
+		<node pkg="iri_door_detector" type="door_detector_actions" name="door_detector_actions"/>       		      
+
+		<!-- find a closed door (iri version)-->	
+		<node pkg="iri_door_detector" type="closed_door_detector" name="closed_door_detector">
+			<remap from="/camera/rgb/image_color" to="/head_mount_xtion/rgb/image_raw" /> 
+			<remap from="/camera/depth/points" to="/head_mount_xtion/depth_registered/points" /> 
+		</node> 
+
+		<!-- find an open door (iri version)-->	
+		<node pkg="iri_door_detector" type="open_door_detector" name="open_door_detector">
+			<remap from="/camera/rgb/image_color" to="/head_mount_xtion/rgb/image_raw" /> 
+			<remap from="/camera/depth/points" to="/head_mount_xtion/depth_registered/points" /> 
+		</node> 	
+
+		<!-- Compute orientation data and filter point clouds -->	
+		<node pkg="iri_door_detector" type="door_cloud" name="door_cloud"> 
+			<remap from="/camera/rgb/image_color" to="/head_mount_xtion/rgb/image_raw" /> 
+			<remap from="/camera/depth/points" to="/head_mount_xtion/depth_registered/points" /> 
+		</node>
+
+		<!-- set no_simulation param -->
+		<node name="disable_simulation_actions" pkg="dynamic_reconfigure" type="dynparam" 
+		      args="set /iri_door_detector/door_detector_actions no_simulator true" />
+
+		<node name="disable_simulation_door_cloud" pkg="dynamic_reconfigure" type="dynparam" 
+		      args="set /iri_door_detector/door_cloud no_simulator true" />
+
+		<node name="disable_simulation_closed_door_detector" pkg="dynamic_reconfigure" type="dynparam" 
+		      args="set /iri_door_detector/closed_door_detector no_simulator true" />
+
+		<node name="disable_simulation_open_door_detector" pkg="dynamic_reconfigure" type="dynparam" 
+		      args="set /iri_door_detector/open_door_detector no_simulator true" />		
+	</group>
+
+</launch>

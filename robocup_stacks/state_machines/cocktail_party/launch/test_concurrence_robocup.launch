@@ -1,0 +1,16 @@
+<launch>
+
+  <!-- fake action server nodes -->
+
+  <include file="$(find tts_mock)/launch/tts_mock.launch" />
+  <include file="$(find coord_translator)/launch/coord_translator.launch" />
+  <include file="$(find move_base_mock)/launch/move_base_mock.launch" /> 
+  
+  <!--  -->
+  <node pkg ="cocktail_party"
+        type="test_concurrence_robocup.py"
+        name="test_concurrence_robocup"
+        output="screen">
+  </node>
+
+</launch>

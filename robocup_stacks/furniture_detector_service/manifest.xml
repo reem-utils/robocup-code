@@ -1,0 +1,19 @@
+<package>
+  <description brief="furniture_detector_service">
+
+     furniture_detector_service
+
+  </description>
+  <author>Gerard Canal</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/furniture_detector_service</url>
+  <depend package="furniture_classification"/>
+  <depend package="roscpp"/>
+  <depend package="pcl17"/>
+  <depend package="pcl17_ros"/>
+  <depend package="sensor_msgs"/>
+  <depend package="geometry_msgs"/>
+</package>
+
+

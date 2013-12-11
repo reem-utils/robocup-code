@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<launch>
+
+
+  <!-- Init Dancing Reem SMACH -->
+  <node pkg ="init_dancing_reem_test"
+        type="init_dancing_reem_test.py"
+        name="init_dancing_reem_test"
+        output="screen">
+  </node>
+
+</launch>

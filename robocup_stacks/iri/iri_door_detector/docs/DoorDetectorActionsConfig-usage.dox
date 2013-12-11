@@ -1,0 +1,12 @@
+\subsubsection usage Usage
+\verbatim
+<node name="DoorDetectorActionsAlgorithm" pkg="iri_door_detector" type="DoorDetectorActionsAlgorithm">
+  <param name="base_distance_before_closed_door" type="double" value="0.36" />
+  <param name="base_distance_after_open_door" type="double" value="1.0" />
+  <param name="arm_distance_before_closed_door" type="double" value="0.25" />
+  <param name="z_arm_offset" type="double" value="0.04" />
+  <param name="y_offset" type="double" value="0.0" />
+  <param name="no_simulator" type="bool" value="True" />
+</node>
+\endverbatim
+

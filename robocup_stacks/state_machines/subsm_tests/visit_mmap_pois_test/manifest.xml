@@ -1,0 +1,18 @@
+<package>
+  <description brief="visit_mmap_pois_test">
+
+     visit_mmap_pois_test
+
+  </description>
+  <author>Gerard Canal</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/visit_mmap_pois_test</url>
+  <depend package="pal_smach_utils"/>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+
+</package>
+
+

@@ -1,0 +1,20 @@
+This module provides two mock implementations for testing REEM@IRI code:
+
+ * Person Detector Publisher
+
+   $ python src/person_detector.py
+   $ rostopic echo /closestPerson
+
+   Publishes a message with 1Hz frequency to topic /closestPerson indicating
+   that a person is stationary at position (10, 10).
+
+   The message is of type person_detector.msg.peopleTracking.
+
+ * Person Detector Service
+
+   $ python src/person_detector_service.py
+   $ rosservice call /detectPeople
+
+   Returns a person_detector.msg.peopleTrackingArray message containing between
+   zero and seven peopleTracking elements with random values (position between
+   0 and 100, velocity between 0 and 10, variances between 0 and 1).

@@ -1,0 +1,124 @@
+#Every section begins with SECTION_NAME:. Then the parameters, and an empty line to show the end of the section
+Names: # Syntax: a name in every line
+Michael
+Jessica
+Christopher
+Ashley
+Matthew
+Brittany
+Joshua
+Amanda
+Daniel
+Samantha
+David
+Sarah
+Andrew
+Stephanie
+James
+Jennifer
+Justin
+Elizabeth
+Joseph
+Lauren
+
+Rooms: # Syntax: room_name, x_coord, y_coord, angle
+hallway, 2.629, 2.820, 0.237
+kitchen, 3.483, -0.644, -1.407
+bedroom, 8.440, -1.142, -0.692
+living room, 4.914, 3.808, 0.284
+
+
+POIS:
+# Syntax: poi_name, poi_class, x_coord, y_coord, angle[,arm_pose_x, arm_pose_y, arm_pose_angle, arm_pose_rot_x, arm_pose_rot_y, arm_pose_rot_z, arm_pose_rot_w]. The arm poses are optional
+registration table, poi, 8.220, 3.165, 0.006
+exit, poi, 0.213, 0.088, -3.032
+pre_exit, poi, 2.488, 0.158, -3.109
+drinks_location, poi, 8.220, 3.165, 0.006
+party_room, poi, 8.220, 3.165, 0.006
+bench, seating, 2.531, 4.185, 1.699
+hallway table, table, 2.902, 1.792, 0.152, 0.20, -0.35, 0.80, 0.0, 0.0, 0.0, 1.0
+hanger, utensil, 1.800, 3.653, 1.990
+umbrella stand, utensil, 2.204, 2.131, -2.926
+bar, shelf, 6.507, -3.274,  0.139, 0.20, -0.35, 0.95, 0.0, 0.0, 0.0, 1.0
+sidetable, table, 6.152, -3.916, -1.397, 0.20, -0.35, 0.80, 0.0, 0.0, 0.0, 1.0
+kitchen table, table, 5.930, -2.533, -2.965
+kitchen counter, shelf, 3.198, -4.534, 3.130
+stove, appliance, 2.891, -2.775, -2.819, 0.20, -0.35, 1.13, 0.0, 0.0, 0.0, 1.0
+trash bin, utensil, 5.434, -4.071, -1.807
+cupboard, shelf, 4.884, -3.782, -1.455
+sink, appliance, 2.920, -3.552, -2.978
+fridge, appliance, 2.845, -1.593, -2.888
+bed, seating, 9.136, -2.289,  0.235
+dresser, shelf, 8.717, -3.370,  -1.514
+sideboard, shelf,  8.614, -2.584,  -3.048
+bedside table, table, 11.046, -3.339, 0.235
+bookshelf, shelf, 5.062, 2.373, -3.062
+pantry, shelf, 6.002, 0.512, -1.455
+cabinet, shelf, 6.029, 4.451, 1.642
+dinner table, table, 6.412, 4.076,  -1.433
+couch table, table, 8.762, 3.311, 0.023
+arm chair, seating, 8.744, 4.606, 0.795
+sofa, seating, 10.060, 2.013, 0.933
+TV counter, appliance, 9.445, 0.716, -1.530
+plant, utensil, 4.727, 4.579, 2.622
+#hanger_d, poi, 9.078, 1.067, 0.117
+
+Objects: # Syntax: Object name, object class, object location name (it'll be a POI or Room name), database_id
+Deodorant, Cleaning stuff, Hallway table, 18987
+tooth paste, Cleaning stuff, Hallway table, 18988
+Cleaner, Cleaning stuff, Hallway table, 18989
+#Fresh discs, Cleaning stuff, Hallway table, 0
+Sponge, Cleaning stuff, Hallway table, 18990
+#Beer bottle, Drinks, Bar, 0
+Fanta, Drinks, Bar, 18982
+Beer can, Drinks, Bar, 18982
+Coke, Drinks, Bar, 18982
+Seven up, Drinks, Bar, 18982
+Chocolate milk, Drinks, Bar, 18999
+Tomato Sauce, Food, Stove, 19000
+Energy drink, Drinks, Bar, 18996
+Orange juice, Drinks, Bar, 18999
+Milk, Drinks, Bar, 18998
+Apple juice, Drinks, Bar, 18999
+Peanut butter, Food, Stove, 19001
+#Chicken noodles, Food, Stove, 19002
+Marmalade, Food, Stove, 19003
+#Veggie Noodles, Food, Stove, 19004
+Garlic sauce, Food, Stove, 19005
+#Chocolate, Snacks, Side table, 0
+Cookies, Snacks, Sidetable, 19006
+Drops, Snacks, Sidetable, 19007
+Crackers, Snacks, Sidetable, 19008
+
+
+ObjectFindingBehaviour: # Syntax: room_name, location_name, probability_of_objects, x_coord, y_coord, angle
+living room, tv_counter, 0.5, 9.392, 0.692, -1.472
+living room, bookshelf, 0.7, 5.062, 2.373, -3.062
+living room, cabinet, 0.7, 6.029, 4.451, 1.642
+living room, couch_table, 0.5, 8.762, 3.311, 0.023
+living room, arm chair, 0.3, 8.744, 4.606, 0.795
+living room, right_dinner_table, 0.9, 6.412, 4.076, -1.433
+living room, left_dinner_table, 0.9, 6.900, 1.040, 1.718
+living room, pantry_l, 0.8, 5.626, 0.083, -1.401
+living room, pantry_r, 0.8, 6.137, 0.153, -1.454
+bedroom, dresser, 0.9, 8.854, -3.677, -1.378
+#bedroom, bedtable, 0.1, 10.548, -3.426, 0.072
+bedroom, sideboard, 0.65, 8.239, -2.382, -2.959
+bedroom, sideboard_1, 0.65, 8.421, -3.052, -3.016
+bedroom, bed_1, 0.5, 9.580, -2.891, 0.244
+bedroom, bed_2, 0.5, 9.335, -1.565, 0.023
+kitchen, bar_1, 0.75, 6.651, -2.552, 0.100
+kitchen, bar_2, 0.75, 6.702, -3.163, 0.067
+kitchen, table_1, 0.85, 5.930, -2.533, -2.965
+kitchen, table_2, 0.85, 3.884, -2.802, 0.196
+kitchen, table_3, 0.7, 4.755, -1.611, -1.439
+kitchen, counter, 0.8, 3.198, -4.534, 3.130
+kitchen, stove, 0.95, 2.891, -2.775, -2.819
+hallway, bench, 0.8, 2.531, 4.185, 1.699
+hallway, hallway table, 0.9, 2.902, 1.792, 0.152
+
+FireLocations: # Syntax: fire_name, x_coord, y_coord, angle
+fire_1, 3.545, -3.609, 1.750
+fire_2, 3.368, -1.764, 0.162
+fire_3, 6.220, -1.538, -1.425
+fire_4, 6.630, -3.556, -3.011

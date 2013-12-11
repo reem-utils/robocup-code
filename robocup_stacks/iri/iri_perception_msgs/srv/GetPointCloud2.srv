@@ -1,0 +1,5 @@
+#request
+string topic
+---
+#response
+sensor_msgs/PointCloud2 pointcloud

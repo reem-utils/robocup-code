@@ -1,0 +1,18 @@
+<package>
+  <description brief="as_move_base">
+
+     as_move_base
+
+  </description>
+  <author></author>
+  <license>LGPL</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/as_move_base</url>
+  <depend package="roscpp"/>
+  <depend package="iri_base_algorithm"/>
+  <depend package="iri_action_server"/>
+  <depend package="move_base_msgs"/>
+
+</package>
+
+

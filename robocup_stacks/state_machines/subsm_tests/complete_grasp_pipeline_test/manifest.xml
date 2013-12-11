@@ -1,0 +1,34 @@
+<package>
+  <description brief="complete_grasp_pipeline_test">
+
+     complete_grasp_pipeline_test
+
+  </description>
+  <author>student</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/complete_grasp_pipeline_test</url>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <depend package="pal_smach_utils"/>
+  <depend package="geometry_msgs"/>
+  <depend package="move_base_msgs"/>
+  <depend package="arm_navigation_msgs" />
+  <depend package="actionlib_msgs" />
+  <depend package="object_manipulation_msgs" />
+  <depend package="control_msgs" />
+  <depend package="tf" />
+  <depend package="std_srvs" />
+  <depend package="trajectory_msgs" />
+  <depend package="text_to_speech" />
+  <depend package="reem_tabletop_manipulation_launch" />
+  <depend package="pr2_controllers_msgs" />
+  <depend package="reem_final_approach" />
+ <!--  <depend package="tabletop_collision_map_processing" /> -->
+
+
+
+</package>
+
+

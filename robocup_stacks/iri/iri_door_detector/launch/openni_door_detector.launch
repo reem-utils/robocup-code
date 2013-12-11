@@ -1,0 +1,22 @@
+<launch>
+
+	<!-- Video input from openni device -->
+        <include file="$(find openni_launch)/launch/openni.launch" />
+        <node pkg="tf" type="static_transform_publisher" name="handeye_broadcaster"
+	      args="0.0 0.0 0.0 0.0 0.0 0.0 0.1 /kinect_link /camera_link 100"/>
+
+	<node pkg="tf" type="static_transform_publisher" name="right_hand_base_link_broadcaster"
+	      args="0.0 0.0 0.0 0.0 0.0 1.0 0.0 /base_link /right_hand_base_link 100" />
+
+	<!-- Skip point cloud messages to reduce message bandwith load 
+	<node name="reconfigure_kinect_pub_ratio" pkg="dynamic_reconfigure" type="dynparam" 
+	      args="set /camera/driver data_skip 10" /> -->
+
+	<!-- Enable depth registration for color point clouds
+	<node name="reconfigure_kinect_depth_registration" pkg="dynamic_reconfigure" type="dynparam" 
+	      args="set /camera/driver depth_registration true" /> -->
+
+	<!-- launch door detection pipeline -->
+  	<include file="$(find iri_door_detector)/launch/door_detector.launch"/>
+
+</launch>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<launch>
+
+
+<!-- fake action server nodes -->
+  <include file="$(find speech_recognition_mock)/launch/speech_recognition_mock.launch" />
+  <include file="$(find poi_current_position_sm_mock)/launch/lookupTransform_mock.launch" />
+  <include file="$(find coord_translator)/launch/coord_translator.launch" />
+  <include file="$(find move_base_mock)/launch/move_base_mock.launch"/>
+  <include file="$(find tts_mock)/launch/tts_mock.launch" /> 
+ <!-- follow_operator_test SMACH -->
+  <node pkg ="fetch_and_give_object_test"
+        type="fetch_and_give_object_test.py"
+        name="fetch_and_give"
+        output="screen">
+  </node>
+
+</launch>
+

@@ -1,0 +1,17 @@
+<launch>
+
+  <include file="$(find coord_translator)/launch/coord_translator.launch" />
+  <include file="$(find poi_current_position_sm_mock)/launch/lookupTransform_mock.launch" />
+  <include file="$(find move_base_mock)/launch/move_base_mock.launch" />
+
+  <rosparam file="$(find robocup_worlds)/navigation/subMap1.yaml"
+      command="load" ns="emergency_situation" />
+
+  <!-- Emergency Situation SubSM Test SMACH -->
+  <node pkg ="emergency_situation_subsm_tests"
+        type="pdf_and_email_test.py"
+        name="emergency_situation_subsm_tests"
+        output="screen">
+  </node>
+
+</launch>

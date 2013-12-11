@@ -1,0 +1,31 @@
+<package>
+  <description brief="learn_and_follow_operator_test">
+
+     learn_and_follow_operator_test
+
+  </description>
+  <author>Ricardo Tellez</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/release_test</url>
+  <depend package="actionlib"/>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  
+  <depend package="geometry_msgs"/>
+  <depend package="std_srvs" />
+  <!--<depend package="follow_me"/>-->
+  <depend package="pal_smach_utils"/>
+  <depend package="text_to_speech" />
+
+  <depend package="dynamic_reconfigure" />
+
+  <!--<depend package="reem_tabletop_manipulation_launch"/>-->
+
+  <!--PACKAGES NEEDED BY THE FACES_AND_WAVING TEST-->
+  <!--<depend package="reem_final_approach"/>-->
+
+</package>
+
+

@@ -1,0 +1,19 @@
+<package>
+  <description brief="detect_table_test">
+
+     detect_table_test
+
+  </description>
+  <author>Gerard</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/detect_table_test</url>
+  <depend package="rospy"/>
+  <depend package="pal_smach_utils"/>
+  <depend package="pr2_controllers_msgs"/>
+  <depend package="tabletop_object_detector"/>
+  <depend package="smach"/>
+  <!-- <depend package="furniture_detector_service"/> This line was commented because this package was not tested, or is not stable.-->
+</package>
+
+

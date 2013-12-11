@@ -1,0 +1,16 @@
+<launch>
+  <!-- <include file="$(find back_camera_server_mock)/launch/back_camera_server_mock.launch" /> -->
+  <include file="$(find coord_translator)/launch/coord_translator.launch" />
+  <include file="$(find tts_mock)/launch/tts_mock.launch" />
+  
+  <!-- Fake Servers -->
+
+  <!-- EmergencySituation SMACH -->
+  <node pkg ="emergency_situation"
+        type="test_rear_camera_check.py"
+        name="test_follow_checker"
+        output="screen">
+  </node>
+
+</launch>
+

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<launch>
+
+	<!-- load the configuration file -->
+    <rosparam file="$(find play_get_the_ball_test)/config/params_play_get_the_ball_test.yaml"
+      command="load" ns="names_space_params_play_get_the_ball_test" />
+
+    <!-- follow_operator_test SMACH -->
+    <node pkg="play_get_the_ball_test"
+        type="play_get_the_ball_test.py"
+        name="sm_play_get_the_ball_test"
+        output="screen">
+    </node>
+
+</launch>

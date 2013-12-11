@@ -1,0 +1,17 @@
+#Independent settings for the planner's costmap
+global_costmap: 
+#  map_topic: /vo_map
+  global_frame: /odom
+  robot_base_frame: /base_link
+  update_frequency: 1.0
+  publish_frequency: 0.0
+  static_map: false
+  rolling_window: true
+  robot_radius: 0.8
+  inflation_radius: 0.81
+  width: 16.0
+  height: 16.0
+  resolution: 0.1
+  origin_z: 0.0
+  z_resolution: 0.4
+  z_voxels: 5

@@ -1,0 +1,4 @@
+string room #Name of the room
+---
+string location #Name of the location
+geometry_msgs/Pose loc_position #Position of the location

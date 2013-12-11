@@ -1,0 +1,60 @@
+Index: src/moped_handler_alg_node.cpp
+===================================================================
+9a10
+> 	//ROS_INFO("MopedHandlerAlgNode [init publishers]"); 
+12a14
+> 	//ROS_INFO("MopedHandlerAlgNode [init subscribers]"); 
+15c17
+< 	this->subPointCloud_.subscribe(this->public_node_handle_, "/camera/rgb/points", 1);
+---
+> 	this->subPointCloud_.subscribe(this->public_node_handle_, "/camera/depth_registered/points", 1);
+18a21
+> 	//ROS_INFO("MopedHandlerAlgNode [attaching callback]"); 
+20a24
+> 	//ROS_INFO("MopedHandlerAlgNode [init services]"); 
+23a28,29
+>   	ROS_INFO("MopedHandlerAlgNode Initiated."); 
+> 	
+60c66,67
+< 		this->subPointCloud_.subscribe(this->public_node_handle_, "/camera/rgb/points", 1);
+---
+> 		this->subPointCloud_.subscribe(this->public_node_handle_, "/camera/depth_registered/points", 1);
+> 		ROS_INFO("MopedHandlerAlgNode::enableCallback: subscribed to topics [/camera/rgb/image_mono /camera/depth_registered/points]!"); 
+69a77
+> 		ROS_INFO("MopedHandlerAlgNode::enableCallback: UNsubscribed from topics [/camera/rgb/image_mono /camera/depth_registered/points]!"); 
+110a119,120
+> 
+> 
+112a123
+>     ROS_INFO("Got %i objects.", objects.size());
+127a139,141
+>     ROS_INFO("From them, %i are good objects.", outputMsg.object_list.size());
+> 
+> 	bad.clear();
+130a145
+>         ROS_INFO("Object num %i:", i);
+140c155,160
+< 
+---
+> 		if(isnan(p.x) || isnan(p.y) || isnan(p.z)){
+>             ROS_INFO("Found NaN values!!");
+>             ROS_INFO("Aborting this object: %s", outputMsg.object_list[i].name.c_str()); //seg fault here i dont know why it happens
+> 			bad.push_back(i);
+> 		}
+> 		else {
+147c167,168
+< 		ROS_INFO("Pixel (%f, %f) is at position (%f, %f, %f).", col, row, p.x, p.y, p.z);
+---
+>             if(outputMsg.object_list[i].name != ""){
+>                 ROS_INFO("Pixel (%f, %f) is at position (%f, %f, %f) for object found \"%s\".", col, row, p.x, p.y, p.z, outputMsg.object_list[i].name.c_str());
+148a170,177
+>             else
+>                 ROS_INFO("Pixel (%f, %f) is at position (%f, %f, %f)", col, row, p.x, p.y, p.z);
+> 		}
+> 	}
+> 
+> 	// Delete objects which had NaN position in inverse order.
+> 	for(int i=bad.size()-1; i>=0; --i)
+> 		outputMsg.object_list.erase( outputMsg.object_list.begin() + bad[i] );
+207a237
+> 	//ROS_INFO("MopedHandlerAlgNode::callback received!");

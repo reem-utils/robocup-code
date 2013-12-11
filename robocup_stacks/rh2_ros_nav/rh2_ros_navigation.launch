@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!-- -->
+<launch>
+
+  <!-- Start the core NOT REQUIRED BECAUSE GAZEBO STARTS A CORE
+  <master auto="start"/> -->
+
+  <!-- Run the Gazebo simulation -->
+
+  <!-- start up willow garage world. Write the name of the png file that defines the world inside the simulated.world file -->
+ <!-- <include file="$(find robocup_worlds)/launch/robocup_house_fuerte3.launch"/>-->
+  <include file="$(find robocup_worlds)/launch/inside_house.launch"/>
+
+  <!-- start REEM_H2 robot -->
+ <!--  <include file="$(find reem_gazebo)/launch/reem.launch"/> -->
+
+  <!-- Run the map server. Write the path to your map in the args param  -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find robocup_worlds)/navigation/subMap1.pgm 0.05"/> 
+
+  <!--- Run AMCL localiztion  --> 
+  <include file="$(find rh2_ros_nav)/rh2_amcl_diff.launch" />
+  
+  <!--- Move By Launch  -->
+  <include file="$(find rh2_ros_nav)/move_by.launch" />
+  
+  <!--- Coord Translator Launch  -->
+  <include file="$(find coord_translator)/launch/coord_translator.launch" />
+
+  <!--- Node launch RVIZ  -->
+  <node pkg="rviz" type="rviz" respawn="false" name="rviz" output="screen">
+  </node>
+
+  <!-- Static Transformation -->
+  <node pkg="tf" type="static_transform_publisher" name="static_transform_map2" args="0 0 0 0 0 0 /map /base_footprint 100" />
+
+
+  <!-- Run the path planner --> 
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find rh2_ros_nav)/move_base/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find rh2_ros_nav)/move_base/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find rh2_ros_nav)/move_base/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find rh2_ros_nav)/move_base/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find rh2_ros_nav)/move_base/base_local_planner_params.yaml" command="load" />
+  </node>
+
+</launch>
+

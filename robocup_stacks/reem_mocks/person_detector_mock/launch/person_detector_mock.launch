@@ -1,0 +1,14 @@
+<launch>
+
+  <node
+    pkg="person_detector_mock" type="person_detector.py"
+    name="person_detector" /> 
+ <!--
+  <node
+    pkg="person_detector_mock" type="person_detector_advanced.py"
+    name="person_detector_advanced" output="screen" />  -->
+<!--  <node
+    pkg="person_detector_mock" type="person_detector_service.py"
+    name="person_detector_service" /> -->
+
+</launch>

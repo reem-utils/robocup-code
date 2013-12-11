@@ -1,0 +1,6 @@
+#File generated with the param_configurator script!
+fire_locations:
+    poi_1: [submap_0, fire_4, 6.630, -3.556, -3.011]
+    poi_2: [submap_0, fire_3, 6.220, -1.538, -1.425]
+    poi_3: [submap_0, fire_2, 3.368, -1.764, 0.162]
+    poi_4: [submap_0, fire_1, 3.545, -3.609, 1.750]

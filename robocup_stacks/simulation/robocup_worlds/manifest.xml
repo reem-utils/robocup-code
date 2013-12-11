@@ -1,0 +1,19 @@
+<package>
+  <description brief="robocup_worlds">
+
+     robocup_worlds
+
+  </description>
+  <author>joan</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/robocup_worlds</url>
+
+  <depend package="gazebo"/>
+  <export>
+    <gazebo gazebo_media_path="${prefix}" />
+  </export>
+
+</package>
+
+

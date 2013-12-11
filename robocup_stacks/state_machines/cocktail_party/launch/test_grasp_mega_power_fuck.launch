@@ -1,0 +1,10 @@
+<launch>
+
+  <!-- Cocktail SMACH -->
+  <node pkg ="cocktail_party"
+        type="test_grasp_mega_power_fuck.py"
+        name="test_grasp_mega_power_fuck"
+        output="screen">
+  </node>
+
+</launch>

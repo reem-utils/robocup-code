@@ -1,0 +1,9 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~num_spatial_bins" : \b [int] Number of spatial bins per side (not implemented yet) min: 1, default: 1, max: 16
+- \b "~num_orientation_bins" : \b [int] Number of orientation bins per side min: 4, default: 16, max: 128
+- \b "~desc_patch_radius" : \b [int] Number of pixels for the local patch radius min: 5, default: 17, max: 65
+- \b "~sample_each" : \b [int] spacing in pixels between each sampled position min: 1, default: 1, max: 32
+

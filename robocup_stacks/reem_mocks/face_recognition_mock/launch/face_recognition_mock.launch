@@ -1,0 +1,8 @@
+<launch>
+
+  <node
+    pkg="face_recognition_mock" type="face_recognition.py"
+    name="face_recognition"
+    output="screen" />
+
+</launch>

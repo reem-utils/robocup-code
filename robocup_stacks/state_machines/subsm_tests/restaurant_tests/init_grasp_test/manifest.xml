@@ -1,0 +1,18 @@
+<package>
+  <description brief="init_grasp_test">
+
+     init_grasp_test
+
+  </description>
+  <author>Ricardo Tellez</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/init_grasp_test</url>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="pal_smach_utils"/>
+  <depend package="smach_ros"/>
+  <depend package="text_to_speech"/>
+</package>
+
+

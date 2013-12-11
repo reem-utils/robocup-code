@@ -1,0 +1,11 @@
+#goal definition
+string[]  sequence_file
+int32[]   num_repetitions
+---
+#result definition
+bool[]    successful
+string[]  observations
+---
+#feedback
+float32[] percentage
+

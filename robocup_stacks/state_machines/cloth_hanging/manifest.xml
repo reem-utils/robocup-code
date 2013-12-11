@@ -1,0 +1,27 @@
+<package>
+  <description brief="cloth_hanging">
+
+    State machine for taking a piece of cloth and hanging it. 
+
+  </description>
+  <author>dmartinez</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/cloth_hanging</url>
+
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <!--<depend package="tf"/>-->
+  <depend package="iri_bow_object_detector" />
+  <!--<depend package="object_manipulation_msgs"/>-->
+  <depend package="estirabot_msgs"/>
+  <depend package="estirabot_apps_base"/>
+  <depend package="iri_bow_object_detector" />
+  <depend package="pal_smach_utils"/>
+  <depend package="text_to_speech" />
+  <depend package="sensor_msgs" />
+  <depend package="sb04_sonar" />
+
+</package>
+
+

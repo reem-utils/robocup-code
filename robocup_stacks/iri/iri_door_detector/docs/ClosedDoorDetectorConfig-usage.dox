@@ -1,0 +1,27 @@
+\subsubsection usage Usage
+\verbatim
+<node name="ClosedDoorDetectorAlgorithm" pkg="iri_door_detector" type="ClosedDoorDetectorAlgorithm">
+  <param name="min_door_width" type="int" value="300" />
+  <param name="max_door_width" type="int" value="750" />
+  <param name="min_door_height" type="int" value="850" />
+  <param name="max_door_height" type="int" value="1200" />
+  <param name="handle_width" type="int" value="12" />
+  <param name="handle_height" type="int" value="6" />
+  <param name="handle_location" type="int" value="15" />
+  <param name="allowed_blobs" type="int" value="130" />
+  <param name="segment_fidelity" type="int" value="40" />
+  <param name="segment_size" type="int" value="40" />
+  <param name="debugging_images" type="int" value="0" />
+  <param name="no_simulator" type="bool" value="True" />
+  <param name="DSC" type="bool" value="False" />
+  <param name="SHM" type="bool" value="False" />
+  <param name="SVP" type="bool" value="False" />
+  <param name="SFT" type="bool" value="False" />
+  <param name="Range_filter" type="bool" value="True" />
+  <param name="Persp_filter" type="bool" value="True" />
+  <param name="Geom_filter" type="bool" value="True" />
+  <param name="Size_filter" type="bool" value="True" />
+  <param name="Aspect_filter" type="bool" value="True" />
+</node>
+\endverbatim
+

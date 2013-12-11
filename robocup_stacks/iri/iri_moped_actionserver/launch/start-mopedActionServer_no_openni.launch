@@ -1,0 +1,12 @@
+<launch>
+	<!-- Start Moped2 -->
+	<include file="$(find moped2)/launch/startmoped_no_openni.launch" />
+
+	<!-- Launch moped action server -->
+	<node pkg="iri_moped_actionserver" type="iri_moped_actionserver" name="iri_moped_actionserver" output="screen">
+
+		<!-- Node params -->
+		<!--TODO-->
+	</node>
+</launch>
+

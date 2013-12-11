@@ -1,0 +1,15 @@
+<package>
+  <description brief="iri_publish_params">
+
+     iri_publish_params
+
+  </description>
+  <author>Arnau Ramisa</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/iri_publish_params</url>
+  <depend package="roscpp"/>
+
+</package>
+
+

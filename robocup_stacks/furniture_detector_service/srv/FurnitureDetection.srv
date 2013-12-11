@@ -1,0 +1,6 @@
+---
+int8 SUCCESS=0
+int8 NO_RESULT=1
+string[] furn_names # Names of the furniture
+geometry_msgs/PoseStamped[] poses # Poses of the detected furniture
+int8 status

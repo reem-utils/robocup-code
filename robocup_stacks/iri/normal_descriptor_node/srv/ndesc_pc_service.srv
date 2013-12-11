@@ -1,0 +1,3 @@
+sensor_msgs/PointCloud2 cloth_cloud
+---
+normal_descriptor_node/ndesc_pc ndesc_pc_msg

@@ -1,0 +1,5 @@
+#detect_door_position: [1.8, 2.5, 0.0]
+detect_door_position: [0.0, 0.0, 0.0]
+#detect_door_orientation: [0, 0, 0.675, 0.738]
+detect_door_orientation: [0, 0, 0, 0]
+#usersaid: [[{name: 'Homer'}], [{name: 'Bart'}], [{action: 'goto', location: 'business'}], [{action: 'bring', drink: 'coke'}, 'first order'], [{action: 'bring', drink: 'milk'}, 'second order']]

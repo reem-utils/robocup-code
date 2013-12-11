@@ -1,0 +1,72 @@
+<robot name="plant">
+
+  <link name="plant_base">
+
+    <inertial>
+      <mass value="70.0" />
+      <origin xyz="0 0 0" />
+      <inertia  ixx="0.0" ixy="0.0"  ixz="0.0"  iyy="0.0"  iyz="0.0"  izz="0.0" />
+    </inertial>
+    
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robocup_worlds/Media/models/plant_base.stl" scale="1 1 1"/>
+      </geometry>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robocup_worlds/Media/models/plant_base.stl" scale="1 1 1"/>
+      </geometry>
+    </collision>
+
+  </link>
+  
+<gazebo reference="plant_base">
+    <material>Gazebo/FlatBlack</material>	
+    <static>true</static>
+    <turnGravityOff>true</turnGravityOff>
+ </gazebo>
+
+<joint name="plant_joint" type="fixed">
+	<parent link="plant_base"/>
+	<child link="plant_leaf"/>
+</joint>
+
+  <link name="plant_leaf">
+
+    <inertial>
+      <mass value="70.0" />
+      <origin xyz="0 0 0" />
+      <inertia  ixx="0.0" ixy="0.0"  ixz="0.0"  iyy="0.0"  iyz="0.0"  izz="0.0" />
+    </inertial>
+    
+    <visual>
+      <origin xyz="0 0 0.5" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robocup_worlds/Media/models/plant_leaf.stl" scale="1 1 1"/>
+      </geometry> 
+     </visual>
+
+    <collision>
+      <origin xyz="0 0 0.5" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robocup_worlds/Media/models/plant_leaf.stl" scale="1 1 1"/>
+      </geometry>
+    </collision>
+
+  </link>
+
+<gazebo reference="plant_leaf">
+    <material>Gazebo/Green</material>	
+    <static>true</static>
+    <turnGravityOff>true</turnGravityOff>
+</gazebo>
+
+  <gazebo>
+    <static>true</static>
+  </gazebo>
+
+</robot>

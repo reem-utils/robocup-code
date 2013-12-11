@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<launch>
+
+	<!-- load the configuration file -->
+    <rosparam file="$(find play_get_the_ball_test)/config/params_play_get_the_ball_test_for_mock.yaml"
+      command="load" ns="names_space_params_play_get_the_ball_test" />
+
+    <!-- fake action server nodes -->
+    <include file="$(find tts_mock)/launch/tts_mock.launch" />
+
+    <!-- follow_operator_test SMACH -->
+    <node pkg="play_get_the_ball_test"
+        type="play_get_the_ball_test.py"
+        name="sm_play_get_the_ball_test"
+        output="screen">
+    </node>
+
+</launch>

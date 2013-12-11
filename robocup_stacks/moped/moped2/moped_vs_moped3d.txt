@@ -1,0 +1,502 @@
+20c20
+<   visit http://personalrobotics.ri.cmu.edu
+---
+>   visit http://personalrobotics.intel-research.net/pittsburgh
+52c52,64
+< #include <cv_bridge/CvBridge.h>
+---
+> #include <cv_bridge/cv_bridge.h>
+> 
+> 
+> #include <std_msgs/String.h>
+> #include <sensor_msgs/PointCloud2.h>
+> // #include <pcl_ros/point_cloud.h>
+> #include <string>
+> #include <math.h>
+> #include <cv.h>
+> #include <highgui.h>
+> #include <message_filters/subscriber.h>
+> #include <message_filters/synchronizer.h>
+> #include <message_filters/sync_policies/approximate_time.h>
+66a79
+> using namespace message_filters;
+67a81
+> typedef union { char buffer[sizeof(Float)]; Float f; } Floatpun;
+74a89,95
+> 
+> void processTest2( const sensor_msgs::PointCloud2::ConstPtr& pMsg){
+>     cerr << "Maybe?" << endl;
+> }
+> 
+> typedef sync_policies::ApproximateTime<sensor_msgs::PointCloud2, sensor_msgs::Image> KinectSyncPolicy;
+> 
+81a103,106
+>     message_filters::Subscriber<sensor_msgs::PointCloud2> pointSub;
+>     message_filters::Subscriber<sensor_msgs::Image> imageSub;
+>     Synchronizer<KinectSyncPolicy> kinectSync;
+> 	
+83,90c108,115
+< 	Pt<4> intrinsicLinearCalibration;
+< 	Pt<4> intrinsicNonlinearCalibration;
+< 
+< 	// Use service to enable/disable MOPED
+< 	int Enabled;
+< 	ros::ServiceServer moped_enable;
+< 
+< 	string inputImageTopicName;
+---
+> 	Pt<4>   RGBIntrinsicLinearCalibration,
+>             DepthIntrinsicLinearCalibration;
+> 	Pt<4>   RGBIntrinsicNonlinearCalibration,
+>             DepthIntrinsicNonlinearCalibration;
+> 
+>     // Use service to enable/disable MOPED
+>     int Enabled;
+>     ros::ServiceServer moped_enable;
+94,262c119,390
+<   // ----------------------- Constructor --------------------------- //
+< 	MopedROS() : it(n) {
+< 		ros::NodeHandle pnh("~");
+< 		string modelsPath;
+< 		pnh.param("models_path", modelsPath, string("/home/student/workspace_fuerte/moped/moped2/models") );
+< 
+< 		DIR *dp;
+< 		struct dirent *dirp;
+< 
+< 		if((dp  = opendir(modelsPath.c_str())) ==  NULL) 
+< 			throw string("Error opening \"") + modelsPath + "\"";
+< 
+< 		vector<string> fileNames;
+< 		while((dirp = readdir(dp)) != NULL) {
+< 
+< 			string fileName =  modelsPath + "/" + string(dirp->d_name);
+< 			if( fileName.rfind(".moped.xml") == string::npos ) continue;
+< 			fileNames.push_back( fileName );
+< 		}
+< 
+<     	// Load models in parallel
+< 		#pragma omp parallel for
+< 		for(int i=0; i<(int)fileNames.size(); i++) {
+< 			
+< 			sXML XMLModel; 
+< 			XMLModel.fromFile(fileNames[i]);
+< 			
+< 			#pragma omp critical(addModel)
+< 			moped.addModel(XMLModel);
+< 		}
+< 		closedir(dp);
+< 
+< //    string inputImageTopicName;
+<     string outputObjectListTopicName;
+<     string EnableSrvName;
+<     pnh.param("input_image_topic_name", inputImageTopicName, std::string("/camera/rgb/image_mono"));
+<     pnh.param("output_object_list_topic_name", outputObjectListTopicName, std::string("/iri_moped_actionserver/object_poses"));
+<     pnh.param("enable_service_name", EnableSrvName, std::string("/Enable"));
+< 
+< 
+<     moped_pub = n.advertise<pr_msgs::ObjectPoseList>(outputObjectListTopicName,10);
+<     moped_sub = it.subscribe(inputImageTopicName, 1, &MopedROS::process, this);
+<     moped_enable = n.advertiseService(EnableSrvName, &MopedROS::EnableMoped, this);
+< 
+< 		double d1, d2, d3, d4;
+< 		n.param("KK_fx", d1, 100.); 
+< 		n.param("KK_fy", d2, 100.);
+< 		n.param("KK_cx", d3, 320.);
+< 		n.param("KK_cy", d4, 240.);
+< 		intrinsicLinearCalibration.init(d1, d2, d3, d4);
+< 
+< 		n.param("kc_k1", d1, 1e-12);
+< 		n.param("kc_k2", d2, 1e-12);
+< 		n.param("kc_p1", d3, 1e-12);
+< 		n.param("kc_p2", d4, 1e-12);
+< 		intrinsicNonlinearCalibration.init(d1, d2, d3, d4);
+< 
+< 		map<string,string> config = moped.getConfig();		
+< 		foreach( value, config ) 
+< 		  {
+< 		    n.param( fix_param_name(value.first), value.second, value.second);
+< 		  }
+< 		moped.setConfig(config);
+< 
+< 		ros::Rate loop_rate(60);
+< 	}
+< 
+< 
+< 	// ----------------------- Enable/Disable MOPED --------------------------- //
+< 	bool EnableMoped(pr_msgs::Enable::Request& Req, pr_msgs::Enable::Response& Resp){
+< 		if(Req.Enable)
+< 			moped_sub = it.subscribe(inputImageTopicName, 1, &MopedROS::process, this);
+< 		else
+< 			moped_sub = it.subscribe("FalseTopic", 1, &MopedROS::process, this);    
+< 		Resp.ok = true;
+< 		return true;
+< 	}
+< 
+< 
+< 	// ----------------------- Process --------------------------- //
+< 	void process( const sensor_msgs::ImageConstPtr& in ) {
+< 
+< 		sensor_msgs::CvBridge bridge;
+< 
+< 		IplImage *gs = bridge.imgMsgToCv( in );
+< 
+< 		vector<SP_Image> images;
+< 
+< 		SP_Image mopedImage( new Image );
+< 
+< 		mopedImage->name = "ROS_Image";
+< 
+< 		mopedImage->intrinsicLinearCalibration = intrinsicLinearCalibration; 
+< 		mopedImage->intrinsicNonlinearCalibration = intrinsicNonlinearCalibration;
+< 
+< 		mopedImage->cameraPose.translation.init(0.,0.,0.);
+< 		mopedImage->cameraPose.rotation.init(0.,0.,0.,1.);
+< 
+< 		mopedImage->width = gs->width;
+< 		mopedImage->height = gs->height;
+< 
+< 		mopedImage->data.resize( gs->width * gs->height );
+< 
+< 		for (int y = 0; y < gs->height; y++) 
+< 			memcpy( &mopedImage->data[y*gs->width], &gs->imageData[y*gs->widthStep], gs->width );
+< 
+< 
+< 		images.push_back( mopedImage );
+< 
+< 		list<SP_Object> objects;
+< 		moped.processImages( images, objects );
+< 
+< 
+< 
+< 		pr_msgs::ObjectPoseList outList;
+< 		outList.header.seq = in->header.seq;
+< 		outList.header.frame_id = "/kinect_link";
+< 		outList.header.stamp = in->header.stamp;
+< 		outList.originalTimeStamp = in->header.stamp;
+< 
+< 		foreach( object, objects) {
+< 
+< 			pr_msgs::ObjectPose out; // Our output msg
+< 
+< 			out.name = object->model->name;
+< 
+< 			out.pose.position.x = object->pose.translation[0];
+< 			out.pose.position.y = object->pose.translation[1];
+< 			out.pose.position.z = object->pose.translation[2];
+< 
+< 			// Fill out.pose2D msg field. By Ferran 2012-04-26
+< 			out.pose2D.x = object->pose2D[0];
+< 			out.pose2D.y = object->pose2D[1];
+< //			out.pose2D.z = UNUSED
+< 
+< 			object->pose.rotation.norm();
+< 
+< 			// Not really necessary, but this way we always display the same half of the quaternion hypersphere
+< 			float flip = object->pose.rotation[0] + object->pose.rotation[1] + object->pose.rotation[2] + object->pose.rotation[3];
+< 			if( flip < 0 ) {
+< 				object->pose.rotation[0] *= -1;
+< 				object->pose.rotation[1] *= -1;
+< 				object->pose.rotation[2] *= -1;
+< 				object->pose.rotation[3] *= -1;
+< 			}
+< 
+< 			out.pose.orientation.x = object->pose.rotation[0];
+< 			out.pose.orientation.y = object->pose.rotation[1];
+< 			out.pose.orientation.z = object->pose.rotation[2];
+< 			out.pose.orientation.w = object->pose.rotation[3];
+< 
+< 			out.mean_quality = object->score;
+< 			out.used_points = 10;
+< 
+< 			// Uncomment if you want to compute Convex Hulls
+< 			//  list<Pt<2> > hull = object->getObjectHull((Image &) images[0]);
+< 			// foreach( pt, hull) {
+< 			//   out.convex_hull_x.push_back( (int) pt[0] );
+< 			//   out.convex_hull_y.push_back( (int) pt[1] );
+< 			// }  
+< 
+< 			outList.object_list.push_back(out);
+< 		}
+< 		moped_pub.publish(outList);
+< 
+< 		// Display some info
+< 		clog << " Found " << objects.size() << " objects" << endl;
+< 		foreach( object, objects )
+< 		clog << " Found " << object->model->name << " at " << object->pose << " with score " << object->score << endl;
+---
+>     // ----------------------- Constructor --------------------------- //
+> 	MopedROS() : it(n), pointSub(n, "/camera/depth_registered/points", 1), imageSub(n, "/camera/rgb/image_rect", 1),
+>         kinectSync(KinectSyncPolicy(100), pointSub, imageSub)    
+>     {
+>         Enabled = 1;
+>         ros::NodeHandle pnh("~");
+>         string modelsPath;
+>         pnh.param("models_path", modelsPath, string("/home/student/workspace_fuerte/moped/moped2/models"));
+> 
+>         DIR *dp;
+>         struct dirent *dirp;
+> 
+>         if((dp  = opendir(modelsPath.c_str())) ==  NULL) 
+>             throw string("Error opening \"") + modelsPath + "\"";
+> 
+>         vector<string> fileNames;
+>         while((dirp = readdir(dp)) != NULL) {
+> 
+>             string fileName =  modelsPath + "/" + string(dirp->d_name);
+>             if( fileName.rfind(".moped.xml") == string::npos ) continue;
+>             fileNames.push_back( fileName );
+>         }
+> 
+>         /*
+>         cerr << "Loading models!" << endl;
+>         */
+>         // Load models in parallel
+>         #pragma omp parallel for
+>         for(int i=0; i<(int)fileNames.size(); i++) {
+>             
+>             sXML XMLModel; 
+>             XMLModel.fromFile(fileNames[i]);
+>             
+>             #pragma omp critical(addModel)
+>             moped.addModel(XMLModel);
+>         }
+>         closedir(dp);
+>         /*
+>         cerr << "Done loading models!" << endl;
+>         */
+> 
+>         // string inputRGBImageTopicName;
+>         // string inputDepthmapTopicName;
+>         string outputObjectListTopicName;
+>         string EnableSrvName;
+>         // pnh.param("RGB_image_topic_name", inputRGBImageTopicName, std::string("/camera/rgb/image_color"));
+>         // pnh.param("Depthmap_topic_name", inputDepthmapTopicName, std::string("/camera/rgb/points"));
+>         pnh.param("output_object_list_topic_name", outputObjectListTopicName, std::string("/object_poses"));
+>         pnh.param("enable_service_name", EnableSrvName, std::string("/Enable"));
+> 
+>         /*
+>         cerr << "Subscribing" << endl;
+>         */
+> 
+>         moped_pub = n.advertise<pr_msgs::ObjectPoseList>(outputObjectListTopicName,100);
+>         /* subscribe to the the point cloud and image topic */
+> 
+>         /*
+>         cerr << "Trying to subscribe to " << inputDepthmapTopicName << " and " << inputRGBImageTopicName << endl;
+>         */
+> 
+>         kinectSync.registerCallback(boost::bind(&MopedROS::process, this, _1, _2));
+>         
+> /*        sync.registerCallback(boost::bind(&MopedROS::process, this, _1, _2)); */
+> 
+> 
+>     /*    moped_sub = it.subscribe(inputImageTopicName, 1, &MopedROS::process, this); */
+>         moped_enable = n.advertiseService(EnableSrvName, &MopedROS::EnableMoped, this);
+> 
+>         /*
+>         cerr << "Setting default intrinsics" << endl;
+>         */
+> 
+> 
+> 
+>         double d1, d2, d3, d4;
+>         n.param("KK_fx", d1, 1050.); 
+>         n.param("KK_fy", d2, 1050.);
+>         n.param("KK_cx", d3, 639.5);
+>         n.param("KK_cy", d4, 479.5);
+>         RGBIntrinsicLinearCalibration.init(d1, d2, d3, d4);
+> 
+>         // n.param("DEPTH_KK_fx", d1, 1050.00034); 
+>         // n.param("DEPTH_KK_fy", d2, 1050.00059);
+>         // n.param("DEPTH_KK_cx", d3, 639.015793);
+>         // n.param("DEPTH_KK_cy", d4, 479.015972);
+>         DepthIntrinsicLinearCalibration.init(d1, d2, d3, d4);
+> 
+>         n.param("RGB_kc_k1", d1, 1e-12);
+>         n.param("RGB_kc_k2", d2, 1e-12);
+>         n.param("RGB_kc_p1", d3, 1e-12);
+>         n.param("RGB_kc_p2", d4, 1e-12);
+>         RGBIntrinsicNonlinearCalibration.init(d1, d2, d3, d4);
+> 
+>         n.param("DEPTH_kc_k1", d1, 1e-12);
+>         n.param("DEPTH_kc_k2", d2, 1e-12);
+>         n.param("DEPTH_kc_p1", d3, 1e-12);
+>         n.param("DEPTH_kc_p2", d4, 1e-12);
+>         DepthIntrinsicNonlinearCalibration.init(d1, d2, d3, d4);
+> 
+>         map<string,string> config = moped.getConfig();		
+>         foreach( value, config ) 
+>           {
+>             n.param( fix_param_name(value.first), value.second, value.second);
+>           }
+>         moped.setConfig(config);
+> 
+>         ros::Rate loop_rate(60);
+>     }
+> 
+> 
+>     // ----------------------- Enable/Disable MOPED --------------------------- //
+>     bool EnableMoped(pr_msgs::Enable::Request& Req, pr_msgs::Enable::Response& Resp){
+>         Enabled = Req.Enable;
+>         Resp.ok = true;
+>         return true;
+>     }
+> 
+> 
+>     // ----------------------- Process --------------------------- //
+> 
+> 	void process(   const sensor_msgs::PointCloud2::ConstPtr& pMsg, 
+>                     const sensor_msgs::Image::ConstPtr& iMsg){
+> 
+>     if (Enabled){
+> 
+>       vector<SP_Image> images;
+>        
+>       /* get the gray/rgb image */
+>       // IplImage *gs = bridge.imgMsgToCv( iMsg, "mono8" );
+>       cv_bridge::CvImagePtr cv_ptr = cv_bridge::toCvCopy(iMsg, "mono8"); 
+>       IplImage gs = (IplImage) cv_ptr->image;
+> 
+>       SP_Image gsMoped( new Image );
+>      
+>       gsMoped->imageType = IMAGE_TYPE_GRAY_IMAGE;
+>       gsMoped->name = "ROS_Image";
+>       /* copy over the intrinsics and extrinsics */
+>       gsMoped->intrinsicLinearCalibration = RGBIntrinsicLinearCalibration; 
+>       gsMoped->intrinsicNonlinearCalibration = RGBIntrinsicNonlinearCalibration;
+>       gsMoped->cameraPose.translation.init(0.,0.,0.);
+>       gsMoped->cameraPose.rotation.init(0.,0.,0.,1.);
+>       gsMoped->width = gs.width;
+>       gsMoped->height = gs.height;
+>       gsMoped->data.resize( gs.width * gs.height );
+>       for (int y = 0; y < gs.height; y++) 
+>         memcpy( &gsMoped->data[y*gs.width], &gs.imageData[y*gs.widthStep], gs.width );
+> 
+>         /* Done with the grayscale; now handle depth (slightly more complex) */
+>       
+>         /* the depthmap as a finished product */
+>         SP_Image depthmap( new Image );
+>         depthmap->name = "Depthmap";
+>         depthmap->imageType = IMAGE_TYPE_DEPTH_MAP;
+>         depthmap->intrinsicLinearCalibration = DepthIntrinsicLinearCalibration;
+>         depthmap->intrinsicNonlinearCalibration = DepthIntrinsicNonlinearCalibration;
+>         depthmap->cameraPose.translation.init(0.0,0.0,0.0);
+>         depthmap->cameraPose.rotation.init(0.0, 0.0, 0.0, 1.0);
+>         depthmap->width = gs.width;
+>         depthmap->height = gs.height;
+>         depthmap->data.resize( gs.width * gs.height * sizeof(Float) * 4 );
+> 
+>         /* the raw depthmap off the kinect */
+>         cv::Mat rawDepthmap(pMsg->height, pMsg->width, CV_32FC1);
+>         /* read in the raw depthmap */
+>         for(int y = 0; y < (int) rawDepthmap.rows; y++){
+>             for(int x = 0; x < (int) rawDepthmap.cols; x++){
+>                 int i = y*rawDepthmap.cols + x;
+>                 float *dataLocation = (float *) (&(pMsg->data[0]) + i*pMsg->point_step);
+>                 if(isnan(dataLocation[2])){
+>                     rawDepthmap.at<float>(y, x) = -1e30;
+>                 } else {
+>                     rawDepthmap.at<float>(y, x) = dataLocation[2];
+>                 }
+>             }
+>         }  
+>        
+>         cv::Mat upscaledDepthmap; 
+>         /* Are the raw depthmap and our target depthmap the same size? */
+>         if (depthmap->width == pMsg->width && depthmap->height == pMsg->height)
+>         /* the upscaled depthmap */
+>           upscaledDepthmap = rawDepthmap;
+>         else{
+>           /* resize the raw depthmap */
+>           cv::resize(rawDepthmap, upscaledDepthmap, cv::Size(pMsg->width*2, pMsg->height*2));
+>         }
+> 
+>         Pt<4> K = DepthIntrinsicLinearCalibration;
+>         /* pass the results, processed somewhat to the depthmap */
+>         for(int v = 0; v < (int) gs.height; v++){
+>             for(int u = 0; u < (int) gs.width; u++){
+>                 int i = v*gs.width+u;
+>                 int offset = i*sizeof(Float)*4;
+>                 Floatpun *buffer = (Floatpun *) ((&depthmap->data[0])+offset);
+>                 if( (v >= (int) upscaledDepthmap.rows) || (u >= (int) upscaledDepthmap.cols)){
+>                     (buffer+0)->f = (buffer+1)->f = (buffer+2)->f = (buffer+3)->f = -1; 
+>                     continue;
+>                 }
+>                 float data = upscaledDepthmap.at<float>(v, u);
+>                 if(data < 0){
+>                     (buffer+0)->f = (buffer+1)->f = (buffer+2)->f = (buffer+3)->f = -1; 
+>                 } else {
+>                     /* Project into the world */
+>                     /* THESE HAVE TO BE MULTIPLIED BY THE DEPTH! OTHERWISE THIS TUGS THE VECTOR
+>                      * OUT OR IN, CHANGING WHAT PIXEL IT GOES THROUGH. */
+> 
+>                     Float x = data*(u - K[2]) / K[0], y = data*(v - K[3]) / K[1];
+>                     (buffer+0)->f = x;
+>                     (buffer+1)->f = y;
+>                     Float z = (buffer+2)->f = data;
+>                     /* update the distance */
+>                     (buffer+3)->f = sqrt(x*x+y*y+z*z); 
+>                 }
+>             }
+>         }
+>       images.push_back( gsMoped );
+>       images.push_back( depthmap );
+> 
+>       list<SP_Object> objects;
+>       int retval = moped.processImages( images, objects );
+> 
+>       if (retval < 0)
+>         ROS_FATAL("Could not detect any features. SIFT-GPU might not have access to the GPU: please verify your X Server configuration.");
+>  
+>       pr_msgs::ObjectPoseList outList;
+>       outList.header.seq = iMsg->header.seq;
+>       outList.header.frame_id = "objdet_cam";
+>       outList.header.stamp = iMsg->header.stamp;
+>       outList.originalTimeStamp = iMsg->header.stamp;
+> 
+>       foreach( object, objects) {
+>         
+>         pr_msgs::ObjectPose out; // Our output msg
+>         
+>         out.name=object->model->name;
+>         
+>         out.pose.position.x = object->pose.translation[0];
+>         out.pose.position.y = object->pose.translation[1];
+>         out.pose.position.z = object->pose.translation[2];
+>         
+>         object->pose.rotation.norm();
+>         
+>         // Not really necessary, but this way we always display the same half of the quaternion hypersphere
+>         float flip = object->pose.rotation[0] + object->pose.rotation[1] + object->pose.rotation[2] + object->pose.rotation[3];
+>         if( flip < 0 ) {
+>           object->pose.rotation[0] *= -1;
+>           object->pose.rotation[1] *= -1;
+>           object->pose.rotation[2] *= -1;
+>           object->pose.rotation[3] *= -1;
+>         }
+> 
+>         out.pose.orientation.x = object->pose.rotation[0];
+>         out.pose.orientation.y = object->pose.rotation[1];
+>         out.pose.orientation.z = object->pose.rotation[2];
+>         out.pose.orientation.w = object->pose.rotation[3];
+>         
+>         out.mean_quality = object->score;
+>         out.used_points = 10;
+>         
+>         outList.object_list.push_back(out);
+>       }
+>       moped_pub.publish(outList);
+> 
+>       // Display some info
+>       clog << " Found " << objects.size() << " objects" << endl;
+>       foreach( object, objects )
+>         clog << " Found " << object->model->name << " at " << object->pose << " with score " << object->score << endl;
+> 
+>     }else{
+>       clog << "MOPED is disabled; skipping image" << endl;
+>     }
+>  
+270c398
+< 		omp_set_num_threads(4);
+---
+> 		omp_set_num_threads(8);

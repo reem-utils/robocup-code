@@ -1,0 +1,14 @@
+<package>
+  <description brief="Soarbin">
+
+     Soarbin
+
+  </description>
+  <author>Albert</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/Soarbin</url>
+
+</package>
+
+

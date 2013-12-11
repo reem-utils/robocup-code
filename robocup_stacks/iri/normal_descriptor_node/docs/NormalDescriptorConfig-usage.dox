@@ -1,0 +1,10 @@
+\subsubsection usage Usage
+\verbatim
+<node name="NormalDescriptorAlgorithm" pkg="normal_descriptor_node" type="NormalDescriptorAlgorithm">
+  <param name="num_spatial_bins" type="int" value="1" />
+  <param name="num_orientation_bins" type="int" value="16" />
+  <param name="desc_patch_radius" type="int" value="17" />
+  <param name="sample_each" type="int" value="1" />
+</node>
+\endverbatim
+

@@ -1,0 +1,22 @@
+<package>
+  <description brief="tabletop_grasping_node_test">
+
+     tabletop_grasping_node_test
+
+  </description>
+  <author>Sammy Pfeiffer I</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/tabletop_grasping_node_test</url>
+  <depend package="rospy"/>
+  <depend package="reem_tabletop_manipulation_launch"/>
+  <depend package="actionlib" />
+  <depend package="actionlib_msgs" />
+  <depend package="smach_ros" />
+  <depend package="smach" />
+  <depend package="pal_smach_utils"/>
+
+
+</package>
+
+

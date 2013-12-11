@@ -1,0 +1,5 @@
+#request
+sensor_msgs/Image image_in
+---
+#response
+bool success

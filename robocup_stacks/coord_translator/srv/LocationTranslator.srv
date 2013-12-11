@@ -1,0 +1,8 @@
+# Name of the location
+string location
+
+---
+# coordinates
+bool exists # true if the name of the location exists in the map
+string submap
+geometry_msgs/Point32 coordinates

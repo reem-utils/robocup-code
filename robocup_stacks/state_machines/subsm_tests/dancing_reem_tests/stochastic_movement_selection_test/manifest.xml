@@ -1,0 +1,21 @@
+<package>
+  <description brief="stochastic_movement_selection_test">
+
+     stochastic_movement_selection_test
+
+  </description>
+  <author>RDaneelOlivaw</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/stochastic_movement_selection_test</url>
+  <depend package="actionlib"/>
+  <depend package="std_srvs"/>
+
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <depend package="dancing_reem"/>
+  <depend package="pal_smach_utils"/>    
+</package>
+
+

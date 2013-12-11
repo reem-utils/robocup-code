@@ -1,0 +1,19 @@
+<package>
+  <description brief="gesture_recognition_test">
+
+     gesture_recognition_test
+
+  </description>
+  <author>RDaneelOlivaw</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/gesture_recognition_test</url>
+  <depend package="rospy"/>
+  <depend package="pal_smach_utils"/>
+  <depend package="pal_vision_msgs"/>
+  <depend package="smach"/>
+  <depend package="text_to_speech" />
+
+</package>
+
+

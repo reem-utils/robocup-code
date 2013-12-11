@@ -1,0 +1,25 @@
+<package>
+  <description brief="find_object_say_category_and_grasp_test">
+
+     find_object_say_category_and_grasp_test
+
+  </description>
+  <author>Gerard Canal</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/find_object_say_category_and_grasp_test</url>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <depend package="pal_smach_utils"/>
+  <depend package="object_recognition_mock"/>
+  <depend package="object_manipulation_msgs"/>
+  <depend package="coord_translator"/>
+  <depend package="text_to_speech" />
+  <depend package="next_location_provider" />
+  <depend package="move_base"/>
+  <depend package="reem_tabletop_manipulation_launch" />
+  <depend package="reem_final_approach" />
+</package>
+
+

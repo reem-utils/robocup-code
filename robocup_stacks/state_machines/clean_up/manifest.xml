@@ -1,0 +1,48 @@
+<package>
+  <description brief="clean_up">
+
+     clean_up
+
+  </description>
+  <author>Sammy Pfeiffer and Gerard Canal</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url></url>
+  
+  <depend package="actionlib"/>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  
+  <depend package="geometry_msgs"/>
+  <depend package="move_base_msgs"/>
+  <depend package="arm_navigation_msgs" />
+  <depend package="actionlib_msgs" />
+  <!--<depend package="tabletop_object_detector" />-->
+  <depend package="object_manipulation_msgs" />
+  <depend package="tabletop_collision_map_processing" />
+  <depend package="control_msgs" />
+  <depend package="tf" />
+  <depend package="std_srvs" />
+  <depend package="next_location_provider"/>
+
+  <!-- Mocks -->
+  <depend package="text_to_speech"/>
+  <depend package="door_detector_pal" />
+  <depend package="move_base" />
+  <depend package="pal_interaction_msgs" />
+  <depend package="object_recognition_mock" />
+
+  <!-- <depend package="pr_msgs" /> -->
+  <depend package="reem_tabletop_manipulation_launch" />
+  <depend package="reem_final_approach"/>
+  <depend package="coord_translator" />
+  
+  <!-- Other packages -->
+  <depend package="pal_smach_utils"/>
+  <depend package="iri_moped_handler" />
+  <!-- <depend package="who_is_who" /> -->
+  
+</package>
+
+

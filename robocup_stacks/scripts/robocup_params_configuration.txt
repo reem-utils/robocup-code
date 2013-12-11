@@ -1,0 +1,36 @@
+Names:
+James
+John
+
+# Room name, coordinates 
+Rooms: #FIXME class will be room
+kitchen, 0.5, 5, 0.365
+living, 036, 206, 0.36
+
+POIS: # Name, class, coordinates, arm_pose (optional)
+drinks_location, 25, 15, 0.056
+registration table, 25, 15, 0.056
+exit, 25, 15, 0.056
+party_room, 25, 15, 0.056
+fridge, 0.86, 5, 0.065, 0.056, 0.051, 1561, 0.65, 15, 1658, 15
+
+Objects: # Object name, object class, object location name (it'll be a POI name)
+redbull, drink, fridge, 12345
+
+ObjectFindingBehaviour:
+living, table, 0.9, 5, 5, 55 # FIXME dictionary with key = name of room and value = list of lists of parameters (poi_name, prob, pose)
+living, chair, 0.5, 5, 5, 55
+kitchen, table, 0.8,4,4,44
+kitchen, shelf, 0.6,8,8,88
+
+# FIXME arm poses will be the same as the location pose but named like "arm_NAME"
+# in the mmap and fire, the script shpuld add the submap_0
+# FIXME check that the rooms used match the Room section, also with the pois
+
+FireLocations:
+fire_name, 8, 45, 0.54
+
+#RoomCorners:
+#living, '[[0.833, 9.418], [1.061, 12.476], [8.049, 9.1], [8.001, 11.957], [[7.007, 10.713, UR], [5.512, 11.194, DR]]]'
+
+

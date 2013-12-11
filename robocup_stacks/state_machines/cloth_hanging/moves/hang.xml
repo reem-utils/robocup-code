@@ -1,0 +1,38 @@
+<motion id = "come_here"  model = "body" type = "motion_action" >
+<motion_action>
+  <motion_aggregation id = "" >
+    <motion_basic id = "NO_ID"  type = "joint"  completion_required = "1" >
+      <dofs>1 1  1 1   1 1 1 1 1 1 1   1 1 1 1 1 1 1</dofs>
+      <end_effector id = "" >
+        <op_frame link = "__BLANK__" >
+           <matrixHom>
+             <point_3D x = "0"  y = "0"  z = "0" ></point_3D>
+             <matrixRot rodrigues_x = "0"  rodrigues_y = "0"  rodrigues_z = "0" ></matrixRot>
+           </matrixHom>        
+        </op_frame>
+      </end_effector>
+      <goal derived = "goal_interpol" >
+        <goal_interpol>
+
+          <point delta_time = "4.0" >
+            <value> 0 0   0 0   1.28392261272 0.2 -0.697265212565 0 0.291463327131 0 0    1.21813629192 0.0213628934561 -0.230282249134 0.526567231664 0.146232016813 0.2221133713428 0.115262675829 </value>
+          </point>
+
+          <point delta_time = "4.0" >
+            <value> -0.2 0   0 0    0 0.2 0 0 0 0 0    1.46816343975 0 0 0 0 -0.962915465297 -1.66571564319 </value>
+          </point>
+          
+          <point delta_time = "4.0" >
+            <value> -0.2 0   0 0    0 0.2 0 0 0 0 0    1.46816343975 0.3 0 0 0 -0.962915465297 -1.66571564319 </value>
+          </point>
+
+          <point delta_time = "3.0" >
+            <value> 0.1 0   0 0   0 0.2 0 0 0 0 0    1.46816343975 -0.175072375394 0 0 0 -0.962915465297 -1.66571564319 </value>
+          </point>
+        </goal_interpol>
+      </goal>
+      <controller kp = "4.0" ></controller>
+    </motion_basic>
+  </motion_aggregation>
+  </motion_action>
+</motion>

@@ -1,0 +1,11 @@
+#Goal Template for SOAR
+
+sp {REEM01*propose*completed-goal1
+    (state <s> ^name REEM01
+               ^goal <g>
+               ^Rlocation kitchen
+               ^io.output-link <out>)
+    (<g> ^name go-to)
+-->
+   (<out> ^result.success ok)}
+

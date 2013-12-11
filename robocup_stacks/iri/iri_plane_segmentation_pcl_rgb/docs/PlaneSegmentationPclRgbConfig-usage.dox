@@ -1,0 +1,18 @@
+\subsubsection usage Usage
+\verbatim
+<node name="PlaneSegmentationPclRgbAlgorithm" pkg="iri_plane_segmentation_pcl_rgb" type="PlaneSegmentationPclRgbAlgorithm">
+  <param name="pointcloud_downsample" type="bool" value="True" />
+  <param name="pointcloud_downsample_size" type="double" value="0.1" />
+  <param name="choose_plane_by_distance" type="bool" value="True" />
+  <param name="choose_nearest_plane" type="bool" value="True" />
+  <param name="plane_size_thresh" type="double" value="0.01" />
+  <param name="plane_min_height" type="double" value="-0.02" />
+  <param name="plane_max_height" type="double" value="0.02" />
+  <param name="plane_segm_iterations" type="int" value="1000" />
+  <param name="plane_segm_probability" type="double" value="0.99" />
+  <param name="plane_clustering" type="bool" value="False" />
+  <param name="plane_min_cluster_size" type="int" value="400" />
+  <param name="plane_min_cluster_distance" type="double" value="0.02" />
+</node>
+\endverbatim
+

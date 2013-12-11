@@ -1,0 +1,5 @@
+pr_msgs/WAMPrecomputedBlendedTrajectory traj
+---
+bool ok
+string reason
+uint32 id

@@ -1,0 +1,6 @@
+#request
+geometry_msgs/PoseStamped desired_pose
+sensor_msgs/JointState reference_joints
+---
+#response
+sensor_msgs/JointState desired_joints

@@ -1,0 +1,31 @@
+<launch>
+
+  <!-- load the configuration file -->
+  <rosparam file="$(find who_is_who)/config/who_is_who.yaml"
+      command="load" ns="who_is_who" />
+
+  <!-- load the mock configuration file -->
+  <rosparam file="$(find who_is_who)/config/simulation.yaml"
+      command="load" ns="mock_config" />
+
+  <!-- fake action server nodes -->
+  <!--<include file="$(find door_detector_pal)/launch/door_detector_pal.launch" />-->
+  <include file="$(find face_recognition_mock)/launch/face_recognition_mock.launch" />
+  <include file="$(find object_recognition_mock)/launch/object_recognition_mock.launch" />
+  <include file="$(find speech_recognition_mock)/launch/speech_recognition_mock.launch" />
+  <include file="$(find coord_translator)/launch/coord_translator.launch" />
+  <include file="$(find person_detector_mock)/launch/person_detector_mock.launch" />
+  <include file="$(find move_base_mock)/launch/move_base_mock.launch" />
+  <include file="$(find tts_mock)/launch/tts_mock.launch" />
+
+  <!-- Static Transformation -->
+  <node pkg="tf" type="static_transform_publisher" name="static_transform" args="1 0 0 0 0 0 kinect_link map 100" />
+  
+  <!-- Who is Who SMACH -->
+  <node pkg ="who_is_who"
+        type="who_is_who.py"
+        name="who_is_who"
+        output="screen">
+  </node>
+
+</launch>

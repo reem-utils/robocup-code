@@ -1,0 +1,7 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~remove_border_size" : \b [int] Number of pixel removed from the border. min: 1, default: 20, max: 100
+- \b "~remove_border_convex" : \b [bool] Remove convex border/every border. min: False, default: False, max: True
+

@@ -1,0 +1,43 @@
+FILE(REMOVE_RECURSE
+  "../src/iri_wam_common_msgs/msg"
+  "../src/iri_wam_common_msgs/srv"
+  "../msg_gen"
+  "../srv_gen"
+  "../msg_gen"
+  "../srv_gen"
+  "CMakeFiles/ROSBUILD_genmsg_py"
+  "../src/iri_wam_common_msgs/msg/__init__.py"
+  "../src/iri_wam_common_msgs/msg/_SimpleBhandPickUpAction.py"
+  "../src/iri_wam_common_msgs/msg/_SimpleBhandPickUpGoal.py"
+  "../src/iri_wam_common_msgs/msg/_SimpleBhandPickUpActionGoal.py"
+  "../src/iri_wam_common_msgs/msg/_SimpleBhandPickUpResult.py"
+  "../src/iri_wam_common_msgs/msg/_SimpleBhandPickUpActionResult.py"
+  "../src/iri_wam_common_msgs/msg/_SimpleBhandPickUpFeedback.py"
+  "../src/iri_wam_common_msgs/msg/_SimpleBhandPickUpActionFeedback.py"
+  "../src/iri_wam_common_msgs/msg/_LWPRTrajectoryReturningForceEstimationAction.py"
+  "../src/iri_wam_common_msgs/msg/_LWPRTrajectoryReturningForceEstimationGoal.py"
+  "../src/iri_wam_common_msgs/msg/_LWPRTrajectoryReturningForceEstimationActionGoal.py"
+  "../src/iri_wam_common_msgs/msg/_LWPRTrajectoryReturningForceEstimationResult.py"
+  "../src/iri_wam_common_msgs/msg/_LWPRTrajectoryReturningForceEstimationActionResult.py"
+  "../src/iri_wam_common_msgs/msg/_LWPRTrajectoryReturningForceEstimationFeedback.py"
+  "../src/iri_wam_common_msgs/msg/_LWPRTrajectoryReturningForceEstimationActionFeedback.py"
+  "../msg/SimpleBhandPickUpAction.msg"
+  "../msg/SimpleBhandPickUpGoal.msg"
+  "../msg/SimpleBhandPickUpActionGoal.msg"
+  "../msg/SimpleBhandPickUpResult.msg"
+  "../msg/SimpleBhandPickUpActionResult.msg"
+  "../msg/SimpleBhandPickUpFeedback.msg"
+  "../msg/SimpleBhandPickUpActionFeedback.msg"
+  "../msg/LWPRTrajectoryReturningForceEstimationAction.msg"
+  "../msg/LWPRTrajectoryReturningForceEstimationGoal.msg"
+  "../msg/LWPRTrajectoryReturningForceEstimationActionGoal.msg"
+  "../msg/LWPRTrajectoryReturningForceEstimationResult.msg"
+  "../msg/LWPRTrajectoryReturningForceEstimationActionResult.msg"
+  "../msg/LWPRTrajectoryReturningForceEstimationFeedback.msg"
+  "../msg/LWPRTrajectoryReturningForceEstimationActionFeedback.msg"
+)
+
+# Per-language clean rules from dependency scanning.
+FOREACH(lang)
+  INCLUDE(CMakeFiles/ROSBUILD_genmsg_py.dir/cmake_clean_${lang}.cmake OPTIONAL)
+ENDFOREACH(lang)

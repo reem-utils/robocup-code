@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+  
+  <!-- Restaurant SMACH -->
+  <node pkg ="init_grasp_test"
+        type="init_grasp_test.py"
+        name="sm_init_grasp_test"
+        output="screen">
+  </node>
+
+</launch>

@@ -1,0 +1,25 @@
+<launch>
+
+  <!--
+  <include file="$(find object_recognition_mock)/launch/object_recognition_mock.launch" />
+  <include file="$(find person_detector_mock)/launch/person_detector_mock.launch" />
+  <include file="$(find close_hand_mock)/launch/close_hand_mock.launch" />
+  <include file="$(find arm_navigation_mock)/launch/arm_navigation_mock.launch" />
+  
+  
+  <include file="$(find tts_mock)/launch/tts_mock.launch" />
+  <include file="$(find coord_translator)/launch/coord_translator.launch" />
+  <include file="$(find iri_motion_detector_mock)/launch/iri_motion_detector_mock.launch" />
+  <include file="$(find speech_recognition_mock)/launch/speech_recognition_mock.launch" />
+  <include file="$(find move_base_mock)/launch/move_base_mock.launch" />
+  <include file="$(find face_recognition_mock)/launch/face_recognition_mock.launch" />
+  -->
+  
+  <!-- Cocktail SMACH -->
+  <node pkg ="cocktail_party"
+        type="check_dependences.py"
+        name="check_dependences"
+        output="screen">
+  </node>
+
+</launch>

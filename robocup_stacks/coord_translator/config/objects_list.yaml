@@ -1,0 +1,31 @@
+#File generated with the param_configurator script!
+# object name, object category, name of the location of the object, and the name of the location_arm_poses, databaseID
+objects_data:
+    object_1: [orange_juice, drinks, bar, bar, 18999]
+    object_2: [cleaner, cleaning stuff, hallway table, hallway table, 18989]
+    object_3: [marmalade, food, stove, stove, 19003]
+    object_4: [energy_drink, drinks, bar, bar, 18996]
+    object_5: [seven_up, drinks, bar, bar, 18982]
+    object_6: [chocolate_milk, drinks, bar, bar, 18999]
+    object_7: [coke, drinks, bar, bar, 18982]
+    object_8: [deodorant, cleaning stuff, hallway table, hallway table, 18987]
+    object_9: [beer_can, drinks, bar, bar, 18982]
+    object_10: [cookies, snacks, sidetable, sidetable, 19006]
+    object_11: [sponge, cleaning stuff, hallway table, hallway table, 18990]
+    object_12: [garlic_sauce, food, stove, stove, 19005]
+    object_13: [tomato_sauce, food, stove, stove, 19000]
+    object_14: [tooth_paste, cleaning stuff, hallway table, hallway table, 18988]
+    object_15: [fanta, drinks, bar, bar, 18982]
+    object_16: [crackers, snacks, sidetable, sidetable, 19008]
+    object_17: [drops, snacks, sidetable, sidetable, 19007]
+    object_18: [milk, drinks, bar, bar, 18998]
+    object_19: [peanut_butter, food, stove, stove, 19001]
+    object_20: [apple_juice, drinks, bar, bar, 18999]
+    object_21: [juice, drinks, bar, bar, 18983]
+
+#Syntax: object location name: list of (x,y,z),(x,y,z,w) move_arm object pose in base_link coord
+location_arm_poses:
+    stove: [0.20, -0.35, 1.13, 0.0, 0.0, 0.0, 1.0]
+    sidetable: [0.20, -0.35, 0.80, 0.0, 0.0, 0.0, 1.0]
+    hallway table: [0.20, -0.35, 0.80, 0.0, 0.0, 0.0, 1.0]
+    bar: [0.20, -0.35, 0.95, 0.0, 0.0, 0.0, 1.0]

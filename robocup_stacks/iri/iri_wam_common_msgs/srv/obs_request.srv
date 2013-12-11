@@ -1,0 +1,4 @@
+---
+int32 num_objects
+int32 num_objectsA
+int32 num_objectsB

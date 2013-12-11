@@ -1,0 +1,8 @@
+\subsubsection usage Usage
+\verbatim
+<node name="RemoveBorderAlgorithm" pkg="iri_opencv_filters" type="RemoveBorderAlgorithm">
+  <param name="remove_border_size" type="int" value="20" />
+  <param name="remove_border_convex" type="bool" value="False" />
+</node>
+\endverbatim
+

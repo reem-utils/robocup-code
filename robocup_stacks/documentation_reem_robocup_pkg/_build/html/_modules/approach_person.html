@@ -1,0 +1,292 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>approach_person &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for approach_person</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">roslib</span><span class="p">;</span> <span class="n">roslib</span><span class="o">.</span><span class="n">load_manifest</span><span class="p">(</span><span class="s">&#39;pal_smach_utils&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">rospy</span>
+<span class="kn">import</span> <span class="nn">actionlib</span>
+<span class="kn">import</span> <span class="nn">smach</span>
+<span class="kn">from</span> <span class="nn">smach</span> <span class="kn">import</span> <span class="n">StateMachine</span><span class="p">,</span> <span class="n">State</span><span class="p">,</span> <span class="n">Concurrence</span><span class="p">,</span> <span class="n">CBState</span>
+<span class="kn">from</span> <span class="nn">smach_ros</span> <span class="kn">import</span> <span class="n">MonitorState</span><span class="p">,</span> <span class="n">SimpleActionState</span><span class="p">,</span> <span class="n">IntrospectionServer</span>
+<span class="kn">from</span> <span class="nn">pal_vision_msgs</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pal_vision_msgs.msg</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.smach_utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">move_base_msgs.msg</span> <span class="kn">import</span> <span class="n">MoveBaseAction</span><span class="p">,</span> <span class="n">MoveBaseGoal</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">geometry_msgs.msg</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">nav_msgs.msg</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">HANDSHAKING_DISTANCE</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">get_param</span><span class="p">(</span><span class="s">&#39;/handshaking/handshakingDistance&#39;</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">)</span>
+
+<span class="c">## State machine callbacks</span>
+<div class="viewcode-block" id="approach_person_cb"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#approach_person.approach_person_cb">[docs]</a><span class="k">def</span> <span class="nf">approach_person_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Callback for the state MOVE_TO_POSITION.</span>
+<span class="sd">    This state creates a PoseStamped message based on the Pose message passed</span>
+<span class="sd">    in userdata, and published.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">goal</span> <span class="o">=</span> <span class="n">PoseStamped</span><span class="p">()</span>
+    <span class="n">goal</span><span class="o">.</span><span class="n">pose</span> <span class="o">=</span> <span class="n">userdata</span><span class="o">.</span><span class="n">goal</span>
+    <span class="n">goal</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">&#39;/map&#39;</span>
+    <span class="n">goal</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">goal</span>
+</div>
+<span class="nd">@smach.cb_interface</span><span class="p">(</span><span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;pose&#39;</span><span class="p">],</span> <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;pose&#39;</span><span class="p">],</span>
+                    <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;done&#39;</span><span class="p">,</span><span class="s">&#39;failed&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">get_position_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Callback for the state GET_POSITION.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">rospy</span><span class="o">.</span><span class="n">Duration</span><span class="p">(</span><span class="mf">0.1</span><span class="p">))</span>
+    <span class="k">print</span> <span class="s">&#39;x=?&#39;</span>
+    <span class="n">userdata</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">readline</span><span class="p">())</span>
+    <span class="k">print</span> <span class="s">&#39;y=?&#39;</span>
+    <span class="n">userdata</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">readline</span><span class="p">())</span>
+    <span class="n">userdata</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">print</span> <span class="n">userdata</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span>
+    <span class="n">userdata</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">userdata</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">userdata</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">userdata</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="k">return</span> <span class="s">&#39;done&#39;</span>
+
+<div class="viewcode-block" id="start_navigating_cb"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#approach_person.start_navigating_cb">[docs]</a><span class="k">def</span> <span class="nf">start_navigating_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">,</span> <span class="n">received_msg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Callback for the state START_NAVIGATING</span>
+<span class="sd">    Waits until a message published on RosPathPlanner/Path contains a non-empty</span>
+<span class="sd">    poses field.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path_poses</span> <span class="o">=</span> <span class="n">received_msg</span><span class="o">.</span><span class="n">poses</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">path_poses</span><span class="p">)</span> <span class="ow">is</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">outcome</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">outcome</span> <span class="o">=</span> <span class="s">&#39;done&#39;</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">rospy</span><span class="o">.</span><span class="n">Duration</span><span class="p">(</span><span class="mf">0.1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">outcome</span>
+</div>
+<div class="viewcode-block" id="robot_is_moving_cb"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#approach_person.robot_is_moving_cb">[docs]</a><span class="k">def</span> <span class="nf">robot_is_moving_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">,</span> <span class="n">received_msg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Callback for the state ROBOT_IS_MOVING</span>
+<span class="sd">    Wait until the robot has stopped navigating</span>
+<span class="sd">    i.e. poses fields of RosPathPlanner/path messages are empty</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path_poses</span> <span class="o">=</span> <span class="n">received_msg</span><span class="o">.</span><span class="n">poses</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">path_poses</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">outcome</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">outcome</span> <span class="o">=</span> <span class="s">&#39;done&#39;</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">rospy</span><span class="o">.</span><span class="n">Duration</span><span class="p">(</span><span class="mf">0.3</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">outcome</span>
+</div>
+<div class="viewcode-block" id="goal_reached_cb"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#approach_person.goal_reached_cb">[docs]</a><span class="k">def</span> <span class="nf">goal_reached_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">,</span> <span class="n">received_msg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Callback for the state CHECK_GOAL_REACHED</span>
+<span class="sd">    Check if the position reached by the robot is close enough to the goal</span>
+<span class="sd">    to consider it has been reached.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">position</span> <span class="o">=</span> <span class="n">received_msg</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span>
+    <span class="n">goal</span> <span class="o">=</span> <span class="n">userdata</span><span class="o">.</span><span class="n">goal</span><span class="o">.</span><span class="n">position</span>
+    <span class="n">goal_reached</span> <span class="o">=</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">position</span><span class="o">.</span><span class="n">x</span><span class="o">-</span><span class="n">goal</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.3</span> <span class="ow">and</span>
+                   <span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">position</span><span class="o">.</span><span class="n">y</span><span class="o">-</span><span class="n">goal</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.3</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">goal_reached</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&#39;done&#39;</span>
+    <span class="k">return</span> <span class="s">&#39;failed&#39;</span>
+</div>
+<span class="k">class</span> <span class="nc">DummyNavigateToPerson</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;done&#39;</span><span class="p">,</span><span class="s">&#39;failed&#39;</span><span class="p">],</span> <span class="n">input_keys</span><span class="o">=</span><span class="p">[],</span>
+                <span class="n">output_keys</span><span class="o">=</span><span class="p">[],</span> <span class="n">io_keys</span><span class="o">=</span><span class="p">[]):</span>
+
+        <span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outcomes</span><span class="o">=</span><span class="n">outcomes</span><span class="p">,</span> <span class="n">input_keys</span><span class="o">=</span><span class="n">input_keys</span><span class="p">,</span>
+                             <span class="n">output_keys</span><span class="o">=</span><span class="n">output_keys</span><span class="p">,</span> <span class="n">io_keys</span><span class="o">=</span><span class="n">io_keys</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userdata</span><span class="p">):</span>
+      <span class="k">return</span> <span class="s">&#39;done&#39;</span>
+
+<div class="viewcode-block" id="create_approach_person_state"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#approach_person.create_approach_person_state">[docs]</a><span class="k">def</span> <span class="nf">create_approach_person_state</span><span class="p">(</span><span class="n">dummy_implementation</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns an APPROACH_STATE container. Calculates the goal position given the</span>
+<span class="sd">    position of the target person, sends the goal to navigation services and</span>
+<span class="sd">    waits until the robot has reached the goal.</span>
+<span class="sd">    dummy_implementation : if True, the states that require</span>
+<span class="sd">    navigation services to run will not be added to the state machine.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">approach_person</span> <span class="o">=</span> <span class="n">StateMachine</span><span class="p">(</span><span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;done&#39;</span><span class="p">,</span><span class="s">&#39;failed&#39;</span><span class="p">,</span><span class="s">&#39;preempted&#39;</span><span class="p">],</span>
+                                       <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;pose&#39;</span><span class="p">])</span>
+    <span class="n">approach_person</span><span class="o">.</span><span class="n">userdata</span><span class="o">.</span><span class="n">goal</span> <span class="o">=</span> <span class="n">Pose</span><span class="p">()</span>
+    <span class="n">approach_person</span><span class="o">.</span><span class="n">userdata</span><span class="o">.</span><span class="n">robot_position</span> <span class="o">=</span> <span class="n">Pose</span><span class="p">()</span>
+    
+    <span class="c">## APPROACH_PERSON</span>
+    <span class="k">with</span> <span class="n">approach_person</span><span class="p">:</span>
+    
+      <span class="c">## CALCULATE_POSITION: compute map coordinates of the detected person</span>
+      <span class="n">calculate_goal_state</span> <span class="o">=</span> <span class="n">FindPositionState</span><span class="p">(</span><span class="n">distance</span> <span class="o">=</span> <span class="n">HANDSHAKING_DISTANCE</span><span class="p">,</span> <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;pose&#39;</span><span class="p">],</span>
+                                               <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;goal&#39;</span><span class="p">],</span> <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;done&#39;</span><span class="p">,</span><span class="s">&#39;failed&#39;</span><span class="p">,</span><span class="s">&#39;skip&#39;</span><span class="p">,</span><span class="s">&#39;preempted&#39;</span><span class="p">])</span>
+
+      <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;CALCULATE_POSITION&#39;</span><span class="p">,</span> <span class="n">calculate_goal_state</span><span class="p">,</span>
+                             <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;done&#39;</span><span class="p">:</span><span class="s">&#39;NAVIGATE_TO_PERSON&#39;</span><span class="p">,</span>
+                                          <span class="s">&#39;failed&#39;</span><span class="p">:</span><span class="s">&#39;CALCULATE_POSITION&#39;</span><span class="p">,</span>
+                                          <span class="s">&#39;skip&#39;</span><span class="p">:</span><span class="s">&#39;done&#39;</span><span class="p">,</span>
+                                          <span class="s">&#39;preempted&#39;</span><span class="p">:</span><span class="s">&#39;preempted&#39;</span><span class="p">})</span>
+
+      <span class="k">if</span> <span class="ow">not</span> <span class="n">dummy_implementation</span><span class="p">:</span>    
+
+        <span class="k">def</span> <span class="nf">create_move_base_goal</span><span class="p">(</span><span class="n">userdata</span><span class="p">,</span> <span class="n">goal</span><span class="p">):</span>
+          <span class="n">nav_goal</span> <span class="o">=</span> <span class="n">MoveBaseGoal</span><span class="p">()</span>
+          <span class="n">nav_goal</span><span class="o">.</span><span class="n">target_pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">userdata</span><span class="o">.</span><span class="n">goal</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span><span class="p">;</span>
+          <span class="n">nav_goal</span><span class="o">.</span><span class="n">target_pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">userdata</span><span class="o">.</span><span class="n">goal</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span><span class="p">;</span>      
+          <span class="n">nav_goal</span><span class="o">.</span><span class="n">target_pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">userdata</span><span class="o">.</span><span class="n">goal</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">x</span><span class="p">;</span>
+          <span class="n">nav_goal</span><span class="o">.</span><span class="n">target_pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">userdata</span><span class="o">.</span><span class="n">goal</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">y</span><span class="p">;</span>
+          <span class="n">nav_goal</span><span class="o">.</span><span class="n">target_pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">userdata</span><span class="o">.</span><span class="n">goal</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">z</span><span class="p">;</span>
+          <span class="n">nav_goal</span><span class="o">.</span><span class="n">target_pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">userdata</span><span class="o">.</span><span class="n">goal</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">w</span><span class="p">;</span>
+          <span class="n">nav_goal</span><span class="o">.</span><span class="n">target_pose</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">&#39;/map&#39;</span><span class="p">;</span>
+          <span class="k">return</span> <span class="n">nav_goal</span>
+
+        <span class="c">#NAVIGATE_TO_PERSON: use navigation action to move the robot in front of the person</span>
+        <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;NAVIGATE_TO_PERSON&#39;</span><span class="p">,</span> 
+                               <span class="n">SimpleActionState</span><span class="p">(</span><span class="s">&#39;move_base&#39;</span><span class="p">,</span> 
+                                                 <span class="n">MoveBaseAction</span><span class="p">,</span> 
+                                                 <span class="n">goal_cb</span><span class="o">=</span><span class="n">create_move_base_goal</span><span class="p">,</span>
+                                                 <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;goal&#39;</span><span class="p">]),</span>            <span class="c">#needed in order that create_move_base_goal can use userdata.goal</span>
+                               <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;succeeded&#39;</span><span class="p">:</span><span class="s">&#39;done&#39;</span><span class="p">,</span>    
+                                            <span class="s">&#39;aborted&#39;</span><span class="p">:</span><span class="s">&#39;failed&#39;</span><span class="p">})</span>      
+      <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;NAVIGATE_TO_PERSON&#39;</span><span class="p">,</span> <span class="n">DummyNavigateToPerson</span><span class="p">(),</span>
+                               <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;done&#39;</span><span class="p">:</span><span class="s">&#39;done&#39;</span><span class="p">,</span><span class="s">&#39;failed&#39;</span><span class="p">:</span><span class="s">&#39;failed&#39;</span><span class="p">})</span> 
+
+    <span class="k">return</span> <span class="n">approach_person</span>
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">init_node</span><span class="p">(</span><span class="s">&quot;handshaking&quot;</span><span class="p">)</span>
+    <span class="n">sm</span> <span class="o">=</span> <span class="n">StateMachine</span><span class="p">(</span><span class="n">outcomes</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;succeeded&#39;</span><span class="p">,</span><span class="s">&#39;aborted&#39;</span><span class="p">,</span><span class="s">&#39;preempted&#39;</span><span class="p">])</span>
+    <span class="c">## USERDATA of the state machine</span>
+    <span class="c"># objectId of the person selected :</span>
+    <span class="n">sm</span><span class="o">.</span><span class="n">userdata</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="c"># position of the person selected :</span>
+    <span class="n">sm</span><span class="o">.</span><span class="n">userdata</span><span class="o">.</span><span class="n">pose</span> <span class="o">=</span> <span class="n">Pose</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">sm</span><span class="p">:</span>
+
+        <span class="c">## GET_POSITION</span>
+        <span class="n">get_position_state</span> <span class="o">=</span> <span class="n">CBState</span><span class="p">(</span><span class="n">get_position_cb</span><span class="p">)</span>
+        <span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;GET_POSITION&#39;</span><span class="p">,</span> <span class="n">get_position_state</span><span class="p">,</span>
+                <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;done&#39;</span><span class="p">:</span><span class="s">&#39;APPROACH_PERSON&#39;</span><span class="p">,</span>
+                             <span class="s">&#39;failed&#39;</span><span class="p">:</span><span class="s">&#39;GET_POSITION&#39;</span><span class="p">})</span>
+
+        <span class="c">## APPROACH_PERSON container</span>
+        <span class="n">approach_person</span> <span class="o">=</span> <span class="n">create_approach_person_state</span><span class="p">()</span>
+
+        <span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;APPROACH_PERSON&#39;</span><span class="p">,</span> <span class="n">approach_person</span><span class="p">,</span>
+                         <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;done&#39;</span><span class="p">:</span><span class="s">&#39;GET_POSITION&#39;</span><span class="p">,</span>
+                                      <span class="s">&#39;failed&#39;</span><span class="p">:</span><span class="s">&#39;GET_POSITION&#39;</span><span class="p">})</span>
+
+     <span class="c"># Run state machine introspection server for smach viewer</span>
+    <span class="n">intro_server</span> <span class="o">=</span> <span class="n">IntrospectionServer</span><span class="p">(</span><span class="s">&#39;navigation_sm&#39;</span><span class="p">,</span><span class="n">sm</span><span class="p">,</span><span class="s">&#39;/NAV_STATE_MACHINE&#39;</span><span class="p">)</span>
+
+    <span class="n">intro_server</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">rospy</span><span class="o">.</span><span class="n">Duration</span><span class="p">(</span><span class="mf">3.0</span><span class="p">))</span>
+    <span class="n">outcome</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+    <span class="n">intro_server</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">signal_shutdown</span><span class="p">(</span><span class="s">&#39;All done.&#39;</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_documentation/pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

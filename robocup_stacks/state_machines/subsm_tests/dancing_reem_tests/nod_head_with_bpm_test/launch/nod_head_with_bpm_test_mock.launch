@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <!-- Dancing_reem_sm_test SMACH -->
+  <node pkg="nod_head_with_bpm_test"
+        type="nod_head_with_bpm_test.py"
+        name="nod_head_with_bpm_test"
+        output="screen">
+  </node>
+
+</launch>

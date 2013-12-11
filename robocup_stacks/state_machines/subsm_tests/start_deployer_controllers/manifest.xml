@@ -1,0 +1,22 @@
+<package>
+  <description brief="start_deployer_controllers">
+
+     start_deployer_controllers
+
+  </description>
+  <author>Ricardo Tellez</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/release_test</url>
+  <depend package="actionlib"/>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  
+  <depend package="geometry_msgs"/>
+  <depend package="std_srvs" />
+  <depend package="pal_smach_utils"/>
+
+</package>
+
+

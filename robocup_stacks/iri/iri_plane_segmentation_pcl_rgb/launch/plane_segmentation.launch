@@ -1,0 +1,25 @@
+<launch>
+  <!-- declare arg to be passed in -->
+  <arg name="input_pointcloud" /> 
+
+  <!--<group ns="iri_plane_segmentation">-->
+    
+    <node pkg="iri_plane_segmentation_pcl_rgb" name="plane_segmentation" type="iri_plane_segmentation_pcl_rgb">
+      <remap from="~/pointcloud_in" to="$(arg input_pointcloud)"/>
+      
+      <param name="~/pointcloud_downsample" value="true" />
+      <param name="~/pointcloud_downsample_size" value="0.2" />
+
+      <param name="~/plane_distance_thresh" value="0.01" />
+      <param name="~/plane_min_height" value="0.07" />
+      <param name="~/plane_max_height" value="0.3" />
+      <param name="~/plane_segm_iterations" value="1000" />
+      
+      <param name="~/plane_clustering" value="false" />
+      <param name="~/plane_min_cluster_size" value="300" />
+      <param name="~/plane_min_cluster_distance" value="0.02" />
+    </node>
+
+  <!--</group>-->
+
+</launch>

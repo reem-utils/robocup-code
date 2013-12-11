@@ -1,0 +1,20 @@
+<package>
+  <description brief="people_tracker_test">
+
+     people_tracker_test
+
+  </description>
+  <author>david</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/people_tracker_test</url>
+  <depend package="actionlib"/>
+  <depend package="rospy"/>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+
+  <depend package="pal_smach_utils"/>
+
+</package>
+
+

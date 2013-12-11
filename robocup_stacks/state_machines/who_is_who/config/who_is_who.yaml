@@ -1,0 +1,8 @@
+door_distance: 2.5
+distance_to_object: 0.35
+recognize_caller_timeout: 120
+take_single_order_timeout: 60
+caller_position: [0.2, 0.2, 0]
+
+#room_guests: business
+room_drinks: kitchen

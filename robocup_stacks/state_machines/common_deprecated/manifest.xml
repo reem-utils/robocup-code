@@ -1,0 +1,14 @@
+<package>
+  <description brief="common">
+
+     Common State Machines shared between different packages separated by uses.
+
+  </description>
+  <author>Sammy Pfeiffer in the REEM@IRI Team</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/common</url>
+  <depend package="rospy"/>
+</package>
+
+

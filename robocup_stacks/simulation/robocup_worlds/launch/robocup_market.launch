@@ -1,0 +1,20 @@
+<launch>
+
+  <!-- start gazebo with an simple world -->
+  <param name="/use_sim_time" value="true" />
+
+  <node name="gazebo" pkg="gazebo" type="gazebo" args="$(find robocup_worlds)/worlds/robocup_market.world" respawn="false" output="screen"/>
+
+  		
+  <param name="market_wall" textfile="$(find robocup_worlds)/objects/market_wall.urdf" />
+  <node name="spawn_market_wall" pkg="gazebo" type="spawn_model" args="-urdf -param market_wall -model market_wall -x 0.0 -y -0.0 -z 0.0 " respawn="false" output="screen" />
+
+  <param name="market_stock" textfile="$(find robocup_worlds)/objects/market_stock.urdf" />
+  <node name="spawn_market_stock" pkg="gazebo" type="spawn_model" args="-urdf -param market_stock -model market_stock -x 0.0 -y -0.0 -z 0.0 " respawn="false" output="screen" />
+
+
+
+
+</launch>
+
+

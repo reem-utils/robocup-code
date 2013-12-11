@@ -1,0 +1,33 @@
+# October 2012 - J.L Rivero, G. Alenya, D. Martinez
+#
+# This action was built after analyze previously the "standard" ROS message
+# PickUp. The ROS message involve a lot of action we were not consider at
+# the moment of writing and adapt that huge input for our needs was over-
+# engineer a solution.
+#
+# A translator PickUp -> SimpleBhandPickUp could be done, if needed
+
+# SimpleBhandPickUp is composed by the following phases:
+#
+# 1. Move the ARM from current to pre-grasp (planned if requested)
+# 2. Put the fingers into the pre-grasp position
+# 3. Move the ARM from pre-grasp to grasp (planned if requested)
+# 4. Put the fingers into the grasp position
+# 5. Perform the lift movement
+
+# goal
+# A vector of different GCL bhand commands
+string[] fingers_position_for_grasp
+string[] fingers_position_for_pre_grasp
+# Grasp pose is defined in the Stamped 
+geometry_msgs/PoseStamped grasp_pose
+# pre movement relative to the grasp_pose
+geometry_msgs/Pose pre_grasp_modifier
+# Direction and distance to lift from the grasp_pose
+object_manipulation_msgs/GripperTranslation lift
+---
+# result
+object_manipulation_msgs/GraspResult grasp_result
+
+---
+# feedback

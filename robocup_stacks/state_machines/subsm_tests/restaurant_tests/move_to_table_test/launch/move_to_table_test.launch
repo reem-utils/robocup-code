@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+  
+  <!-- Restaurant SMACH -->
+  <node pkg ="move_to_table_test"
+        type="move_to_table_test.py"
+        name="sm_move_to_table_test"
+        output="screen">
+  </node>
+
+</launch>

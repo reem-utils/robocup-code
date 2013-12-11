@@ -1,0 +1,8 @@
+sensor_msgs/Image prev_image
+sensor_msgs/Image current_image
+estirabot_msgs/DirtyArea[] ignored_dirty_areas
+---
+# previous_ellipses - current_ellipses
+int32 changed_ellipses
+string differences_string
+string pre_state_string

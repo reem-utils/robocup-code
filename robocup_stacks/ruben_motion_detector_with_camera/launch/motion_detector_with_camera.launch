@@ -1,0 +1,11 @@
+<launch>
+
+  <!-- Cocktail Party SMACH -->
+  <node pkg ="ruben_motion_detector_with_camera"
+        type="motion_detector_with_camera.py"
+        name="motion_detector_with_camera"
+        output="screen">
+  </node>
+
+</launch>
+

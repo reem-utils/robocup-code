@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+	
+
+	<node pkg="iri_motion_detector"
+          name="iri_motion_detector"
+          type="iri_motion_detector"
+          output="screen">
+		<remap from="/image_in" to="/head_mount_xtion/rgb/image_color"/>
+		<remap from="/pointcloud_in" to="/head_mount_xtion/depth_registered/points"/>
+    </node>
+	
+</launch>

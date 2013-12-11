@@ -1,0 +1,6 @@
+\subsubsection usage Usage
+\verbatim
+<node name="BowObjectDetectorAlgorithm" pkg="iri_bow_object_detector" type="BowObjectDetectorAlgorithm">
+</node>
+\endverbatim
+

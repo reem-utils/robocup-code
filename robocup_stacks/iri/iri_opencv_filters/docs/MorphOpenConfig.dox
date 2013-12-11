@@ -1,0 +1,9 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~morph_operation" : \b [str] Morphological operation min: , default: open, max: 
+- \b "~structuring_element_shape" : \b [str] Structuring element shape min: , default: ellipse, max: 
+- \b "~morph_element_size" : \b [int] Morphological element size min: 1, default: 3, max: 25
+- \b "~morph_iterations" : \b [int] Filtering iterations min: 1, default: 1, max: 255
+

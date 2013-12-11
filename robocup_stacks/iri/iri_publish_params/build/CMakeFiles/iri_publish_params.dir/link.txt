@@ -1,0 +1,1 @@
+/home/sampfeiffer/branches_svn/scm/bin/utils/developer_utils/g++   -g     -pthread CMakeFiles/iri_publish_params.dir/src/iri_publish_params.o  -o ../bin/iri_publish_params -rdynamic -L/opt/ros/fuerte/lib -lroscpp -lrostime -lrosconsole -lroscpp_serialization -lxmlrpcpp -Wl,-rpath,/opt/ros/fuerte/lib 

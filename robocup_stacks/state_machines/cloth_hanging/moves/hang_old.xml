@@ -1,0 +1,52 @@
+<motion id = "come_here"  model = "body" type = "motion_action" >
+<motion_action>
+  <motion_aggregation id = "" >
+    <motion_basic id = "NO_ID"  type = "joint"  completion_required = "1" >
+      <dofs>1 1  1 1   1 1 1 1 1 1 1   1 1 1 1 1 1 1</dofs>
+      <end_effector id = "" >
+        <op_frame link = "__BLANK__" >
+           <matrixHom>
+             <point_3D x = "0"  y = "0"  z = "0" ></point_3D>
+             <matrixRot rodrigues_x = "0"  rodrigues_y = "0"  rodrigues_z = "0" ></matrixRot>
+           </matrixHom>        
+        </op_frame>
+      </end_effector>
+      <goal derived = "goal_interpol" >
+        <goal_interpol>
+
+	  <!-- To finish cool cloth pose -->
+          <point delta_time = "3.0" >
+            <value> 0 0   0 0   1.28392261272 0.1 -0.697265212565 0 0.291463327131 0 0    1.21813629192 0.0213628934561 -0.230282249134 0.526567231664 0.146232016813 0.0221133713428 0.115262675829 </value>
+          </point>
+
+	  <!-- init simple -->
+          <point delta_time = "3.0" >
+            <value> 0.284352515388 0   0 0    0 0.1 0 0 0 0 0    2.16369052847 0 0 0 0 0.0197180106223 -0.411605116597 </value>
+          </point>
+
+	  <!-- init 2 -->
+          <point delta_time = "2.0" >
+            <value> 0.484352515388 0   0 0    0 0.1 0 0 0 0 0    2.16369052847 0 0 0 0 0.79244841558 -0.411605116597 </value>
+          </point>
+	  
+	  <!-- init 3 -->
+          <point delta_time = "2.0" >
+            <value> 0.484352515388 0   0 0    0 0.1 0 0 0 0 0    2.16369052847 -0.0883070531448 -1.9053540402 0.0437291538723 1.71044958669 0.79244841558 -0.411605116597</value>
+          </point>
+
+	  <!-- movement -->
+          <point delta_time = "2.0" >
+            <value> 0.484352515388 0   0 0    0 0.1 0 0 0 0 0   2.16369052847 -0.0883070531448 -1.9053540402 0.762233129703 1.71044958669 0.79244841558 -0.411605116597 </value>
+          </point>
+
+	  <!-- movement2 
+          <point delta_time = "2.0" >
+            <value> 0.484352515388 0   0 0    0 0 0 0 0 0 0   1.88790066293 -0.0883070531448 -1.9053540402 0.762233129703 1.71044958669 0.79244841558 -0.411605116597 </value>
+          </point> -->
+        </goal_interpol>
+      </goal>
+      <controller kp = "4.0" ></controller>
+    </motion_basic>
+  </motion_aggregation>
+  </motion_action>
+</motion>

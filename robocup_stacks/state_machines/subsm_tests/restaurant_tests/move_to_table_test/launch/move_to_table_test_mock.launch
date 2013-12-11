@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- required system nodes -->
+ <!-- <include file="$(find speech_recognition_mock)/launch/speech_recognition_mock.launch" />-->
+  <include file="$(find tts_mock)/launch/tts_mock.launch" />
+
+<!--    Launch people_tracking_rai node -->
+  <node   pkg="table_approach"
+          type="table_approach"
+          name="table_approach"
+          args=""
+          output="screen">
+  </node>
+
+  
+  <!-- Restaurant SMACH -->
+  <node pkg ="move_to_table_test"
+        type="move_to_table_test.py"
+        name="sm_move_to_table_test"
+        output="screen">
+  </node>
+
+</launch>

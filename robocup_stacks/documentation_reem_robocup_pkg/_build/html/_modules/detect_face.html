@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>detect_face &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for detect_face</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="kn">import</span> <span class="nn">roslib</span>
+<span class="n">roslib</span><span class="o">.</span><span class="n">load_manifest</span><span class="p">(</span><span class="s">&#39;pal_smach_utils&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">rospy</span>
+<span class="kn">import</span> <span class="nn">smach</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">global_common</span> <span class="kn">import</span> <span class="n">succeeded</span><span class="p">,</span> <span class="n">preempted</span><span class="p">,</span> <span class="n">aborted</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.speech.sound_action</span> <span class="kn">import</span> <span class="n">SpeakActionState</span>
+<span class="kn">from</span> <span class="nn">topic_reader</span> <span class="kn">import</span> <span class="n">TopicReaderState</span>
+<span class="kn">from</span> <span class="nn">pal_vision_msgs.msg</span> <span class="kn">import</span> <span class="n">FaceDetections</span>
+<span class="kn">from</span> <span class="nn">math_utils</span> <span class="kn">import</span> <span class="n">vector_magnitude</span>
+
+
+<span class="n">FACE_READING_TIMEOUT</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">DEFAULT_HOG</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">SAW_LOADS_OF_FACES_TXT</span> <span class="o">=</span> <span class="s">&quot;There are some people around here.&quot;</span>
+<span class="n">NO_FACES_SEEN_TXT</span> <span class="o">=</span> <span class="s">&quot;No one is to be seen.&quot;</span>
+<span class="n">FOUND_FACE_TXT</span> <span class="o">=</span> <span class="s">&quot;I found the face I was looking for&quot;</span>
+<span class="n">NOT_FOUND_FACE_TXT</span> <span class="o">=</span> <span class="s">&quot;I couldn&#39;t find the face.&quot;</span>
+
+<span class="n">BIG_SMALL_DIVIDING_HIGHT</span> <span class="o">=</span> <span class="mf">1.7</span>
+<span class="n">FAR_NEAR_DIVIDING_DISTANCE</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="n">CENTERED_DIVIDING_OFFSET</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+<span class="n">CENTERED_WORD</span> <span class="o">=</span> <span class="s">&quot;CENTERED&quot;</span>
+<span class="n">RIGHT_WORD</span> <span class="o">=</span> <span class="s">&quot;RIGHT&quot;</span>
+<span class="n">LEFT_WORD</span> <span class="o">=</span> <span class="s">&quot;LEFT&quot;</span>
+
+<span class="n">FAR_WORD</span> <span class="o">=</span> <span class="s">&quot;FAR&quot;</span>
+<span class="n">NEAR_WORD</span> <span class="o">=</span> <span class="s">&quot;NEAR&quot;</span>
+
+<span class="n">BIG_WORD</span> <span class="o">=</span> <span class="s">&quot;BIG&quot;</span>
+<span class="n">SMALL_WORD</span> <span class="o">=</span> <span class="s">&quot;SMALL&quot;</span>
+
+
+<div class="viewcode-block" id="SayIfHogsAreSimilar"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#detect_face.SayIfHogsAreSimilar">[docs]</a><span class="k">def</span> <span class="nf">SayIfHogsAreSimilar</span><span class="p">(</span><span class="n">hog1</span><span class="p">,</span> <span class="n">hog2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function isnt finished yet. TODO</span>
+<span class="sd">    For the moment it looks how alike are the two lists</span>
+<span class="sd">    and makes a percentage based on the maximum length of both lists.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">100</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="nb">frozenset</span><span class="p">(</span><span class="n">hog1</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">hog2</span><span class="p">))</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">hog1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">hog2</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="DistanceFromFace"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#detect_face.DistanceFromFace">[docs]</a><span class="k">def</span> <span class="nf">DistanceFromFace</span><span class="p">(</span><span class="n">face_point</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the distance projected in the ground from a face.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vector</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">face_point</span><span class="p">)</span>
+    <span class="n">vector</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">return</span> <span class="n">vector_magnitude</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+
+</div>
+<span class="k">def</span> <span class="nf">FaceBigSmall</span><span class="p">(</span><span class="n">big_small_word</span><span class="p">,</span> <span class="n">hight</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">big_small_word</span> <span class="o">==</span> <span class="n">BIG_WORD</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">hight</span> <span class="o">&lt;</span> <span class="n">BIG_SMALL_DIVIDING_HIGHT</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">elif</span> <span class="n">big_small_word</span> <span class="o">==</span> <span class="n">SMALL_WORD</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">hight</span> <span class="o">&gt;</span> <span class="n">BIG_SMALL_DIVIDING_HIGHT</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+
+<span class="k">def</span> <span class="nf">FaceFarNear</span><span class="p">(</span><span class="n">far_near_word</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">far_near_word</span> <span class="o">==</span> <span class="n">FAR_WORD</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">DistanceFromFace</span><span class="p">(</span><span class="n">position</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">FAR_NEAR_DIVIDING_DISTANCE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">elif</span> <span class="n">far_near_word</span> <span class="o">==</span> <span class="n">NEAR_WORD</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">DistanceFromFace</span><span class="p">(</span><span class="n">position</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">FAR_NEAR_DIVIDING_DISTANCE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+
+<span class="k">def</span> <span class="nf">FaceCenterRightLeft</span><span class="p">(</span><span class="n">centred_right_left_word</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">centred_right_left_word</span> <span class="o">==</span> <span class="n">CENTERED_WORD</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">CENTERED_DIVIDING_OFFSET</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">elif</span> <span class="n">centred_right_left_word</span> <span class="o">==</span> <span class="n">RIGHT_WORD</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">offset</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">elif</span> <span class="n">centred_right_left_word</span> <span class="o">==</span> <span class="n">LEFT_WORD</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">offset</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+
+<span class="k">def</span> <span class="nf">BigSmallFilter</span><span class="p">(</span><span class="n">big_small_word</span><span class="p">,</span> <span class="n">original_list</span><span class="p">):</span>
+
+    <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;FILTERING BY BIG_SMALL&quot;</span><span class="p">)</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;ORIGINAL LIST BIG SMALL==&gt; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">original_list</span><span class="p">))</span>
+    <span class="n">filtered_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">FaceBigSmall</span><span class="p">(</span><span class="n">big_small_word</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">position3D</span><span class="o">.</span><span class="n">z</span><span class="p">),</span> <span class="n">original_list</span><span class="p">))</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;FILTERED LIST BIG SMALL==&gt; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">filtered_list</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">filtered_list</span>
+
+
+<span class="k">def</span> <span class="nf">FarNearFilter</span><span class="p">(</span><span class="n">far_near_word</span><span class="p">,</span> <span class="n">original_list</span><span class="p">):</span>
+
+    <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;ORIGINAL LIST NEAR FAR==&gt; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">original_list</span><span class="p">))</span>
+    <span class="n">filtered_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">FaceFarNear</span><span class="p">(</span><span class="n">far_near_word</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">position3D</span><span class="p">),</span> <span class="n">original_list</span><span class="p">))</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;FILTERED LIST NEAR FAR==&gt; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">filtered_list</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">filtered_list</span>
+
+
+<span class="k">def</span> <span class="nf">CentredRightLeftFilter</span><span class="p">(</span><span class="n">centred_right_left_word</span><span class="p">,</span> <span class="n">original_list</span><span class="p">):</span>
+
+    <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;ORIGINAL LIST CENTERED_RIGHT_LEFT==&gt; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">original_list</span><span class="p">))</span>
+    <span class="n">filtered_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">FaceCenterRightLeft</span><span class="p">(</span><span class="n">centred_right_left_word</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">position3D</span><span class="o">.</span><span class="n">y</span><span class="p">),</span> <span class="n">original_list</span><span class="p">))</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;FILTERED LIST CENTERED_RIGHT_LEFT==&gt; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">filtered_list</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">filtered_list</span>
+
+
+<span class="k">def</span> <span class="nf">HightDistanceCenterFaceFilters</span><span class="p">(</span><span class="n">big_small_word</span><span class="p">,</span> <span class="n">far_near_word</span><span class="p">,</span> <span class="n">centred_right_left_word</span><span class="p">,</span> <span class="n">original_list</span><span class="p">):</span>
+
+    <span class="c">#Filter by big or small</span>
+    <span class="n">new_faces_list</span> <span class="o">=</span> <span class="n">BigSmallFilter</span><span class="p">(</span><span class="n">big_small_word</span><span class="p">,</span> <span class="n">original_list</span><span class="p">)</span>
+    <span class="c">#Filter by Far or Near</span>
+    <span class="n">new_faces_list2</span> <span class="o">=</span> <span class="n">FarNearFilter</span><span class="p">(</span><span class="n">far_near_word</span><span class="p">,</span> <span class="n">new_faces_list</span><span class="p">)</span>
+    <span class="c">#Filter by Centered. Right or Left</span>
+    <span class="n">new_faces_list3</span> <span class="o">=</span> <span class="n">CentredRightLeftFilter</span><span class="p">(</span><span class="n">centred_right_left_word</span><span class="p">,</span> <span class="n">new_faces_list2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">new_faces_list3</span>
+
+
+<div class="viewcode-block" id="ProcessFaces"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#detect_face.ProcessFaces">[docs]</a><span class="k">class</span> <span class="nc">ProcessFaces</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Filters all the faces detected based on the properties given.</span>
+
+<span class="sd">    #. First it will see if a Hog identifier is given. If so, it will look for a face that matches.</span>
+<span class="sd">    If no face is found it will return aborted.</span>
+<span class="sd">    #. If no hog is given, it will use the properties given to filter the faces detected.</span>
+
+<span class="sd">    @input_keys: The input is of type pal_vision_msgs/FaceDetection[] inside faces_data_in.</span>
+<span class="sd">    @output_keys: The output is of type pal_vision_msgs/FaceDetection inside face_data_out.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hog_descriptor</span><span class="o">=</span><span class="n">DEFAULT_HOG</span><span class="p">,</span> <span class="n">prop_big_small</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">prop_far_near</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">prop_centered_right_left</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+        <span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                             <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="n">preempted</span><span class="p">,</span> <span class="n">aborted</span><span class="p">],</span>
+                             <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;faces_data_in&#39;</span><span class="p">],</span>
+                             <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;face_data_out&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hog_descriptor</span> <span class="o">=</span> <span class="n">hog_descriptor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prop_big_small</span> <span class="o">=</span> <span class="n">prop_big_small</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prop_far_near</span> <span class="o">=</span> <span class="n">prop_far_near</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prop_centered_right_left</span> <span class="o">=</span> <span class="n">prop_centered_right_left</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userdata</span><span class="p">):</span>
+
+        <span class="n">faces_list</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">userdata</span><span class="o">.</span><span class="n">faces_data_in</span><span class="p">)</span>
+
+        <span class="c"># If we want to search for a precise face.</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;FILTERING BY HOG&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hog_descriptor</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">faces_list</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">SayIfHogsAreSimilar</span><span class="p">(</span><span class="n">faces_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">hog</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hog_descriptor</span><span class="p">):</span>
+                    <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;SELECTED FACE WAS ==&gt;&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">faces_list</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+                    <span class="n">userdata</span><span class="o">.</span><span class="n">face_data_out</span> <span class="o">=</span> <span class="n">faces_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="k">return</span> <span class="n">succeeded</span>
+            <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;NO FACE WAS SELECTED&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">aborted</span>
+
+        <span class="n">final_filtered_list</span> <span class="o">=</span> <span class="n">HightDistanceCenterFaceFilters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_prop_big_small</span><span class="p">,</span>
+                                                             <span class="bp">self</span><span class="o">.</span><span class="n">_prop_far_near</span><span class="p">,</span>
+                                                             <span class="bp">self</span><span class="o">.</span><span class="n">_prop_centered_right_left</span><span class="p">,</span>
+                                                             <span class="n">faces_list</span><span class="p">)</span>
+
+        <span class="c">#Once all the filters have been applied, we select a random face from the ones that were left.</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">final_filtered_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;NO FACE WAS SELECTED&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">aborted</span>
+
+        <span class="n">selected_face</span> <span class="o">=</span> <span class="n">final_filtered_list</span><span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">final_filtered_list</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;SELECTED FACE WAS ==&gt;&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">selected_face</span><span class="p">))</span>
+        <span class="n">userdata</span><span class="o">.</span><span class="n">face_data_out</span> <span class="o">=</span> <span class="n">selected_face</span>
+
+        <span class="k">return</span> <span class="n">succeeded</span>
+
+</div>
+<div class="viewcode-block" id="DetectFaces"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#detect_face.DetectFaces">[docs]</a><span class="k">class</span> <span class="nc">DetectFaces</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The output is of type pal_vision_msgs/FaceDetection[] inside face_detections_out.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                    <span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="n">preempted</span><span class="p">,</span> <span class="n">aborted</span><span class="p">],</span>
+                                    <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;face_detections_out&#39;</span><span class="p">])</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="p">:</span>
+
+            <span class="k">def</span> <span class="nf">face_detection_cb</span><span class="p">(</span><span class="n">userdata</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+
+                <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;Faces that I see now ==&gt; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">faces</span><span class="p">))</span>
+
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">faces</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;There are no faces to be seen. &quot;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">aborted</span>
+                <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">&quot;I can see faces.&quot;</span><span class="p">)</span>
+                <span class="n">userdata</span><span class="o">.</span><span class="n">face_detections_out</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">faces</span>
+                <span class="k">return</span> <span class="n">succeeded</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;READ_FACE_DETECTION_TOPIC&#39;</span><span class="p">,</span>
+                                   <span class="n">TopicReaderState</span><span class="p">(</span><span class="n">topic_name</span><span class="o">=</span><span class="s">&#39;/person/faceDetections&#39;</span><span class="p">,</span>
+                                                    <span class="n">msg_type</span><span class="o">=</span><span class="n">FaceDetections</span><span class="p">,</span>
+                                                    <span class="n">timeout</span><span class="o">=</span><span class="n">FACE_READING_TIMEOUT</span><span class="p">,</span>
+                                                    <span class="n">callback</span><span class="o">=</span><span class="n">face_detection_cb</span><span class="p">,</span>
+                                                    <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;face_detections_out&#39;</span><span class="p">]),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;SAW_LOADS_OF_FACES&#39;</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&#39;NO_FACES_SEEN&#39;</span><span class="p">},</span>
+                                   <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;face_detections_out&#39;</span><span class="p">:</span> <span class="s">&#39;face_detections_out&#39;</span><span class="p">})</span>
+
+            <span class="n">some_faces_text</span> <span class="o">=</span> <span class="n">SAW_LOADS_OF_FACES_TXT</span>
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;SAW_LOADS_OF_FACES&#39;</span><span class="p">,</span>
+                                   <span class="n">SpeakActionState</span><span class="p">(</span><span class="n">some_faces_text</span><span class="p">),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="n">succeeded</span><span class="p">})</span>
+
+            <span class="n">no_faces_text</span> <span class="o">=</span> <span class="n">NO_FACES_SEEN_TXT</span>
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;NO_FACES_SEEN&#39;</span><span class="p">,</span>
+                                   <span class="n">SpeakActionState</span><span class="p">(</span><span class="n">no_faces_text</span><span class="p">),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="n">aborted</span><span class="p">})</span>
+
+</div>
+<span class="k">class</span> <span class="nc">DetectAFace</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hog_descriptor</span><span class="o">=</span><span class="n">DEFAULT_HOG</span><span class="p">,</span> <span class="n">prop_big_small</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">prop_far_near</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">prop_centered_right_left</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+        <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                    <span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="s">&#39;no_face_found&#39;</span><span class="p">,</span> <span class="n">preempted</span><span class="p">,</span> <span class="n">aborted</span><span class="p">],</span>
+                                    <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;face_data_out&#39;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hog_descriptor</span> <span class="o">=</span> <span class="n">hog_descriptor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prop_big_small</span> <span class="o">=</span> <span class="n">prop_big_small</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prop_far_near</span> <span class="o">=</span> <span class="n">prop_far_near</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prop_centered_right_left</span> <span class="o">=</span> <span class="n">prop_centered_right_left</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="p">:</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;DETECT_FACES&#39;</span><span class="p">,</span>
+                                   <span class="n">DetectFaces</span><span class="p">(),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;PROCESS_FACES&#39;</span><span class="p">,</span> <span class="n">preempted</span><span class="p">:</span> <span class="n">preempted</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span>  <span class="s">&#39;no_face_found&#39;</span><span class="p">},</span>
+                                   <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;face_detections_out&#39;</span><span class="p">:</span> <span class="s">&#39;face_detections_out&#39;</span><span class="p">})</span>
+
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;PROCESS_FACES&#39;</span><span class="p">,</span>
+                                   <span class="n">ProcessFaces</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hog_descriptor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prop_big_small</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prop_far_near</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prop_centered_right_left</span><span class="p">),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="s">&#39;FOUND_FACE&#39;</span><span class="p">,</span> <span class="n">preempted</span><span class="p">:</span> <span class="n">preempted</span><span class="p">,</span> <span class="n">aborted</span><span class="p">:</span> <span class="s">&#39;NOT_FOUND_FACE&#39;</span><span class="p">},</span>
+                                   <span class="n">remapping</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;faces_data_in&#39;</span><span class="p">:</span> <span class="s">&#39;face_detections_out&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;face_data_out&#39;</span><span class="p">:</span> <span class="s">&#39;face_data_out&#39;</span><span class="p">})</span>
+
+            <span class="n">a_face_text</span> <span class="o">=</span> <span class="n">FOUND_FACE_TXT</span>
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;FOUND_FACE&#39;</span><span class="p">,</span>
+                                   <span class="n">SpeakActionState</span><span class="p">(</span><span class="n">a_face_text</span><span class="p">),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span> <span class="n">succeeded</span><span class="p">})</span>
+
+            <span class="n">no_face_text</span> <span class="o">=</span> <span class="n">NOT_FOUND_FACE_TXT</span>
+            <span class="n">smach</span><span class="o">.</span><span class="n">StateMachine</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;NOT_FOUND_FACE&#39;</span><span class="p">,</span>
+                                   <span class="n">SpeakActionState</span><span class="p">(</span><span class="n">no_face_text</span><span class="p">),</span>
+                                   <span class="n">transitions</span><span class="o">=</span><span class="p">{</span><span class="n">succeeded</span><span class="p">:</span>  <span class="s">&#39;no_face_found&#39;</span><span class="p">})</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_documentation/pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

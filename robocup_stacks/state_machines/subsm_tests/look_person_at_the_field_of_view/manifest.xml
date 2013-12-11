@@ -1,0 +1,19 @@
+<package>
+  <description brief="look_person_at_the_field_of_view">
+
+     look_person_at_the_field_of_view
+
+  </description>
+  <author>Ruben Alves</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/look_person_at_the_field_of_view</url>
+  <depend package="smach"/>
+  <depend package="smach_ros"/>
+  <depend package="roslib"/>
+  <depend package="tf"/>
+  <depend package="iri_perception_msgs"/>
+  <depend package="pal_smach_utils"/>
+</package>
+
+

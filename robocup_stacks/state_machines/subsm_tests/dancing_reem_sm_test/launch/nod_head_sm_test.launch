@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+    <!--Launch of Nod Head with bpm SM -->
+    <node pkg="dancing_reem_sm_test" 
+        type="nod_head_sm_test.py"
+        name="nod_head_sm_test"
+        output="screen" >
+    </node>
+
+</launch>

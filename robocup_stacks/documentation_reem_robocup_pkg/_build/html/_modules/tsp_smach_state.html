@@ -1,0 +1,173 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>tsp_smach_state &mdash; REEM Robocup@HOME 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="REEM Robocup@HOME 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../index.html">REEM Robocup@HOME 1.0 documentation</a></div>
+        <div class="rel">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for tsp_smach_state</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+<span class="kn">import</span> <span class="nn">roslib</span>
+<span class="n">roslib</span><span class="o">.</span><span class="n">load_manifest</span><span class="p">(</span><span class="s">&#39;pal_smach_utils&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">smach</span>
+
+<span class="kn">from</span> <span class="nn">pal_smach_utils.utils.global_common</span> <span class="kn">import</span> <span class="n">succeeded</span><span class="p">,</span> <span class="n">aborted</span><span class="p">,</span> <span class="n">transform_pose</span>
+<span class="kn">from</span> <span class="nn">geometry_msgs.msg</span> <span class="kn">import</span> <span class="n">Pose</span>
+<span class="kn">from</span> <span class="nn">pal_smach_utils.object_finding_algorithms.tsp</span> <span class="kn">import</span> <span class="n">TSP</span>
+
+
+<div class="viewcode-block" id="TSPState"><a class="viewcode-back" href="../pkg_documentation/pal_smach_utils/pal_smach_utils_doc.html#tsp_smach_state.TSPState">[docs]</a><span class="k">class</span> <span class="nc">TSPState</span><span class="p">(</span><span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="p">):</span>
+
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Smach node to solve the TSP problem.</span>
+<span class="sd">    The HC parameter in the constructor specifies if it&#39;ll be solved with a Hill Climbing (True)</span>
+<span class="sd">    or with a Simulated Annealing(False)</span>
+<span class="sd">    The add_start_pose parameter in the constructor specifies whether the actual position of the robot should be</span>
+<span class="sd">    adedd as the start position of the route or not. If True, the resulting route doesn&#39;t contain the initial as a route.</span>
+
+<span class="sd">    Userdata keys:</span>
+<span class="sd">        - in_nodes is expected to be a list of pairs representing the points to visit.</span>
+<span class="sd">        - out_route is a list of pairs in order of visiting, optimizing the distance of the total route.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">HC</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">add_start_pose</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">smach</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outcomes</span><span class="o">=</span><span class="p">[</span><span class="n">succeeded</span><span class="p">,</span> <span class="n">aborted</span><span class="p">],</span> <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;in_nodes&#39;</span><span class="p">],</span>
+                             <span class="n">output_keys</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;out_route&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">HC</span> <span class="o">=</span> <span class="n">HC</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_pose</span> <span class="o">=</span> <span class="n">add_start_pose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indices</span> <span class="o">=</span> <span class="n">indices</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userdata</span><span class="p">):</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="n">userdata</span><span class="o">.</span><span class="n">in_nodes</span>
+        <span class="k">print</span> <span class="s">&#39;Calculating the TSP route with </span><span class="si">%d</span><span class="s"> nodes&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>  <span class="c"># There&#39;s no point in calculating it</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">:</span>
+                <span class="n">userdata</span><span class="o">.</span><span class="n">out_route</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">userdata</span><span class="o">.</span><span class="n">out_route</span> <span class="o">=</span> <span class="n">nodes</span>  <span class="c"># The same result</span>
+            <span class="k">return</span> <span class="n">succeeded</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_pose</span><span class="p">:</span>
+            <span class="n">robot_pose</span> <span class="o">=</span> <span class="n">Pose</span><span class="p">()</span>
+            <span class="n">robot_pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">robot_pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">robot_pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="c"># Get robot&#39;s pose in /map coordinates</span>
+            <span class="n">robot_pose</span> <span class="o">=</span> <span class="n">transform_pose</span><span class="p">(</span><span class="n">robot_pose</span><span class="p">,</span> <span class="s">&#39;/base_link&#39;</span><span class="p">,</span> <span class="s">&#39;/map&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">initial</span> <span class="o">=</span> <span class="p">(</span><span class="n">robot_pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">robot_pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+            <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">initial</span><span class="p">]</span> <span class="o">+</span> <span class="n">nodes</span>
+
+        <span class="n">tsp</span> <span class="o">=</span> <span class="n">TSP</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+        <span class="n">in_qual</span> <span class="o">=</span> <span class="n">tsp</span><span class="o">.</span><span class="n">_best_qual</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">HC</span><span class="p">:</span>
+            <span class="n">route</span> <span class="o">=</span> <span class="n">userdata</span><span class="o">.</span><span class="n">out_route</span> <span class="o">=</span> <span class="n">tsp</span><span class="o">.</span><span class="n">hill_climbing</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">route</span> <span class="o">=</span> <span class="n">tsp</span><span class="o">.</span><span class="n">simulated_annealing</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_pose</span><span class="p">:</span>
+            <span class="n">route</span> <span class="o">=</span> <span class="n">route</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">:</span>
+                <span class="n">route</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">route</span><span class="p">)</span>
+
+        <span class="n">userdata</span><span class="o">.</span><span class="n">out_route</span> <span class="o">=</span> <span class="n">route</span>
+
+        <span class="k">print</span> <span class="s">&quot;</span><span class="se">\n\n</span><span class="s">TSP&#39;s route&quot;</span><span class="p">,</span> <span class="n">route</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">route</span><span class="p">)</span>  <span class="c"># FIXME</span>
+        <span class="k">print</span> <span class="s">&#39;Initial: </span><span class="si">%f</span><span class="s">, End: </span><span class="si">%f</span><span class="s">, Difference: </span><span class="si">%f</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">in_qual</span><span class="p">,</span> <span class="n">tsp</span><span class="o">.</span><span class="n">_best_qual</span><span class="p">,</span> <span class="n">in_qual</span><span class="o">-</span><span class="n">tsp</span><span class="o">.</span><span class="n">_best_qual</span><span class="p">),</span> <span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span>  <span class="c"># FIXME</span>
+
+        <span class="k">return</span> <span class="n">succeeded</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../documentation_tutorial/documentation_tutorial.html">DOCUMENTATION TUTORIAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pkg_documentation/pkg_doc.html">Packages Documentation</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2013, Reem_Robocup@HOME_Team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

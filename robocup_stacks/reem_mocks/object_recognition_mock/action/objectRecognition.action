@@ -1,0 +1,7 @@
+#Goal 
+sensor_msgs/Image imggoal
+---
+#Result
+RegionList reglistresult
+---
+#feedback (nothing for now)

@@ -1,0 +1,18 @@
+<launch>
+
+    <include file="$(find next_location_provider)/launch/next_location_provider_service.launch" />
+
+    <include file="$(find tts_mock)/launch/tts_mock.launch" />
+    <include file="$(find move_base_mock)/launch/move_base_mock.launch"/>
+    <include file="$(find object_recognition_mock)/launch/object_recognition_mock.launch"/>
+    <include file="$(find coord_translator)/launch/coord_translator.launch" />
+    <node pkg="tf" type="static_transform_publisher" name="stereo_link_to_map" 
+          args="1.0 1.0 1.0 1.0 1.0 1.0 /head_2_link /map 40" />
+
+    <node pkg ="object_finding_behaviour_tests"
+        type="ofb_first_approach_test.py"
+        name="ofb_first_approach_test"
+        output="screen">
+    </node>
+
+</launch>

@@ -1,0 +1,6 @@
+\subsubsection usage Usage
+\verbatim
+<node name="MotionDetectorAlgorithm" pkg="iri_motion_detector" type="MotionDetectorAlgorithm">
+</node>
+\endverbatim
+

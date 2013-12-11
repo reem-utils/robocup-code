@@ -1,0 +1,13 @@
+<launch>
+  
+  <!-- Fake Servers -->
+
+  <!-- EmergencySituation SMACH -->
+  <node pkg ="back_camera_server_mock"
+        type="back_camera_server_mock.py"
+        name="back_camera_server_mock"
+        output="screen">
+  </node>
+
+</launch>
+

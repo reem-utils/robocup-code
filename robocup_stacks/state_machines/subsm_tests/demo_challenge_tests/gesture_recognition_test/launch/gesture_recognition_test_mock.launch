@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<launch>
+
+    <!-- fake action server nodes -->
+    <include file="$(find tts_mock)/launch/tts_mock.launch" />
+    <include file="$(find gesture_recognition_mock)/launch/gesture_recognition_mock.launch" />
+
+    <!-- follow_operator_test SMACH -->
+    <node pkg="gesture_recognition_test"
+        type="gesture_recognition_test.py"
+        name="sm_gesture_recognition_test"
+        output="screen">
+    </node>
+
+</launch>

@@ -1,0 +1,46 @@
+<launch>
+
+
+  <!-- fake action server nodes -->
+  <!--<include file="$(find door_detector_pal)/launch/door_detector_pal.launch" />-->
+<!--  <include file="$(find speech_recognition_mock)/launch/speech_recognition_mock.launch" /> -->
+<!--  <include file="$(find coord_translator)/launch/coord_translator.launch" />-->
+<!--  <include file="$(find person_detector_mock)/launch/person_detector_mock.launch" />-->
+<!--  <include file="$(find move_base_mock)/launch/move_base_mock.launch" />  -->
+<!--  <include file="$(find tts_mock)/launch/tts_mock.launch" /> -->
+<!--  <include file="$(find pal_smoke_detection_mock)/launch/pal_smoke_detection_mock.launch" /> -->
+ 
+
+ <!-- MAP FILES ARE CALLED FROM PYTHON: call_fire_department.py -->
+
+ <!-- REEM H3 MAP FILE -->
+  <!-- <rosparam file="$(find reem_maps)/config/map.yaml"
+      command="load" ns="emergency_situation" /> -->
+ 
+ <!-- REEM H2 MAP FILE Remember to remove this and change it to python code--> 
+ <!-- <rosparam file="$(find reemh2_maps)/config/map.yaml"
+      command="load" ns="emergency_situation" /> -->
+
+  <!-- 
+  <rosparam file="$(find coord_translator)/config/mmap.yaml" command="load" ns="mmap" />
+  -->
+
+  <!-- <rosparam file="$(find robocup_worlds)/navigation/subMap1.yaml"
+      command="load" ns="emergency_situation" /> -->
+  
+  <! -- ######################################################## -->
+
+  <rosparam file="$(find coord_translator)/config/fire_locations.yaml"
+      command="load" ns="emergency_situation" />
+
+  <rosparam file="$(find emergency_situation)/config/pendrive_location.yaml"
+      command="load" ns="emergency_situation" />
+
+  <!-- Emergency Situation SMACH -->
+  <node pkg ="emergency_situation"
+        type="emergency_situation.py"
+        name="emergency_situation"
+        output="screen">
+  </node>
+
+</launch>

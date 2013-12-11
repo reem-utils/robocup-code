@@ -1,0 +1,37 @@
+sp {REEM01*propose*deliver
+   (state <s> ^name REEM01
+              ^goal <g>
+              ^item <i>
+              ^person <p>)
+   (<i> ^grasped ok
+        ^name <item-id>)
+   (<p> ^near ok)
+  -(<p> ^item <item-id>)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name deliver)
+}
+
+sp {REEM01*apply*deliver
+   (state <s> ^name REEM01
+              ^operator <o>
+              ^io.output-link <out>)
+   (<o> ^name deliver)
+-->
+   (<out> ^command deliver)
+}
+
+sp {REEM01*elaborate*delivered
+   (state <s> ^name REEM01
+              ^io.input-link <in>
+              ^person <p>
+              ^item <i>)
+   (<in> ^performed deliver
+         ^person <per>
+         ^item <ite>)
+   (<p> ^name <per>)
+   (<i> ^name <ite>)
+-->
+   (<i> ^grasped ko)
+   (<p> ^item <i>)
+}
